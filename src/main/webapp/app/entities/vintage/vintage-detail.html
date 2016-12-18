@@ -1,0 +1,35 @@
+
+<div>
+    <h2><span data-translate="cavaVinApp.vintage.detail.title">Vintage</span> {{vm.vintage.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="cavaVinApp.vintage.bareCode">Bare Code</span></dt>
+        <dd>
+            <span>{{vm.vintage.bareCode}}</span>
+        </dd>
+        <dt><span data-translate="cavaVinApp.vintage.year">Year</span></dt>
+        <dd>
+            <a ui-sref="year-detail({id:vm.vintage.year.id})">{{vm.vintage.year.number}}</a>
+        </dd>
+        <dt><span data-translate="cavaVinApp.vintage.maxKeep">Max Keep</span></dt>
+        <dd>
+            <a ui-sref="year-detail({id:vm.vintage.maxKeep.id})">{{vm.vintage.maxKeep.number}}</a>
+        </dd>
+        <dt><span data-translate="cavaVinApp.vintage.wine">Wine</span></dt>
+        <dd>
+            <a ui-sref="wine-detail({id:vm.vintage.wine.id})">{{vm.vintage.wine.name}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="vintage-detail.edit({id:vm.vintage.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>
