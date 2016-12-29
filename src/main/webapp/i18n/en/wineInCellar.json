@@ -18,6 +18,7 @@
             },
             "price": "Price",
             "quantity": "Quantity",
+            "comments": "Comments",
             "cellar": "Cellar",
             "vintage": "Vintage"
         }

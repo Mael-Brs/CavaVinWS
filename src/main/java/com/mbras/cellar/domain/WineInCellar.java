@@ -29,6 +29,9 @@ public class WineInCellar implements Serializable {
     @Column(name = "quantity")
     private Integer quantity;
 
+    @Column(name = "comments")
+    private String comments;
+
     @ManyToOne
     private Cellar cellar;
 
@@ -67,6 +70,19 @@ public class WineInCellar implements Serializable {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public WineInCellar comments(String comments) {
+        this.comments = comments;
+        return this;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
     public Cellar getCellar() {
@@ -121,6 +137,7 @@ public class WineInCellar implements Serializable {
             "id=" + id +
             ", price='" + price + "'" +
             ", quantity='" + quantity + "'" +
+            ", comments='" + comments + "'" +
             '}';
     }
 }

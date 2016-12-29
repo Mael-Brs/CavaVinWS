@@ -26,7 +26,7 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class WineInCellarService {
 
     private final Logger log = LoggerFactory.getLogger(WineInCellarService.class);
-    
+
     @Inject
     private WineInCellarRepository wineInCellarRepository;
 
@@ -53,10 +53,10 @@ public class WineInCellarService {
 
     /**
      *  Get all the wineInCellars.
-     *  
+     *
      *  @return the list of entities
      */
-    @Transactional(readOnly = true) 
+    @Transactional(readOnly = true)
     public List<WineInCellarDTO> findAll() {
         log.debug("Request to get all WineInCellars");
         List<WineInCellarDTO> result = wineInCellarRepository.findAll().stream()
@@ -72,7 +72,7 @@ public class WineInCellarService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    @Transactional(readOnly = true) 
+    @Transactional(readOnly = true)
     public WineInCellarDTO findOne(Long id) {
         log.debug("Request to get WineInCellar : {}", id);
         WineInCellar wineInCellar = wineInCellarRepository.findOne(id);

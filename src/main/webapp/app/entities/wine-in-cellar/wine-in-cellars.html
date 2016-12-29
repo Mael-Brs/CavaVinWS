@@ -38,6 +38,7 @@
                     <th><span data-translate="global.field.id">ID</span></th>
                     <th><span data-translate="cavaVinApp.wineInCellar.price">Price</span></th>
                     <th><span data-translate="cavaVinApp.wineInCellar.quantity">Quantity</span></th>
+                    <th><span data-translate="cavaVinApp.wineInCellar.comments">Comments</span></th>
                     <th><span data-translate="cavaVinApp.wineInCellar.cellar">Cellar</span></th>
                     <th><span data-translate="cavaVinApp.wineInCellar.vintage">Vintage</span></th>
                     <th></th>
@@ -48,11 +49,12 @@
                     <td><a ui-sref="wine-in-cellar-detail({id:wineInCellar.id})">{{wineInCellar.id}}</a></td>
                     <td>{{wineInCellar.price}}</td>
                     <td>{{wineInCellar.quantity}}</td>
+                    <td>{{wineInCellar.comments}}</td>
                     <td>
                         <a ui-sref="cellar-detail({id:wineInCellar.cellarId})">{{wineInCellar.cellarId}}</a>
                     </td>
                     <td>
-                        <a ui-sref="vintage-detail({id:wineInCellar.vintage.id})">{{wineInCellar.vintage.wine.name}}</a>
+                        <a ui-sref="vintage-detail({id:wineInCellar.vintageId})">{{wineInCellar.vintageId}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
