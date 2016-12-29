@@ -5,9 +5,9 @@
         .module('cavaVinApp')
         .controller('YearController', YearController);
 
-    YearController.$inject = ['$scope', '$state', 'Year', 'YearSearch', '$q'];
+    YearController.$inject = ['$scope', '$state', 'Year', 'YearSearch'];
 
-    function YearController ($scope, $state, Year, YearSearch, $q) {
+    function YearController ($scope, $state, Year, YearSearch) {
         var vm = this;
 
         vm.years = [];

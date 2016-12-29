@@ -22,6 +22,10 @@
         {
             "fieldName": "quantity",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "comments",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20161204094532",

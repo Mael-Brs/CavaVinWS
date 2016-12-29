@@ -19,6 +19,8 @@ public class WineInCellarDTO implements Serializable {
 
     private Integer quantity;
 
+    private String comments;
+
     private Vintage vintage;
 
     private Long cellarId;
@@ -44,6 +46,13 @@ public class WineInCellarDTO implements Serializable {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
     public Vintage getVintage() {
@@ -89,6 +98,7 @@ public class WineInCellarDTO implements Serializable {
             "id=" + id +
             ", price='" + price + "'" +
             ", quantity='" + quantity + "'" +
+            ", comments='" + comments + "'" +
             '}';
     }
 }

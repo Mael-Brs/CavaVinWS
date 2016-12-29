@@ -26,7 +26,7 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class CellarService {
 
     private final Logger log = LoggerFactory.getLogger(CellarService.class);
-    
+
     @Inject
     private CellarRepository cellarRepository;
 
@@ -53,10 +53,10 @@ public class CellarService {
 
     /**
      *  Get all the cellars.
-     *  
+     *
      *  @return the list of entities
      */
-    @Transactional(readOnly = true) 
+    @Transactional(readOnly = true)
     public List<CellarDTO> findAll() {
         log.debug("Request to get all Cellars");
         List<CellarDTO> result = cellarRepository.findAll().stream()
@@ -72,7 +72,7 @@ public class CellarService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    @Transactional(readOnly = true) 
+    @Transactional(readOnly = true)
     public CellarDTO findOne(Long id) {
         log.debug("Request to get Cellar : {}", id);
         Cellar cellar = cellarRepository.findOne(id);

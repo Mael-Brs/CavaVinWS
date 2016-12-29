@@ -29,6 +29,10 @@
                 <constraints nullable="true" />
             </column>
             
+            <column name="comments" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            
             <column name="cellar_id" type="bigint">
                 <constraints nullable="true" />
             </column>

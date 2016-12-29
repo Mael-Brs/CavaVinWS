@@ -47,6 +47,9 @@ public class WineInCellarResourceIntTest {
     private static final Integer DEFAULT_QUANTITY = 1;
     private static final Integer UPDATED_QUANTITY = 2;
 
+    private static final String DEFAULT_COMMENTS = "AAAAAAAAAA";
+    private static final String UPDATED_COMMENTS = "BBBBBBBBBB";
+
     @Inject
     private WineInCellarRepository wineInCellarRepository;
 
@@ -91,7 +94,8 @@ public class WineInCellarResourceIntTest {
     public static WineInCellar createEntity(EntityManager em) {
         WineInCellar wineInCellar = new WineInCellar()
                 .price(DEFAULT_PRICE)
-                .quantity(DEFAULT_QUANTITY);
+                .quantity(DEFAULT_QUANTITY)
+                .comments(DEFAULT_COMMENTS);
         return wineInCellar;
     }
 
@@ -120,6 +124,7 @@ public class WineInCellarResourceIntTest {
         WineInCellar testWineInCellar = wineInCellars.get(wineInCellars.size() - 1);
         assertThat(testWineInCellar.getPrice()).isEqualTo(DEFAULT_PRICE);
         assertThat(testWineInCellar.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
+        assertThat(testWineInCellar.getComments()).isEqualTo(DEFAULT_COMMENTS);
 
         // Validate the WineInCellar in ElasticSearch
         WineInCellar wineInCellarEs = wineInCellarSearchRepository.findOne(testWineInCellar.getId());
@@ -138,7 +143,8 @@ public class WineInCellarResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(wineInCellar.getId().intValue())))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
-            .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)));
+            .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
+            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())));
     }
 
     @Test
@@ -153,7 +159,8 @@ public class WineInCellarResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(wineInCellar.getId().intValue()))
             .andExpect(jsonPath("$.price").value(DEFAULT_PRICE.doubleValue()))
-            .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY));
+            .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY))
+            .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS.toString()));
     }
 
     @Test
@@ -176,7 +183,8 @@ public class WineInCellarResourceIntTest {
         WineInCellar updatedWineInCellar = wineInCellarRepository.findOne(wineInCellar.getId());
         updatedWineInCellar
                 .price(UPDATED_PRICE)
-                .quantity(UPDATED_QUANTITY);
+                .quantity(UPDATED_QUANTITY)
+                .comments(UPDATED_COMMENTS);
         WineInCellarDTO wineInCellarDTO = wineInCellarMapper.wineInCellarToWineInCellarDTO(updatedWineInCellar);
 
         restWineInCellarMockMvc.perform(put("/api/wine-in-cellars")
@@ -190,6 +198,7 @@ public class WineInCellarResourceIntTest {
         WineInCellar testWineInCellar = wineInCellars.get(wineInCellars.size() - 1);
         assertThat(testWineInCellar.getPrice()).isEqualTo(UPDATED_PRICE);
         assertThat(testWineInCellar.getQuantity()).isEqualTo(UPDATED_QUANTITY);
+        assertThat(testWineInCellar.getComments()).isEqualTo(UPDATED_COMMENTS);
 
         // Validate the WineInCellar in ElasticSearch
         WineInCellar wineInCellarEs = wineInCellarSearchRepository.findOne(testWineInCellar.getId());
@@ -231,6 +240,7 @@ public class WineInCellarResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(wineInCellar.getId().intValue())))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
-            .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)));
+            .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
+            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())));
     }
 }

@@ -12,13 +12,17 @@
         <dd>
             <span>{{vm.wineInCellar.quantity}}</span>
         </dd>
+        <dt><span data-translate="cavaVinApp.wineInCellar.comments">Comments</span></dt>
+        <dd>
+            <span>{{vm.wineInCellar.comments}}</span>
+        </dd>
         <dt><span data-translate="cavaVinApp.wineInCellar.cellar">Cellar</span></dt>
         <dd>
             <a ui-sref="cellar-detail({id:vm.wineInCellar.cellarId})">{{vm.wineInCellar.cellarId}}</a>
         </dd>
         <dt><span data-translate="cavaVinApp.wineInCellar.vintage">Vintage</span></dt>
         <dd>
-            <a ui-sref="vintage-detail({id:vm.wineInCellar.vintage.id})">{{vm.wineInCellar.vintage.wine.name}}</a>
+            <a ui-sref="vintage-detail({id:vm.wineInCellar.vintageId})">{{vm.wineInCellar.vintageId}}</a>
         </dd>
     </dl>
 
