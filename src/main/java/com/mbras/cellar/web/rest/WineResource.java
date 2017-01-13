@@ -1,8 +1,10 @@
 package com.mbras.cellar.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.mbras.cellar.domain.Vintage;
 import com.mbras.cellar.domain.Wine;
 
+import com.mbras.cellar.repository.VintageRepository;
 import com.mbras.cellar.repository.WineRepository;
 import com.mbras.cellar.repository.search.WineSearchRepository;
 import com.mbras.cellar.web.rest.util.HeaderUtil;
@@ -32,12 +34,15 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class WineResource {
 
     private final Logger log = LoggerFactory.getLogger(WineResource.class);
-        
+
     @Inject
     private WineRepository wineRepository;
 
     @Inject
     private WineSearchRepository wineSearchRepository;
+
+    @Inject
+    private VintageRepository vintageRepository;
 
     /**
      * POST  /wines : Create a new wine.
@@ -115,6 +120,24 @@ public class WineResource {
     }
 
     /**
+     * GET  /wines/:id/vintages : get vintages for the "id" wine.
+     *
+     * @param id the id of the wine to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the wine, or with status 404 (Not Found)
+     */
+    @GetMapping("/wines/{id}/vintages")
+    @Timed
+    public ResponseEntity<List<Vintage>> getVintageByWine(@PathVariable Long id) {
+        log.debug("REST request to get Wine : {}", id);
+        List<Vintage> vintages = vintageRepository.findByWine_Id(id);
+        return Optional.ofNullable(vintages)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    /**
      * DELETE  /wines/:id : delete the "id" wine.
      *
      * @param id the id of the wine to delete
@@ -133,7 +156,7 @@ public class WineResource {
      * SEARCH  /_search/wines?query=:query : search for the wine corresponding
      * to the query.
      *
-     * @param query the query of the wine search 
+     * @param query the query of the wine search
      * @return the result of the search
      */
     @GetMapping("/_search/wines")
