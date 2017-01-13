@@ -11,5 +11,5 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface VintageRepository extends JpaRepository<Vintage,Long> {
-
+    List<Vintage> findByWine_Id(Long id);
 }
