@@ -9,12 +9,6 @@
         },
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "maxKeep",
-            "otherEntityName": "year",
-            "otherEntityField": "number"
-        },
-        {
-            "relationshipType": "many-to-one",
             "relationshipName": "wine",
             "otherEntityName": "wine",
             "otherEntityField": "name"

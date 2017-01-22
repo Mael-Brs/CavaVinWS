@@ -38,7 +38,6 @@
                     <th><span data-translate="global.field.id">ID</span></th>
                     <th><span data-translate="cavaVinApp.vintage.bareCode">Bare Code</span></th>
                     <th><span data-translate="cavaVinApp.vintage.year">Year</span></th>
-                    <th><span data-translate="cavaVinApp.vintage.maxKeep">Max Keep</span></th>
                     <th><span data-translate="cavaVinApp.vintage.wine">Wine</span></th>
                     <th></th>
                 </tr>
@@ -49,9 +48,6 @@
                     <td>{{vintage.bareCode}}</td>
                     <td>
                         <a ui-sref="year-detail({id:vintage.year.id})">{{vintage.year.number}}</a>
-                    </td>
-                    <td>
-                        <a ui-sref="year-detail({id:vintage.maxKeep.id})">{{vintage.maxKeep.number}}</a>
                     </td>
                     <td>
                         <a ui-sref="wine-detail({id:vintage.wine.id})">{{vintage.wine.name}}</a>

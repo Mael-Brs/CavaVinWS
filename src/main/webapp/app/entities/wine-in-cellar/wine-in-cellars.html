@@ -36,6 +36,8 @@
             <thead>
                 <tr>
                     <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="cavaVinApp.wineInCellar.minKeep">Min Keep</span></th>
+                    <th><span data-translate="cavaVinApp.wineInCellar.maxKeep">Max Keep</span></th>
                     <th><span data-translate="cavaVinApp.wineInCellar.price">Price</span></th>
                     <th><span data-translate="cavaVinApp.wineInCellar.quantity">Quantity</span></th>
                     <th><span data-translate="cavaVinApp.wineInCellar.comments">Comments</span></th>
@@ -47,6 +49,8 @@
             <tbody>
                 <tr ng-repeat="wineInCellar in vm.wineInCellars track by wineInCellar.id">
                     <td><a ui-sref="wine-in-cellar-detail({id:wineInCellar.id})">{{wineInCellar.id}}</a></td>
+                    <td>{{wineInCellar.minKeep}}</td>
+                    <td>{{wineInCellar.maxKeep}}</td>
                     <td>{{wineInCellar.price}}</td>
                     <td>{{wineInCellar.quantity}}</td>
                     <td>{{wineInCellar.comments}}</td>

@@ -104,6 +104,8 @@
                     resolve: {
                         entity: function () {
                             return {
+                                minKeep: null,
+                                maxKeep: null,
                                 price: null,
                                 quantity: null,
                                 comments: null,

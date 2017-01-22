@@ -41,6 +41,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = CavaVinApp.class)
 public class WineInCellarResourceIntTest {
 
+    private static final Integer DEFAULT_MIN_KEEP = 1;
+    private static final Integer UPDATED_MIN_KEEP = 2;
+
+    private static final Integer DEFAULT_MAX_KEEP = 1;
+    private static final Integer UPDATED_MAX_KEEP = 2;
+
     private static final Double DEFAULT_PRICE = 1D;
     private static final Double UPDATED_PRICE = 2D;
 
@@ -93,6 +99,8 @@ public class WineInCellarResourceIntTest {
      */
     public static WineInCellar createEntity(EntityManager em) {
         WineInCellar wineInCellar = new WineInCellar()
+                .minKeep(DEFAULT_MIN_KEEP)
+                .maxKeep(DEFAULT_MAX_KEEP)
                 .price(DEFAULT_PRICE)
                 .quantity(DEFAULT_QUANTITY)
                 .comments(DEFAULT_COMMENTS);
@@ -122,6 +130,8 @@ public class WineInCellarResourceIntTest {
         List<WineInCellar> wineInCellars = wineInCellarRepository.findAll();
         assertThat(wineInCellars).hasSize(databaseSizeBeforeCreate + 1);
         WineInCellar testWineInCellar = wineInCellars.get(wineInCellars.size() - 1);
+        assertThat(testWineInCellar.getMinKeep()).isEqualTo(DEFAULT_MIN_KEEP);
+        assertThat(testWineInCellar.getMaxKeep()).isEqualTo(DEFAULT_MAX_KEEP);
         assertThat(testWineInCellar.getPrice()).isEqualTo(DEFAULT_PRICE);
         assertThat(testWineInCellar.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
         assertThat(testWineInCellar.getComments()).isEqualTo(DEFAULT_COMMENTS);
@@ -142,6 +152,8 @@ public class WineInCellarResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(wineInCellar.getId().intValue())))
+            .andExpect(jsonPath("$.[*].minKeep").value(hasItem(DEFAULT_MIN_KEEP)))
+            .andExpect(jsonPath("$.[*].maxKeep").value(hasItem(DEFAULT_MAX_KEEP)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())));
@@ -158,6 +170,8 @@ public class WineInCellarResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(wineInCellar.getId().intValue()))
+            .andExpect(jsonPath("$.minKeep").value(DEFAULT_MIN_KEEP))
+            .andExpect(jsonPath("$.maxKeep").value(DEFAULT_MAX_KEEP))
             .andExpect(jsonPath("$.price").value(DEFAULT_PRICE.doubleValue()))
             .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY))
             .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS.toString()));
@@ -182,6 +196,8 @@ public class WineInCellarResourceIntTest {
         // Update the wineInCellar
         WineInCellar updatedWineInCellar = wineInCellarRepository.findOne(wineInCellar.getId());
         updatedWineInCellar
+                .minKeep(UPDATED_MIN_KEEP)
+                .maxKeep(UPDATED_MAX_KEEP)
                 .price(UPDATED_PRICE)
                 .quantity(UPDATED_QUANTITY)
                 .comments(UPDATED_COMMENTS);
@@ -196,6 +212,8 @@ public class WineInCellarResourceIntTest {
         List<WineInCellar> wineInCellars = wineInCellarRepository.findAll();
         assertThat(wineInCellars).hasSize(databaseSizeBeforeUpdate);
         WineInCellar testWineInCellar = wineInCellars.get(wineInCellars.size() - 1);
+        assertThat(testWineInCellar.getMinKeep()).isEqualTo(UPDATED_MIN_KEEP);
+        assertThat(testWineInCellar.getMaxKeep()).isEqualTo(UPDATED_MAX_KEEP);
         assertThat(testWineInCellar.getPrice()).isEqualTo(UPDATED_PRICE);
         assertThat(testWineInCellar.getQuantity()).isEqualTo(UPDATED_QUANTITY);
         assertThat(testWineInCellar.getComments()).isEqualTo(UPDATED_COMMENTS);
@@ -239,6 +257,8 @@ public class WineInCellarResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(wineInCellar.getId().intValue())))
+            .andExpect(jsonPath("$.[*].minKeep").value(hasItem(DEFAULT_MIN_KEEP)))
+            .andExpect(jsonPath("$.[*].maxKeep").value(hasItem(DEFAULT_MAX_KEEP)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())));

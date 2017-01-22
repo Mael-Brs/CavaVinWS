@@ -30,7 +30,7 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class WineInCellarResource {
 
     private final Logger log = LoggerFactory.getLogger(WineInCellarResource.class);
-        
+
     @Inject
     private WineInCellarService wineInCellarService;
 
@@ -124,7 +124,7 @@ public class WineInCellarResource {
      * SEARCH  /_search/wine-in-cellars?query=:query : search for the wineInCellar corresponding
      * to the query.
      *
-     * @param query the query of the wineInCellar search 
+     * @param query the query of the wineInCellar search
      * @return the result of the search
      */
     @GetMapping("/_search/wine-in-cellars")

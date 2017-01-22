@@ -29,10 +29,6 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="max_keep_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
             <column name="wine_id" type="bigint">
                 <constraints nullable="true" />
             </column>

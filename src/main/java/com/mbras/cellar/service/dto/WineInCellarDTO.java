@@ -15,6 +15,10 @@ public class WineInCellarDTO implements Serializable {
 
     private Long id;
 
+    private Integer minKeep;
+
+    private Integer maxKeep;
+
     private Double price;
 
     private Integer quantity;
@@ -32,6 +36,20 @@ public class WineInCellarDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    public Integer getMinKeep() {
+        return minKeep;
+    }
+
+    public void setMinKeep(Integer minKeep) {
+        this.minKeep = minKeep;
+    }
+    public Integer getMaxKeep() {
+        return maxKeep;
+    }
+
+    public void setMaxKeep(Integer maxKeep) {
+        this.maxKeep = maxKeep;
     }
     public Double getPrice() {
         return price;
@@ -96,6 +114,8 @@ public class WineInCellarDTO implements Serializable {
     public String toString() {
         return "WineInCellarDTO{" +
             "id=" + id +
+            ", minKeep='" + minKeep + "'" +
+            ", maxKeep='" + maxKeep + "'" +
             ", price='" + price + "'" +
             ", quantity='" + quantity + "'" +
             ", comments='" + comments + "'" +
