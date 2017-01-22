@@ -27,12 +27,6 @@
             </select>
         </div>
         <div class="form-group">
-            <label data-translate="cavaVinApp.vintage.maxKeep" for="field_maxKeep">Max Keep</label>
-            <select class="form-control" id="field_maxKeep" name="maxKeep" ng-model="vm.vintage.maxKeep" ng-options="year as year.number for year in vm.years track by year.id">
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="form-group">
             <label data-translate="cavaVinApp.vintage.wine" for="field_wine">Wine</label>
             <select class="form-control" id="field_wine" name="wine" ng-model="vm.vintage.wine" ng-options="wine as wine.name for wine in vm.wines track by wine.id">
                 <option value=""></option>

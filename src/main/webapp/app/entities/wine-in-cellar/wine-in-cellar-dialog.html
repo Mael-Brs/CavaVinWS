@@ -14,6 +14,18 @@
                     ng-model="vm.wineInCellar.id" readonly />
         </div>
         <div class="form-group">
+            <label class="control-label" data-translate="cavaVinApp.wineInCellar.minKeep" for="field_minKeep">Min Keep</label>
+            <input type="number" class="form-control" name="minKeep" id="field_minKeep"
+                    ng-model="vm.wineInCellar.minKeep"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="cavaVinApp.wineInCellar.maxKeep" for="field_maxKeep">Max Keep</label>
+            <input type="number" class="form-control" name="maxKeep" id="field_maxKeep"
+                    ng-model="vm.wineInCellar.maxKeep"
+                     />
+        </div>
+        <div class="form-group">
             <label class="control-label" data-translate="cavaVinApp.wineInCellar.price" for="field_price">Price</label>
             <input type="number" class="form-control" name="price" id="field_price"
                     ng-model="vm.wineInCellar.price"

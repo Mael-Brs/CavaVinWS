@@ -14,12 +14,6 @@
                                  referencedColumnNames="id"
                                  referencedTableName="year"/>
 
-        <addForeignKeyConstraint baseColumnNames="max_keep_id"
-                                 baseTableName="vintage"
-                                 constraintName="fk_vintage_max_keep_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="year"/>
-
         <addForeignKeyConstraint baseColumnNames="wine_id"
                                  baseTableName="vintage"
                                  constraintName="fk_vintage_wine_id"

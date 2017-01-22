@@ -30,9 +30,6 @@ public class Vintage implements Serializable {
     private Year year;
 
     @ManyToOne
-    private Year maxKeep;
-
-    @ManyToOne
     private Wine wine;
 
     public Long getId() {
@@ -67,19 +64,6 @@ public class Vintage implements Serializable {
 
     public void setYear(Year year) {
         this.year = year;
-    }
-
-    public Year getMaxKeep() {
-        return maxKeep;
-    }
-
-    public Vintage maxKeep(Year year) {
-        this.maxKeep = year;
-        return this;
-    }
-
-    public void setMaxKeep(Year year) {
-        this.maxKeep = year;
     }
 
     public Wine getWine() {
