@@ -1,6 +1,7 @@
 package com.mbras.cellar.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.mbras.cellar.domain.WineByRegion;
 import com.mbras.cellar.service.WineInCellarService;
 import com.mbras.cellar.web.rest.util.HeaderUtil;
 import com.mbras.cellar.service.dto.WineInCellarDTO;
