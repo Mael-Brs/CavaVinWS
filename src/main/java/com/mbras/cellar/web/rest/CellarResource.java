@@ -166,7 +166,7 @@ public class CellarResource {
      * @param id the id of cellar
      * @return the ResponseEntity with status 200 (OK) and the list of wine by color in body
      */
-    @GetMapping("/wine-by-color")
+    @GetMapping("/cellars/{id}/wine-by-color")
     @Timed
     public List<WineByColor> getWineByColor(@PathVariable Long id) {
         log.debug("REST request to get number of wine by color");
@@ -179,7 +179,7 @@ public class CellarResource {
      * @param id the id of the cellarDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @DeleteMapping("/cellars/{id}//cellars/{id}")
+    @DeleteMapping("/cellars/{id}")
     @Timed
     public ResponseEntity<Void> deleteCellar(@PathVariable Long id) {
         log.debug("REST request to delete Cellar : {}", id);
