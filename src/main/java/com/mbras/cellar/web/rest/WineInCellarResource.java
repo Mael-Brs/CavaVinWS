@@ -1,6 +1,7 @@
 package com.mbras.cellar.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.mbras.cellar.domain.WineByColor;
 import com.mbras.cellar.domain.WineByRegion;
 import com.mbras.cellar.service.WineInCellarService;
 import com.mbras.cellar.web.rest.util.HeaderUtil;
@@ -134,6 +135,5 @@ public class WineInCellarResource {
         log.debug("REST request to search WineInCellars for query {}", query);
         return wineInCellarService.search(query);
     }
-
 
 }

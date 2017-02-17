@@ -1,5 +1,8 @@
 package com.mbras.cellar.service;
 
+import com.codahale.metrics.annotation.Timed;
+import com.mbras.cellar.domain.WineByColor;
+import com.mbras.cellar.domain.WineByRegion;
 import com.mbras.cellar.domain.WineInCellar;
 import com.mbras.cellar.repository.WineInCellarRepository;
 import com.mbras.cellar.repository.search.WineInCellarSearchRepository;
@@ -9,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.inject.Inject;
 import java.util.LinkedList;
@@ -119,5 +123,38 @@ public class WineInCellarService {
             .stream(wineInCellarSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .map(wineInCellarMapper::wineInCellarToWineInCellarDTO)
             .collect(Collectors.toList());
+    }
+
+    /**
+     * Get total number of wine
+     *
+     * @return the number of wine in cellar of user
+     */
+    @Transactional(readOnly = true)
+    public Long getWineSum(Long id) {
+        log.debug("Request to get total number of wine");
+        return wineInCellarRepository.sumWine(id);
+    }
+
+    /**
+     * Get number of wine group by region
+     *
+     * @return the list of wine by region
+     */
+    @Transactional(readOnly = true)
+    public List<WineByRegion> getWineByRegion(Long id) {
+        log.debug("Request to get number of wine by region");
+        return wineInCellarRepository.sumWineByRegion(id);
+    }
+
+    /**
+     * GET  /wine-by-color : get number of wine group by color
+     *
+     * @return the list of wine by color
+     */
+    @Transactional(readOnly = true)
+    public List<WineByColor> getWineByColor(Long id) {
+        log.debug("Request to get number of wine by color");
+        return wineInCellarRepository.sumWineByColor(id);
     }
 }

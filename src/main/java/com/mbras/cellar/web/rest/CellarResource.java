@@ -1,6 +1,8 @@
 package com.mbras.cellar.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.mbras.cellar.domain.WineByColor;
+import com.mbras.cellar.domain.WineByRegion;
 import com.mbras.cellar.service.CellarService;
 import com.mbras.cellar.service.WineInCellarService;
 import com.mbras.cellar.service.dto.WineInCellarDTO;
@@ -130,12 +132,54 @@ public class CellarResource {
     }
 
     /**
+     * GET  /sum-of-wine : get total number of wine
+     * @param id the id of cellar
+     * @return the ResponseEntity with status 200 (OK) and the total number of wine in body
+     */
+    @GetMapping("/cellars/{id}/sum-of-wine")
+    @Timed
+    public ResponseEntity<Long> getWineSum(@PathVariable Long id) {
+        log.debug("REST request to get total number of wine");
+        Long sum = wineInCellarService.getWineSum(id);
+        return Optional.ofNullable(sum)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(0L,HttpStatus.OK));
+    }
+
+    /**
+     * GET  /wine-by-region : get number of wine group by region
+     * @param id the id of cellar
+     * @return the ResponseEntity with status 200 (OK) and the list of wine by region in body
+     */
+    @GetMapping("/cellars/{id}/wine-by-region")
+    @Timed
+    public List<WineByRegion> getWineByRegion(@PathVariable Long id) {
+        log.debug("REST request to get number of wine by region");
+        List<WineByRegion> wineByRegions = wineInCellarService.getWineByRegion(id);
+        return wineInCellarService.getWineByRegion(id);
+    }
+
+    /**
+     * GET  /wine-by-color : get number of wine group by color
+     * @param id the id of cellar
+     * @return the ResponseEntity with status 200 (OK) and the list of wine by color in body
+     */
+    @GetMapping("/wine-by-color")
+    @Timed
+    public List<WineByColor> getWineByColor(@PathVariable Long id) {
+        log.debug("REST request to get number of wine by color");
+        return wineInCellarService.getWineByColor(id);
+    }
+
+    /**
      * DELETE  /cellars/:id : delete the "id" cellar.
      *
      * @param id the id of the cellarDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @DeleteMapping("/cellars/{id}")
+    @DeleteMapping("/cellars/{id}//cellars/{id}")
     @Timed
     public ResponseEntity<Void> deleteCellar(@PathVariable Long id) {
         log.debug("REST request to delete Cellar : {}", id);
