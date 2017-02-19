@@ -1,7 +1,11 @@
 package com.mbras.cellar.service.dto;
 
+import com.mbras.cellar.domain.WineByColor;
+import com.mbras.cellar.domain.WineByRegion;
+
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Objects;
 
@@ -15,11 +19,15 @@ public class CellarDTO implements Serializable {
 
     private Integer capacity;
 
-
     private Long userId;
-    
 
     private String userLogin;
+
+    private Long sumOfWine;
+
+    private List<WineByRegion> wineByRegion;
+
+    private List<WineByColor> wineByColor;
 
     public Long getId() {
         return id;
@@ -53,6 +61,31 @@ public class CellarDTO implements Serializable {
         this.userLogin = userLogin;
     }
 
+    public Long getSumOfWine() {
+        return sumOfWine;
+    }
+
+    public void setSumOfWine(Long sumOfWine) {
+        this.sumOfWine = sumOfWine;
+    }
+
+    public List<WineByRegion> getWineByRegion() {
+        return wineByRegion;
+    }
+
+    public void setWineByRegion(List<WineByRegion> wineByRegion) {
+        this.wineByRegion = wineByRegion;
+    }
+
+    public List<WineByColor> getWineByColor() {
+        return wineByColor;
+    }
+
+    public void setWineByColor(List<WineByColor> wineByColor) {
+        this.wineByColor = wineByColor;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -76,9 +109,13 @@ public class CellarDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "CellarDTO{" +
-            "id=" + id +
-            ", capacity='" + capacity + "'" +
-            '}';
+        final StringBuffer sb = new StringBuffer("CellarDTO{");
+        sb.append("id=").append(id);
+        sb.append(", capacity=").append(capacity);
+        sb.append(", sumOfWine=").append(sumOfWine);
+        sb.append(", wineByRegion=").append(wineByRegion);
+        sb.append(", wineByColor=").append(wineByColor);
+        sb.append('}');
+        return sb.toString();
     }
 }

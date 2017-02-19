@@ -106,6 +106,12 @@ public class CellarResource {
     public ResponseEntity<CellarDTO> getCellar(@PathVariable Long id) {
         log.debug("REST request to get Cellar : {}", id);
         CellarDTO cellarDTO = cellarService.findOne(id);
+        Long sum = wineInCellarService.getWineSum(id);
+        List<WineByRegion> wineByRegion = wineInCellarService.getWineByRegion(id);
+        List<WineByColor> wineByColor = wineInCellarService.getWineByColor(id);
+        cellarDTO.setSumOfWine(sum);
+        cellarDTO.setWineByRegion(wineByRegion);
+        cellarDTO.setWineByColor(wineByColor);
         return Optional.ofNullable(cellarDTO)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -138,14 +144,11 @@ public class CellarResource {
      */
     @GetMapping("/cellars/{id}/sum-of-wine")
     @Timed
-    public ResponseEntity<Long> getWineSum(@PathVariable Long id) {
+    public ResponseEntity<String> getWineSum(@PathVariable Long id) {
         log.debug("REST request to get total number of wine");
         Long sum = wineInCellarService.getWineSum(id);
-        return Optional.ofNullable(sum)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(0L,HttpStatus.OK));
+        String sumString = "{'sum':" + sum + "}";
+        return new ResponseEntity<>(sumString, HttpStatus.OK);
     }
 
     /**
