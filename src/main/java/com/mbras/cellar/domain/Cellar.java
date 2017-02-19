@@ -6,6 +6,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -29,6 +30,15 @@ public class Cellar implements Serializable {
     @OneToOne
     @JoinColumn(unique = true)
     private User user;
+
+    @Transient
+    private Long sumOfWine;
+
+    @Transient
+    private List<WineByRegion> wineByRegion;
+
+    @Transient
+    private List<WineByColor> wineByColor;
 
     public Long getId() {
         return id;
@@ -64,6 +74,30 @@ public class Cellar implements Serializable {
         this.user = user;
     }
 
+    public Long getSumOfWine() {
+        return sumOfWine;
+    }
+
+    public void setSumOfWine(Long sumOfWine) {
+        this.sumOfWine = sumOfWine;
+    }
+
+    public List<WineByRegion> getWineByRegion() {
+        return wineByRegion;
+    }
+
+    public void setWineByRegion(List<WineByRegion> wineByRegion) {
+        this.wineByRegion = wineByRegion;
+    }
+
+    public List<WineByColor> getWineByColor() {
+        return wineByColor;
+    }
+
+    public void setWineByColor(List<WineByColor> wineByColor) {
+        this.wineByColor = wineByColor;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -86,9 +120,13 @@ public class Cellar implements Serializable {
 
     @Override
     public String toString() {
-        return "Cellar{" +
-            "id=" + id +
-            ", capacity='" + capacity + "'" +
-            '}';
+        final StringBuilder sb = new StringBuilder("Cellar{");
+        sb.append("id=").append(id);
+        sb.append(", capacity=").append(capacity);
+        sb.append(", sumOfWine=").append(sumOfWine);
+        sb.append(", wineByRegion=").append(wineByRegion);
+        sb.append(", wineByColor=").append(wineByColor);
+        sb.append('}');
+        return sb.toString();
     }
 }

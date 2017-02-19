@@ -3,12 +3,15 @@ package com.mbras.cellar.web.rest;
 import com.mbras.cellar.config.Constants;
 import com.codahale.metrics.annotation.Timed;
 import com.mbras.cellar.domain.User;
+import com.mbras.cellar.domain.WineByColor;
+import com.mbras.cellar.domain.WineByRegion;
 import com.mbras.cellar.repository.UserRepository;
 import com.mbras.cellar.repository.search.UserSearchRepository;
 import com.mbras.cellar.security.AuthoritiesConstants;
 import com.mbras.cellar.service.CellarService;
 import com.mbras.cellar.service.MailService;
 import com.mbras.cellar.service.UserService;
+import com.mbras.cellar.service.WineInCellarService;
 import com.mbras.cellar.service.dto.CellarDTO;
 import com.mbras.cellar.web.rest.vm.ManagedUserVM;
 import com.mbras.cellar.web.rest.util.HeaderUtil;
@@ -77,6 +80,9 @@ public class UserResource {
 
     @Inject
     private CellarService cellarService;
+
+    @Inject
+    private WineInCellarService wineInCellarService;
 
     /**
      * POST  /users  : Creates a new user.
@@ -190,6 +196,13 @@ public class UserResource {
     public ResponseEntity<CellarDTO> getCellarForUser(@PathVariable String login) {
         log.debug("REST request to get cellars for User : {}", login);
         CellarDTO cellar = cellarService.findByUser(login);
+        Long id =  cellar.getId();
+        Long sum = wineInCellarService.getWineSum(id);
+        List<WineByRegion> wineByRegion = wineInCellarService.getWineByRegion(id);
+        List<WineByColor> wineByColor = wineInCellarService.getWineByColor(id);
+        cellar.setSumOfWine(sum);
+        cellar.setWineByRegion(wineByRegion);
+        cellar.setWineByColor(wineByColor);
         return Optional.ofNullable(cellar)
             .map(result -> new ResponseEntity<>(
                 result,
