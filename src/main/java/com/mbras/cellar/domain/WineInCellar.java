@@ -44,6 +44,9 @@ public class WineInCellar implements Serializable {
     @ManyToOne
     private Vintage vintage;
 
+    @Transient
+    private Integer apogee;
+
     public Long getId() {
         return id;
     }
@@ -71,11 +74,15 @@ public class WineInCellar implements Serializable {
 
     public WineInCellar maxKeep(Integer maxKeep) {
         this.maxKeep = maxKeep;
+            this.apogee = this.vintage.getYear().getNumber() + maxKeep;
+        }
         return this;
     }
 
     public void setMaxKeep(Integer maxKeep) {
         this.maxKeep = maxKeep;
+            this.apogee = this.vintage.getYear().getNumber() + maxKeep;
+        }
     }
 
     public Double getPrice() {
@@ -136,11 +143,26 @@ public class WineInCellar implements Serializable {
 
     public WineInCellar vintage(Vintage vintage) {
         this.vintage = vintage;
+            this.apogee = vintage.getYear().getNumber() + this.maxKeep;
+        }
         return this;
     }
 
     public void setVintage(Vintage vintage) {
         this.vintage = vintage;
+            this.apogee = vintage.getYear().getNumber() + this.maxKeep;
+        }
+    }
+
+    public Integer getApogee() {
+        return apogee;
+    }
+
+    @PostLoad
+    public void setApogee(){
+        if(this.maxKeep != null && this.vintage != null && this.vintage.getYear() != null){
+            this.apogee = this.vintage.getYear().getNumber() + this.maxKeep;
+        }
     }
 
     @Override

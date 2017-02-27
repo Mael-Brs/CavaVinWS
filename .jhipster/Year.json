@@ -4,7 +4,7 @@
     "fields": [
         {
             "fieldName": "number",
-            "fieldType": "String",
+            "fieldType": "Integer",
             "fieldValidateRules": [
                 "required"
             ]

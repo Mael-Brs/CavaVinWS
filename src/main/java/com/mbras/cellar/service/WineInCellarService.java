@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import javax.inject.Inject;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -66,7 +67,6 @@ public class WineInCellarService {
         List<WineInCellarDTO> result = wineInCellarRepository.findAll().stream()
             .map(wineInCellarMapper::wineInCellarToWineInCellarDTO)
             .collect(Collectors.toCollection(LinkedList::new));
-
         return result;
     }
 
@@ -133,7 +133,7 @@ public class WineInCellarService {
     @Transactional(readOnly = true)
     public Long getWineSum(Long id) {
         log.debug("Request to get total number of wine");
-        return wineInCellarRepository.sumWine(id);
+        return Optional.ofNullable(wineInCellarRepository.sumWine(id)).orElse(0L);
     }
 
     /**

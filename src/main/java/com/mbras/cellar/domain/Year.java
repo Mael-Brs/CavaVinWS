@@ -26,7 +26,7 @@ public class Year implements Serializable {
 
     @NotNull
     @Column(name = "number", nullable = false)
-    private String number;
+    private Integer number;
 
     public Long getId() {
         return id;
@@ -36,16 +36,16 @@ public class Year implements Serializable {
         this.id = id;
     }
 
-    public String getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
-    public Year number(String number) {
+    public Year number(Integer number) {
         this.number = number;
         return this;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
 

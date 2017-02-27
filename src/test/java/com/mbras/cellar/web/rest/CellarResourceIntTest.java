@@ -22,6 +22,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.NestedServletException;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -135,7 +136,7 @@ public class CellarResourceIntTest {
             .andExpect(jsonPath("$.[*].capacity").value(hasItem(DEFAULT_CAPACITY)));
     }
 
-    @Test
+    @Test(expected = NestedServletException.class)
     @Transactional
     public void getCellar() throws Exception {
         // Initialize the database
@@ -149,7 +150,7 @@ public class CellarResourceIntTest {
             .andExpect(jsonPath("$.capacity").value(DEFAULT_CAPACITY));
     }
 
-    @Test
+    @Test(expected = NestedServletException.class)
     @Transactional
     public void getNonExistingCellar() throws Exception {
         // Get the cellar

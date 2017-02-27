@@ -17,21 +17,10 @@
 
         loadAll();
 
-        function populateYear(nb){
-            Year.save({number:nb}, function(){
-                if(nb < 2016){
-                    populateYear(nb+1);
-                }
-            });
-        }
-
         function loadAll() {
             Year.query(function(result) {
                 vm.years = result;
                 vm.searchQuery = null;
-                if(!vm.years.length > 0){
-                    populateYear(1885);
-                }
             });
         }
 

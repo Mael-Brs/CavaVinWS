@@ -38,8 +38,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = CavaVinApp.class)
 public class YearResourceIntTest {
 
-    private static final String DEFAULT_NUMBER = "AAAAAAAAAA";
-    private static final String UPDATED_NUMBER = "BBBBBBBBBB";
+    private static final Integer DEFAULT_NUMBER = 1;
+    private static final Integer UPDATED_NUMBER = 2;
 
     @Inject
     private YearRepository yearRepository;
@@ -141,7 +141,7 @@ public class YearResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(year.getId().intValue())))
-            .andExpect(jsonPath("$.[*].number").value(hasItem(DEFAULT_NUMBER.toString())));
+            .andExpect(jsonPath("$.[*].number").value(hasItem(DEFAULT_NUMBER)));
     }
 
     @Test
@@ -155,7 +155,7 @@ public class YearResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(year.getId().intValue()))
-            .andExpect(jsonPath("$.number").value(DEFAULT_NUMBER.toString()));
+            .andExpect(jsonPath("$.number").value(DEFAULT_NUMBER));
     }
 
     @Test
@@ -229,6 +229,6 @@ public class YearResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(year.getId().intValue())))
-            .andExpect(jsonPath("$.[*].number").value(hasItem(DEFAULT_NUMBER.toString())));
+            .andExpect(jsonPath("$.[*].number").value(hasItem(DEFAULT_NUMBER)));
     }
 }
