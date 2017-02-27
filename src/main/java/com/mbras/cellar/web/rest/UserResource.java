@@ -196,13 +196,15 @@ public class UserResource {
     public ResponseEntity<CellarDTO> getCellarForUser(@PathVariable String login) {
         log.debug("REST request to get cellars for User : {}", login);
         CellarDTO cellar = cellarService.findByUser(login);
-        Long id =  cellar.getId();
-        Long sum = wineInCellarService.getWineSum(id);
-        List<WineByRegion> wineByRegion = wineInCellarService.getWineByRegion(id);
-        List<WineByColor> wineByColor = wineInCellarService.getWineByColor(id);
-        cellar.setSumOfWine(sum);
-        cellar.setWineByRegion(wineByRegion);
-        cellar.setWineByColor(wineByColor);
+        if(cellar != null){
+            Long id =  cellar.getId();
+            Long sum = wineInCellarService.getWineSum(id);
+            List<WineByRegion> wineByRegion = wineInCellarService.getWineByRegion(id);
+            List<WineByColor> wineByColor = wineInCellarService.getWineByColor(id);
+            cellar.setSumOfWine(sum);
+            cellar.setWineByRegion(wineByRegion);
+            cellar.setWineByColor(wineByColor);
+        }
         return Optional.ofNullable(cellar)
             .map(result -> new ResponseEntity<>(
                 result,

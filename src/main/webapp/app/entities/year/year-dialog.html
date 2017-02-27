@@ -15,13 +15,17 @@
         </div>
         <div class="form-group">
             <label class="control-label" data-translate="cavaVinApp.year.number" for="field_number">Number</label>
-            <input type="text" class="form-control" name="number" id="field_number"
+            <input type="number" class="form-control" name="number" id="field_number"
                     ng-model="vm.year.number"
                     required />
             <div ng-show="editForm.number.$invalid">
                 <p class="help-block"
                     ng-show="editForm.number.$error.required" data-translate="entity.validation.required">
                     This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.number.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
                 </p>
             </div>
         </div>

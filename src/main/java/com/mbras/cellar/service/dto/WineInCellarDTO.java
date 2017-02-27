@@ -29,6 +29,7 @@ public class WineInCellarDTO implements Serializable {
 
     private Long cellarId;
 
+    private Integer apogee;
 
     public Long getId() {
         return id;
@@ -87,6 +88,14 @@ public class WineInCellarDTO implements Serializable {
 
     public void setCellarId(Long cellarId) {
         this.cellarId = cellarId;
+    }
+
+    public Integer getApogee() {
+        return apogee;
+    }
+
+    public void setApogee(Integer apogee) {
+        this.apogee = apogee;
     }
 
     @Override
