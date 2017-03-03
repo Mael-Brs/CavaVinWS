@@ -71,9 +71,11 @@ jhipster:
         ehcache:
             maxBytesLocalHeap: 256M
     security:
-        rememberMe:
-            # security key (this key should be unique for your application, and kept secret)
-            key: 8e675dd4c4630915f54d5134d48162a14f63b446
+        authentication:
+            jwt:
+                secret: 34bc8b1f9130ff8c9b1a76e14fe882be1f02e7d7
+                # Token is valid 24 hours
+                tokenValidityInSeconds: 86400
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: cavaVin@localhost
         baseUrl: http://my-server-url-to-change # Modify according to your server's URL

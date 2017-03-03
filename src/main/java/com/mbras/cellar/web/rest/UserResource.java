@@ -3,16 +3,11 @@ package com.mbras.cellar.web.rest;
 import com.mbras.cellar.config.Constants;
 import com.codahale.metrics.annotation.Timed;
 import com.mbras.cellar.domain.User;
-import com.mbras.cellar.domain.WineByColor;
-import com.mbras.cellar.domain.WineByRegion;
 import com.mbras.cellar.repository.UserRepository;
 import com.mbras.cellar.repository.search.UserSearchRepository;
 import com.mbras.cellar.security.AuthoritiesConstants;
-import com.mbras.cellar.service.CellarService;
 import com.mbras.cellar.service.MailService;
 import com.mbras.cellar.service.UserService;
-import com.mbras.cellar.service.WineInCellarService;
-import com.mbras.cellar.service.dto.CellarDTO;
 import com.mbras.cellar.web.rest.vm.ManagedUserVM;
 import com.mbras.cellar.web.rest.util.HeaderUtil;
 import com.mbras.cellar.web.rest.util.PaginationUtil;
@@ -77,12 +72,6 @@ public class UserResource {
 
     @Inject
     private UserSearchRepository userSearchRepository;
-
-    @Inject
-    private CellarService cellarService;
-
-    @Inject
-    private WineInCellarService wineInCellarService;
 
     /**
      * POST  /users  : Creates a new user.
@@ -183,33 +172,6 @@ public class UserResource {
                 .map(ManagedUserVM::new)
                 .map(managedUserVM -> new ResponseEntity<>(managedUserVM, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    /**
-     * GET  /users/:login/cellars : get cellars for this user.
-     *
-     * @param login the login of the user to find
-     * @return the ResponseEntity with status 200 (OK) and with body the "login" user, or with status 404 (Not Found)
-     */
-    @GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}/cellars")
-    @Timed
-    public ResponseEntity<CellarDTO> getCellarForUser(@PathVariable String login) {
-        log.debug("REST request to get cellars for User : {}", login);
-        CellarDTO cellar = cellarService.findByUser(login);
-        if(cellar != null){
-            Long id =  cellar.getId();
-            Long sum = wineInCellarService.getWineSum(id);
-            List<WineByRegion> wineByRegion = wineInCellarService.getWineByRegion(id);
-            List<WineByColor> wineByColor = wineInCellarService.getWineByColor(id);
-            cellar.setSumOfWine(sum);
-            cellar.setWineByRegion(wineByRegion);
-            cellar.setWineByColor(wineByColor);
-        }
-        return Optional.ofNullable(cellar)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     /**

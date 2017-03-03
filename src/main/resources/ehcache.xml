@@ -20,19 +20,5 @@
 
     <cache alias="com.mbras.cellar.domain.User.persistentTokens" uses-template="simple"/>
 
-    <cache alias="com.mbras.cellar.domain.Region" uses-template="simple"/>
-
-    <cache alias="com.mbras.cellar.domain.Color" uses-template="simple"/>
-
-    <cache alias="com.mbras.cellar.domain.Year" uses-template="simple"/>
-
-    <cache alias="com.mbras.cellar.domain.Wine" uses-template="simple"/>
-
-    <cache alias="com.mbras.cellar.domain.Vintage" uses-template="simple"/>
-
-    <cache alias="com.mbras.cellar.domain.WineInCellar" uses-template="simple"/>
-
-    <cache alias="com.mbras.cellar.domain.Cellar" uses-template="simple"/>
-
     <!-- jhipster-needle-ehcache-add-entry -->
 </config>
