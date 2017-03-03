@@ -1,0 +1,40 @@
+entity Region {
+	regionName String required
+}
+
+entity Color {
+	colorName String required
+}
+
+entity Wine {
+	name String required,
+	appellation String,
+	maxKeep Integer,
+	bareCode Integer
+}
+
+entity WineInCellar {
+	year Integer,
+	price Double,
+    quantity Integer
+}
+
+entity Cellar {
+	capacity Integer
+}
+
+relationship OneToOne {
+	Cellar{user(login)} to User
+}
+
+relationship ManyToOne {
+	WineInCellar{cellar} to Cellar,
+    WineInCellar{wine(appellation)} to Wine
+}
+
+relationship ManyToOne {
+	Wine{region(regionName)} to Region,
+    Wine{color(colorName)} to Color
+}
+dto Cellar, WineInCellar with mapstruct
+service all with serviceClass except Region, Color
