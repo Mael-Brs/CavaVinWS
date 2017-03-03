@@ -371,7 +371,6 @@ public class AccountResourceIntTest {
     @Transactional
     public void testSaveInvalidLogin() throws Exception {
         UserDTO invalidUser = new UserDTO(
-            0L,
             "funky-log!n",          // login <-- invalid
             "Funky",                // firstName
             "One",                  // lastName

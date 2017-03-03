@@ -3,7 +3,6 @@ package com.mbras.cellar.service;
 import com.mbras.cellar.domain.Authority;
 import com.mbras.cellar.domain.User;
 import com.mbras.cellar.repository.AuthorityRepository;
-import com.mbras.cellar.repository.PersistentTokenRepository;
 import com.mbras.cellar.repository.UserRepository;
 import com.mbras.cellar.repository.search.UserSearchRepository;
 import com.mbras.cellar.security.AuthoritiesConstants;
@@ -17,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import javax.inject.Inject;
 import java.util.*;
@@ -39,9 +37,6 @@ public class UserService {
 
     @Inject
     private UserSearchRepository userSearchRepository;
-
-    @Inject
-    private PersistentTokenRepository persistentTokenRepository;
 
     @Inject
     private AuthorityRepository authorityRepository;
@@ -214,23 +209,6 @@ public class UserService {
          return user;
     }
 
-    /**
-     * Persistent Token are used for providing automatic authentication, they should be automatically deleted after
-     * 30 days.
-     * <p>
-     * This is scheduled to get fired everyday, at midnight.
-     * </p>
-     */
-    @Scheduled(cron = "0 0 0 * * ?")
-    public void removeOldPersistentTokens() {
-        LocalDate now = LocalDate.now();
-        persistentTokenRepository.findByTokenDateBefore(now.minusMonths(1)).stream().forEach(token -> {
-            log.debug("Deleting token {}", token.getSeries());
-            User user = token.getUser();
-            user.getPersistentTokens().remove(token);
-            persistentTokenRepository.delete(token);
-        });
-    }
 
     /**
      * Not activated users should be automatically deleted after 3 days.

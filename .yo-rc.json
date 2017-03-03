@@ -5,7 +5,7 @@
     "packageName": "com.mbras.cellar",
     "packageFolder": "com/mbras/cellar",
     "serverPort": "8080",
-    "authenticationType": "session",
+    "authenticationType": "jwt",
     "hibernateCache": "ehcache",
     "clusteredHttpSession": false,
     "websocket": false,
@@ -16,7 +16,6 @@
     "messageBroker": false,
     "buildTool": "maven",
     "enableSocialSignIn": false,
-    "rememberMeKey": "8e675dd4c4630915f54d5134d48162a14f63b446",
     "useSass": true,
     "applicationType": "monolith",
     "testFrameworks": [
@@ -30,6 +29,7 @@
       "fr",
       "en"
     ],
-    "serviceDiscoveryType": false
+    "serviceDiscoveryType": false,
+    "jwtSecretKey": "34bc8b1f9130ff8c9b1a76e14fe882be1f02e7d7"
   }
 }
