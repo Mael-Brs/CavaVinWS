@@ -1,4 +1,4 @@
-beforeEach(module('cavaVinApp'));
+beforeEach(module('cavavinApp'));
 /**
  * returns a function whose angular will be replaced
  * with whatever mock was supplied.

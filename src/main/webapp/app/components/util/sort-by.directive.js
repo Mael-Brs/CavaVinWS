@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .directive('jhSortBy', jhSortBy);
 
     function jhSortBy() {

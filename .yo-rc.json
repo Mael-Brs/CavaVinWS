@@ -1,9 +1,9 @@
 {
   "generator-jhipster": {
-    "jhipsterVersion": "3.12.0",
-    "baseName": "cavaVin",
-    "packageName": "com.mbras.cellar",
-    "packageFolder": "com/mbras/cellar",
+    "jhipsterVersion": "4.0.7",
+    "baseName": "cavavin",
+    "packageName": "com.mbras.cavavin",
+    "packageFolder": "com/mbras/cavavin",
     "serverPort": "8080",
     "authenticationType": "jwt",
     "hibernateCache": "ehcache",
@@ -14,9 +14,13 @@
     "prodDatabaseType": "postgresql",
     "searchEngine": "elasticsearch",
     "messageBroker": false,
+    "serviceDiscoveryType": false,
     "buildTool": "maven",
     "enableSocialSignIn": false,
+    "jwtSecretKey": "d96910351020d6ca0c0df813e64a2dac7711e58f",
+    "clientFramework": "angular1",
     "useSass": true,
+    "clientPackageManager": "yarn",
     "applicationType": "monolith",
     "testFrameworks": [
       "gatling",
@@ -28,8 +32,6 @@
     "languages": [
       "fr",
       "en"
-    ],
-    "serviceDiscoveryType": false,
-    "jwtSecretKey": "34bc8b1f9130ff8c9b1a76e14fe882be1f02e7d7"
+    ]
   }
 }
