@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp', [
+        .module('cavavinApp', [
             'ngStorage',
             'tmh.dynamicLocale',
             'pascalprecht.translate',
