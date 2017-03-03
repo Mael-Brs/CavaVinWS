@@ -1,0 +1,39 @@
+
+<div>
+    <h2><span data-translate="cavaVinApp.wine.detail.title">Wine</span> {{vm.wine.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="cavaVinApp.wine.name">Name</span></dt>
+        <dd>
+            <span>{{vm.wine.name}}</span>
+        </dd>
+        <dt><span data-translate="cavaVinApp.wine.appellation">Appellation</span></dt>
+        <dd>
+            <span>{{vm.wine.appellation}}</span>
+        </dd>
+        <dt><span data-translate="cavaVinApp.wine.producer">Producer</span></dt>
+        <dd>
+            <span>{{vm.wine.producer}}</span>
+        </dd>
+        <dt><span data-translate="cavaVinApp.wine.region">Region</span></dt>
+        <dd>
+            <a ui-sref="region-detail({id:vm.wine.region.id})">{{vm.wine.region.regionName}}</a>
+        </dd>
+        <dt><span data-translate="cavaVinApp.wine.color">Color</span></dt>
+        <dd>
+            <a ui-sref="color-detail({id:vm.wine.color.id})">{{vm.wine.color.colorName}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="wine-detail.edit({id:vm.wine.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>
