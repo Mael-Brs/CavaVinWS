@@ -2,12 +2,13 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .controller('YearController', YearController);
 
-    YearController.$inject = ['$scope', '$state', 'Year', 'YearSearch'];
+    YearController.$inject = ['Year', 'YearSearch'];
 
-    function YearController ($scope, $state, Year, YearSearch) {
+    function YearController(Year, YearSearch) {
+
         var vm = this;
 
         vm.years = [];

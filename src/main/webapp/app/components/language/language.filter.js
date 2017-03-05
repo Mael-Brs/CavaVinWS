@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .filter('findLanguageFromKey', findLanguageFromKey);
 
     function findLanguageFromKey() {
@@ -17,10 +17,12 @@
                 'el': 'Ελληνικά',
                 'en': 'English',
                 'es': 'Español',
+                'et': 'Eesti',
                 'fr': 'Français',
                 'gl': 'Galego',
                 'hu': 'Magyar',
                 'hi': 'हिंदी',
+                'hy': 'Հայերեն',
                 'it': 'Italiano',
                 'ja': '日本語',
                 'ko': '한국어',

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .config(stateConfig);
 
     stateConfig.$inject = ['$stateProvider'];
@@ -14,7 +14,7 @@
             url: '/wine-in-cellar',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'cavaVinApp.wineInCellar.home.title'
+                pageTitle: 'cavavinApp.wineInCellar.home.title'
             },
             views: {
                 'content@': {
@@ -32,11 +32,11 @@
             }
         })
         .state('wine-in-cellar-detail', {
-            parent: 'entity',
+            parent: 'wine-in-cellar',
             url: '/wine-in-cellar/{id}',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'cavaVinApp.wineInCellar.detail.title'
+                pageTitle: 'cavavinApp.wineInCellar.detail.title'
             },
             views: {
                 'content@': {

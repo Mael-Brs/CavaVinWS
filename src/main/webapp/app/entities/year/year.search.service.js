@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .factory('YearSearch', YearSearch);
 
     YearSearch.$inject = ['$resource'];

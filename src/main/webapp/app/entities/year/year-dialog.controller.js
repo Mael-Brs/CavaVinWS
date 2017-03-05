@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .controller('YearDialogController', YearDialogController);
 
     YearDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Year'];
@@ -32,7 +32,7 @@
         }
 
         function onSaveSuccess (result) {
-            $scope.$emit('cavaVinApp:yearUpdate', result);
+            $scope.$emit('cavavinApp:yearUpdate', result);
             $uibModalInstance.close(result);
             vm.isSaving = false;
         }

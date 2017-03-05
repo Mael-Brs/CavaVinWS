@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .config(stateConfig);
 
     stateConfig.$inject = ['$stateProvider'];
@@ -14,7 +14,7 @@
             url: '/year',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'cavaVinApp.year.home.title'
+                pageTitle: 'cavavinApp.year.home.title'
             },
             views: {
                 'content@': {
@@ -32,11 +32,11 @@
             }
         })
         .state('year-detail', {
-            parent: 'entity',
+            parent: 'year',
             url: '/year/{id}',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'cavaVinApp.year.detail.title'
+                pageTitle: 'cavavinApp.year.detail.title'
             },
             views: {
                 'content@': {

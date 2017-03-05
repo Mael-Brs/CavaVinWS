@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .factory('DataUtils', DataUtils);
 
     DataUtils.$inject = ['$window'];

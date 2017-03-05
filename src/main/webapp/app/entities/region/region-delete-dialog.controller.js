@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .controller('RegionDeleteController',RegionDeleteController);
 
     RegionDeleteController.$inject = ['$uibModalInstance', 'entity', 'Region'];

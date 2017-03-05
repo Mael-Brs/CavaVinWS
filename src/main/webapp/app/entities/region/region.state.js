@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .config(stateConfig);
 
     stateConfig.$inject = ['$stateProvider'];
@@ -14,7 +14,7 @@
             url: '/region',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'cavaVinApp.region.home.title'
+                pageTitle: 'cavavinApp.region.home.title'
             },
             views: {
                 'content@': {
@@ -32,11 +32,11 @@
             }
         })
         .state('region-detail', {
-            parent: 'entity',
+            parent: 'region',
             url: '/region/{id}',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'cavaVinApp.region.detail.title'
+                pageTitle: 'cavavinApp.region.detail.title'
             },
             views: {
                 'content@': {

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .controller('WineDialogController', WineDialogController);
 
     WineDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Wine', 'Region', 'Color'];
@@ -34,7 +34,7 @@
         }
 
         function onSaveSuccess (result) {
-            $scope.$emit('cavaVinApp:wineUpdate', result);
+            $scope.$emit('cavavinApp:wineUpdate', result);
             $uibModalInstance.close(result);
             vm.isSaving = false;
         }

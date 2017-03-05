@@ -1,4 +1,4 @@
-// Generated on 2016-12-04 using generator-jhipster 3.12.0
+// Generated on 2017-03-03 using generator-jhipster 4.0.7
 'use strict';
 
 var gulp = require('gulp'),
@@ -103,7 +103,7 @@ gulp.task('html', function () {
     return gulp.src(config.app + 'app/**/*.html')
         .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(templateCache({
-            module: 'cavaVinApp',
+            module: 'cavavinApp',
             root: 'app/',
             moduleSystem: 'IIFE'
         }))
@@ -112,7 +112,7 @@ gulp.task('html', function () {
 
 gulp.task('ngconstant:dev', function () {
     return ngConstant({
-        name: 'cavaVinApp',
+        name: 'cavavinApp',
         constants: {
             VERSION: util.parseVersion(),
             DEBUG_INFO_ENABLED: true
@@ -126,7 +126,7 @@ gulp.task('ngconstant:dev', function () {
 
 gulp.task('ngconstant:prod', function () {
     return ngConstant({
-        name: 'cavaVinApp',
+        name: 'cavavinApp',
         constants: {
             VERSION: util.parseVersion(),
             DEBUG_INFO_ENABLED: false

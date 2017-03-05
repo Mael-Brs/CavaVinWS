@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .controller('LogsController', LogsController);
 
     LogsController.$inject = ['LogsService'];

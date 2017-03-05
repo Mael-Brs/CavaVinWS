@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .factory('translationStorageProvider', translationStorageProvider);
 
     translationStorageProvider.$inject = ['$cookies', '$log', 'LANGUAGES'];
