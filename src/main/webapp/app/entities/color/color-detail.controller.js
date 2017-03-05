@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .controller('ColorDetailController', ColorDetailController);
 
     ColorDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Color'];
@@ -13,7 +13,7 @@
         vm.color = entity;
         vm.previousState = previousState.name;
 
-        var unsubscribe = $rootScope.$on('cavaVinApp:colorUpdate', function(event, result) {
+        var unsubscribe = $rootScope.$on('cavavinApp:colorUpdate', function(event, result) {
             vm.color = result;
         });
         $scope.$on('$destroy', unsubscribe);

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .factory('RegionSearch', RegionSearch);
 
     RegionSearch.$inject = ['$resource'];

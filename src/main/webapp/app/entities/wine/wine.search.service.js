@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .factory('WineSearch', WineSearch);
 
     WineSearch.$inject = ['$resource'];

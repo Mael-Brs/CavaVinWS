@@ -2,12 +2,13 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .controller('CellarController', CellarController);
 
-    CellarController.$inject = ['$scope', '$state', 'Cellar', 'CellarSearch'];
+    CellarController.$inject = ['Cellar', 'CellarSearch'];
 
-    function CellarController ($scope, $state, Cellar, CellarSearch) {
+    function CellarController(Cellar, CellarSearch) {
+
         var vm = this;
 
         vm.cellars = [];

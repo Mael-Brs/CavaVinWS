@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .controller('ColorDeleteController',ColorDeleteController);
 
     ColorDeleteController.$inject = ['$uibModalInstance', 'entity', 'Color'];

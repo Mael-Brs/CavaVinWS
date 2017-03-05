@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .controller('WineInCellarDeleteController',WineInCellarDeleteController);
 
     WineInCellarDeleteController.$inject = ['$uibModalInstance', 'entity', 'WineInCellar'];

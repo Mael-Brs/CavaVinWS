@@ -1,12 +1,12 @@
 <div>
-    <h2 data-translate="cavaVinApp.wine.home.title">Wines</h2>
+    <h2 data-translate="cavavinApp.wine.home.title">Wines</h2>
     <jhi-alert></jhi-alert>
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-4 no-padding-left">
                 <button class="btn btn-primary" ui-sref="wine.new" >
                     <span class="glyphicon glyphicon-plus"></span>
-                    <span class="hidden-xs"  data-translate="cavaVinApp.wine.home.createLabel">
+                    <span class="hidden-xs-down"  data-translate="cavavinApp.wine.home.createLabel">
                         Create new Wine
                     </span>
                 </button>
@@ -14,7 +14,7 @@
             <div class="col-xs-8 no-padding-right">
                 <form name="searchForm" class="form-inline">
                     <div class="input-group pull-right" >
-                        <input type="text" class="form-control" ng-model="vm.searchQuery" id="searchQuery" placeholder="{{ 'cavaVinApp.wine.home.search' | translate }}">
+                        <input type="text" class="form-control" ng-model="vm.searchQuery" id="searchQuery" placeholder="{{ 'cavavinApp.wine.home.search' | translate }}">
                         <span  class="input-group-btn width-min" >
                             <button class="btn btn-info" ng-click="vm.search(vm.searchQuery)">
                                 <span class="glyphicon glyphicon-search"></span>
@@ -36,11 +36,11 @@
             <thead>
                 <tr>
                     <th><span data-translate="global.field.id">ID</span></th>
-                    <th><span data-translate="cavaVinApp.wine.name">Name</span></th>
-                    <th><span data-translate="cavaVinApp.wine.appellation">Appellation</span></th>
-                    <th><span data-translate="cavaVinApp.wine.producer">Producer</span></th>
-                    <th><span data-translate="cavaVinApp.wine.region">Region</span></th>
-                    <th><span data-translate="cavaVinApp.wine.color">Color</span></th>
+                    <th><span data-translate="cavavinApp.wine.name">Name</span></th>
+                    <th><span data-translate="cavavinApp.wine.appellation">Appellation</span></th>
+                    <th><span data-translate="cavavinApp.wine.producer">Producer</span></th>
+                    <th><span data-translate="cavavinApp.wine.region">Region</span></th>
+                    <th><span data-translate="cavavinApp.wine.color">Color</span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -62,19 +62,19 @@
                                     ui-sref="wine-detail({id:wine.id})"
                                     class="btn btn-info btn-sm">
                                 <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-xs hidden-sm" data-translate="entity.action.view"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
                             </button>
                             <button type="submit"
                                     ui-sref="wine.edit({id:wine.id})"
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
                             </button>
                             <button type="submit"
                                     ui-sref="wine.delete({id:wine.id})"
                                     class="btn btn-danger btn-sm">
                                 <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-xs hidden-sm" data-translate="entity.action.delete"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
                             </button>
                         </div>
                     </td>

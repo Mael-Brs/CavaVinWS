@@ -2,12 +2,13 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .controller('ColorController', ColorController);
 
-    ColorController.$inject = ['$scope', '$state', 'Color', 'ColorSearch'];
+    ColorController.$inject = ['Color', 'ColorSearch'];
 
-    function ColorController ($scope, $state, Color, ColorSearch) {
+    function ColorController(Color, ColorSearch) {
+
         var vm = this;
 
         vm.colors = [];

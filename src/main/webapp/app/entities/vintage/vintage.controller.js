@@ -2,12 +2,13 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .controller('VintageController', VintageController);
 
-    VintageController.$inject = ['$scope', '$state', 'Vintage', 'VintageSearch'];
+    VintageController.$inject = ['Vintage', 'VintageSearch'];
 
-    function VintageController ($scope, $state, Vintage, VintageSearch) {
+    function VintageController(Vintage, VintageSearch) {
+
         var vm = this;
 
         vm.vintages = [];

@@ -2,12 +2,13 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .controller('RegionController', RegionController);
 
-    RegionController.$inject = ['$scope', '$state', 'Region', 'RegionSearch'];
+    RegionController.$inject = ['Region', 'RegionSearch'];
 
-    function RegionController ($scope, $state, Region, RegionSearch) {
+    function RegionController(Region, RegionSearch) {
+
         var vm = this;
 
         vm.regions = [];

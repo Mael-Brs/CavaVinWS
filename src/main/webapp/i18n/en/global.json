@@ -7,6 +7,13 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entities",
+                "cellar": "Cellar",
+                "color": "Color",
+                "region": "Region",
+                "vintage": "Vintage",
+                "wine": "Wine",
+                "wineInCellar": "Wine In Cellar",
+                "year": "Year",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

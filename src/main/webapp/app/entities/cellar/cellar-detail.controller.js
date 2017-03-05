@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .controller('CellarDetailController', CellarDetailController);
 
     CellarDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Cellar', 'User'];
@@ -13,7 +13,7 @@
         vm.cellar = entity;
         vm.previousState = previousState.name;
 
-        var unsubscribe = $rootScope.$on('cavaVinApp:cellarUpdate', function(event, result) {
+        var unsubscribe = $rootScope.$on('cavavinApp:cellarUpdate', function(event, result) {
             vm.cellar = result;
         });
         $scope.$on('$destroy', unsubscribe);

@@ -4,7 +4,7 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myWineLabel" data-translate="cavaVinApp.wine.home.createOrEditLabel">Create or edit a Wine</h4>
+        <h4 class="modal-title" id="myWineLabel" data-translate="cavavinApp.wine.home.createOrEditLabel">Create or edit a Wine</h4>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
@@ -14,10 +14,10 @@
                     ng-model="vm.wine.id" readonly />
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="cavaVinApp.wine.name" for="field_name">Name</label>
+            <label class="control-label" data-translate="cavavinApp.wine.name" for="field_name">Name</label>
             <input type="text" class="form-control" name="name" id="field_name"
                     ng-model="vm.wine.name"
-                    required />
+                    required/>
             <div ng-show="editForm.name.$invalid">
                 <p class="help-block"
                     ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
@@ -26,16 +26,16 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="cavaVinApp.wine.appellation" for="field_appellation">Appellation</label>
+            <label class="control-label" data-translate="cavavinApp.wine.appellation" for="field_appellation">Appellation</label>
             <input type="text" class="form-control" name="appellation" id="field_appellation"
                     ng-model="vm.wine.appellation"
-                     />
+                    />
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="cavaVinApp.wine.producer" for="field_producer">Producer</label>
+            <label class="control-label" data-translate="cavavinApp.wine.producer" for="field_producer">Producer</label>
             <input type="text" class="form-control" name="producer" id="field_producer"
                     ng-model="vm.wine.producer"
-                    required />
+                    required/>
             <div ng-show="editForm.producer.$invalid">
                 <p class="help-block"
                     ng-show="editForm.producer.$error.required" data-translate="entity.validation.required">
@@ -45,13 +45,13 @@
         </div>
 
         <div class="form-group">
-            <label data-translate="cavaVinApp.wine.region" for="field_region">Region</label>
+            <label data-translate="cavavinApp.wine.region" for="field_region">Region</label>
             <select class="form-control" id="field_region" name="region" ng-model="vm.wine.region" ng-options="region as region.regionName for region in vm.regions track by region.id">
                 <option value=""></option>
             </select>
         </div>
         <div class="form-group">
-            <label data-translate="cavaVinApp.wine.color" for="field_color">Color</label>
+            <label data-translate="cavavinApp.wine.color" for="field_color">Color</label>
             <select class="form-control" id="field_color" name="color" ng-model="vm.wine.color" ng-options="color as color.colorName for color in vm.colors track by color.id">
                 <option value=""></option>
             </select>
