@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .controller('RegionDetailController', RegionDetailController);
 
     RegionDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Region'];
@@ -13,7 +13,7 @@
         vm.region = entity;
         vm.previousState = previousState.name;
 
-        var unsubscribe = $rootScope.$on('cavaVinApp:regionUpdate', function(event, result) {
+        var unsubscribe = $rootScope.$on('cavavinApp:regionUpdate', function(event, result) {
             vm.region = result;
         });
         $scope.$on('$destroy', unsubscribe);

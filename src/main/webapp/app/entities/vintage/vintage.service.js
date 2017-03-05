@@ -1,7 +1,7 @@
 (function() {
     'use strict';
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .factory('Vintage', Vintage);
 
     Vintage.$inject = ['$resource'];

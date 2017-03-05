@@ -4,9 +4,11 @@ import com.mbras.cavavin.CavavinApp;
 import com.mbras.cavavin.domain.User;
 import com.mbras.cavavin.repository.UserRepository;
 import com.mbras.cavavin.repository.search.UserSearchRepository;
+import com.mbras.cavavin.service.CellarService;
 import com.mbras.cavavin.service.UserService;
 import com.mbras.cavavin.service.MailService;
 
+import com.mbras.cavavin.service.WineInCellarService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +46,12 @@ public class UserResourceIntTest {
     @Autowired
     private UserSearchRepository userSearchRepository;
 
+    @Autowired
+    private CellarService cellarService;
+
+    @Autowired
+    private WineInCellarService wineInCellarService;
+
     private MockMvc restUserMockMvc;
 
     /**
@@ -69,7 +77,7 @@ public class UserResourceIntTest {
 
     @Before
     public void setup() {
-        UserResource userResource = new UserResource(userRepository, mailService, userService, userSearchRepository);
+        UserResource userResource = new UserResource(userRepository, mailService, userService, userSearchRepository, cellarService, wineInCellarService);
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(userResource).build();
     }
 

@@ -16,7 +16,7 @@
             "fieldType": "Integer"
         }
     ],
-    "changelogDate": "20161204094533",
+    "changelogDate": "20170303215710",
     "entityTableName": "cellar",
     "dto": "mapstruct",
     "pagination": "no",

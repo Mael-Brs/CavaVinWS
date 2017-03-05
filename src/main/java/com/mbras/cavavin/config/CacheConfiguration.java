@@ -40,6 +40,13 @@ public class CacheConfiguration {
             cm.createCache(com.mbras.cavavin.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(com.mbras.cavavin.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(com.mbras.cavavin.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(com.mbras.cavavin.domain.Cellar.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mbras.cavavin.domain.Color.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mbras.cavavin.domain.Region.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mbras.cavavin.domain.Vintage.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mbras.cavavin.domain.Wine.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mbras.cavavin.domain.WineInCellar.class.getName(), jcacheConfiguration);
+            cm.createCache(com.mbras.cavavin.domain.Year.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

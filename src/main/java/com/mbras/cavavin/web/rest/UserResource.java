@@ -3,11 +3,16 @@ package com.mbras.cavavin.web.rest;
 import com.mbras.cavavin.config.Constants;
 import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.User;
+import com.mbras.cavavin.domain.WineByColor;
+import com.mbras.cavavin.domain.WineByRegion;
 import com.mbras.cavavin.repository.UserRepository;
 import com.mbras.cavavin.repository.search.UserSearchRepository;
 import com.mbras.cavavin.security.AuthoritiesConstants;
+import com.mbras.cavavin.service.CellarService;
 import com.mbras.cavavin.service.MailService;
 import com.mbras.cavavin.service.UserService;
+import com.mbras.cavavin.service.WineInCellarService;
+import com.mbras.cavavin.service.dto.CellarDTO;
 import com.mbras.cavavin.service.dto.UserDTO;
 import com.mbras.cavavin.web.rest.vm.ManagedUserVM;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
@@ -73,13 +78,17 @@ public class UserResource {
 
     private final UserSearchRepository userSearchRepository;
 
-    public UserResource(UserRepository userRepository, MailService mailService,
-            UserService userService, UserSearchRepository userSearchRepository) {
+    private CellarService cellarService;
 
+    private WineInCellarService wineInCellarService;
+
+    public UserResource(UserRepository userRepository, MailService mailService, UserService userService, UserSearchRepository userSearchRepository, CellarService cellarService, WineInCellarService wineInCellarService) {
         this.userRepository = userRepository;
         this.mailService = mailService;
         this.userService = userService;
         this.userSearchRepository = userSearchRepository;
+        this.cellarService = cellarService;
+        this.wineInCellarService = wineInCellarService;
     }
 
     /**
@@ -174,6 +183,29 @@ public class UserResource {
         return ResponseUtil.wrapOrNotFound(
             userService.getUserWithAuthoritiesByLogin(login)
                 .map(UserDTO::new));
+    }
+
+    /**
+     * GET  /users/:login/cellars : get cellars for this user.
+     *
+     * @param login the login of the user to find
+     * @return the ResponseEntity with status 200 (OK) and with body the "login" user, or with status 404 (Not Found)
+     */
+    @GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}/cellars")
+    @Timed
+    public ResponseEntity<CellarDTO> getCellarForUser(@PathVariable String login) {
+        log.debug("REST request to get cellars for User : {}", login);
+        CellarDTO cellarDTO = cellarService.findByUser(login);
+        if(cellarDTO != null){
+            Long id =  cellarDTO.getId();
+            Long sum = wineInCellarService.getWineSum(id);
+            List<WineByRegion> wineByRegion = wineInCellarService.getWineByRegion(id);
+            List<WineByColor> wineByColor = wineInCellarService.getWineByColor(id);
+            cellarDTO.setSumOfWine(sum);
+            cellarDTO.setWineByRegion(wineByRegion);
+            cellarDTO.setWineByColor(wineByColor);
+        }
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(cellarDTO));
     }
 
     /**

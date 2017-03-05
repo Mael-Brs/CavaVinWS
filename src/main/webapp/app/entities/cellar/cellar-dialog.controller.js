@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .controller('CellarDialogController', CellarDialogController);
 
     CellarDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'entity', 'Cellar', 'User'];
@@ -33,7 +33,7 @@
         }
 
         function onSaveSuccess (result) {
-            $scope.$emit('cavaVinApp:cellarUpdate', result);
+            $scope.$emit('cavavinApp:cellarUpdate', result);
             $uibModalInstance.close(result);
             vm.isSaving = false;
         }
