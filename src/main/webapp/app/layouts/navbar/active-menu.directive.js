@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .directive('activeMenu', activeMenu);
 
     activeMenu.$inject = ['$translate', '$locale', 'tmhDynamicLocale'];

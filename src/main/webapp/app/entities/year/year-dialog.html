@@ -4,7 +4,7 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myYearLabel" data-translate="cavaVinApp.year.home.createOrEditLabel">Create or edit a Year</h4>
+        <h4 class="modal-title" id="myYearLabel" data-translate="cavavinApp.year.home.createOrEditLabel">Create or edit a Year</h4>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
@@ -14,10 +14,10 @@
                     ng-model="vm.year.id" readonly />
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="cavaVinApp.year.number" for="field_number">Number</label>
+            <label class="control-label" data-translate="cavavinApp.year.number" for="field_number">Number</label>
             <input type="number" class="form-control" name="number" id="field_number"
                     ng-model="vm.year.number"
-                    required />
+                    required/>
             <div ng-show="editForm.number.$invalid">
                 <p class="help-block"
                     ng-show="editForm.number.$error.required" data-translate="entity.validation.required">

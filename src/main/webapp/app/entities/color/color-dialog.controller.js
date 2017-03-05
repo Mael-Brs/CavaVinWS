@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .controller('ColorDialogController', ColorDialogController);
 
     ColorDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Color'];
@@ -32,7 +32,7 @@
         }
 
         function onSaveSuccess (result) {
-            $scope.$emit('cavaVinApp:colorUpdate', result);
+            $scope.$emit('cavavinApp:colorUpdate', result);
             $uibModalInstance.close(result);
             vm.isSaving = false;
         }

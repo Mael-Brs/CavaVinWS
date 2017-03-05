@@ -5,72 +5,100 @@
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
-        <version>1.4.2.RELEASE</version>
+        <version>1.5.1.RELEASE</version>
         <relativePath />
     </parent>
 
-    <groupId>com.mbras.cellar</groupId>
-    <artifactId>cava-vin</artifactId>
+    <groupId>com.mbras.cavavin</groupId>
+    <artifactId>cavavin</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>Cava Vin</name>
+    <name>Cavavin</name>
 
     <prerequisites>
-        <maven>3.0.0</maven>
+        <maven>${maven.version}</maven>
     </prerequisites>
 
     <properties>
         <argLine>-Djava.security.egd=file:/dev/./urandom -Xmx256m</argLine>
-        <assertj-core.version>3.5.2</assertj-core.version>
-        <awaitility.version>1.7.0</awaitility.version>
+        <assertj.version>3.6.2</assertj.version>
+        <awaitility.version>2.0.0</awaitility.version>
         <commons-io.version>2.5</commons-io.version>
-        <commons-lang.version>3.4</commons-lang.version>
+        <commons-lang.version>3.5</commons-lang.version>
         <cucumber.version>1.2.4</cucumber.version>
-        <frontend-maven-plugin.version>1.2</frontend-maven-plugin.version>
-        <gatling-maven-plugin.version>2.2.0</gatling-maven-plugin.version>
-        <gatling.version>2.2.0</gatling.version>
-        <hibernate.version>5.2.4.Final</hibernate.version>
-        <hikaricp.version>2.4.6</hikaricp.version>
-        <jacoco-maven-plugin.version>0.7.7.201606060606</jacoco-maven-plugin.version>
+        <docker-maven-plugin.version>0.4.13</docker-maven-plugin.version>
+        <frontend-maven-plugin.version>1.3</frontend-maven-plugin.version>
+        <gatling-maven-plugin.version>2.2.1</gatling-maven-plugin.version>
+        <gatling.version>2.2.3</gatling.version>
+        <hibernate.version>5.2.8.Final</hibernate.version>
+        <hikaricp.version>2.6.0</hikaricp.version>
+        <jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
         <java.version>1.8</java.version>
-        <javax.inject.version>1</javax.inject.version>
+        <javassist.version>3.21.0-GA</javassist.version>
         <jcache.version>1.0.0</jcache.version>
-        <jna.version>4.2.2</jna.version>
+        <jhipster.server.version>1.1.0</jhipster.server.version>
+        <jjwt.version>0.7.0</jjwt.version>
+        <jzlib.version>1.1.3</jzlib.version>
         <liquibase-hibernate5.version>3.6</liquibase-hibernate5.version>
         <liquibase-slf4j.version>2.0.0</liquibase-slf4j.version>
-        <liquibase.version>3.5.3</liquibase.version>
-        <logstash-logback-encoder.version>4.7</logstash-logback-encoder.version>
+        <logstash-logback-encoder.version>4.8</logstash-logback-encoder.version>
         <m2e.apt.activation>jdt_apt</m2e.apt.activation>
         <mapstruct.version>1.1.0.Final</mapstruct.version>
+        <maven-compiler-plugin.version>3.6.0</maven-compiler-plugin.version>
         <maven-enforcer-plugin.version>1.4.1</maven-enforcer-plugin.version>
         <maven-resources-plugin.version>3.0.1</maven-resources-plugin.version>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.version>3.0.0</maven.version>
         <metrics-spring.version>3.1.3</metrics-spring.version>
+        <node.version>v6.9.5</node.version>
         <postgresql.version>9.4.1212</postgresql.version>
         <!-- These remain empty unless the corresponding profile is active -->
         <profile.no-liquibase />
         <profile.swagger />
         <!-- Sonar properties -->
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
-        <prometheus-simpleclient.version>0.0.18</prometheus-simpleclient.version>
+        <prometheus-simpleclient.version>0.0.20</prometheus-simpleclient.version>
         <run.addResources>false</run.addResources>
+        <scala-maven-plugin.version>3.2.2</scala-maven-plugin.version>
+        <scala.version>2.12.1</scala.version>
         <sonar-maven-plugin.version>3.2</sonar-maven-plugin.version>
-        <sonar.exclusions>src/main/webapp/content/**/*.*, src/main/webapp/bower_components/**/*.*, target/www/**/*.*</sonar.exclusions>
+
+        <sonar.exclusions>src/main/webapp/content/**/*.*, src/main/webapp/bower_components/**/*.*, src/main/webapp/i18n/*.js, target/www/**/*.*</sonar.exclusions>
+
+        <sonar.issue.ignore.multicriteria>S3437,UndocumentedApi,BoldAndItalicTagsCheck</sonar.issue.ignore.multicriteria>
+
+        <!-- Rule https://sonarqube.com/coding_rules#rule_key=Web%3ABoldAndItalicTagsCheck is ignored. Even if we agree that using the "i" tag is an awful practice, this is what is recommended by http://fontawesome.io/examples/ -->
+        <sonar.issue.ignore.multicriteria.BoldAndItalicTagsCheck.resourceKey>src/main/webapp/app/**/*.*</sonar.issue.ignore.multicriteria.BoldAndItalicTagsCheck.resourceKey>
+        <sonar.issue.ignore.multicriteria.BoldAndItalicTagsCheck.ruleKey>Web:BoldAndItalicTagsCheck</sonar.issue.ignore.multicriteria.BoldAndItalicTagsCheck.ruleKey>
+        <!-- Rule https://sonarqube.com/coding_rules#rule_key=squid%3AS3437 is ignored, as a JPA-managed field cannot be transient -->
+        <sonar.issue.ignore.multicriteria.S3437.resourceKey>src/main/java/**/*</sonar.issue.ignore.multicriteria.S3437.resourceKey>
+        <sonar.issue.ignore.multicriteria.S3437.ruleKey>squid:S3437</sonar.issue.ignore.multicriteria.S3437.ruleKey>
+        <!-- Rule http://sonarqube.com/coding_rules#rule_key=squid%3AUndocumentedApi is ignored, as we want to follow "clean code" guidelines and classes, methods and arguments names should be self-explanatory -->
+        <sonar.issue.ignore.multicriteria.UndocumentedApi.resourceKey>src/main/java/**/*</sonar.issue.ignore.multicriteria.UndocumentedApi.resourceKey>
+        <sonar.issue.ignore.multicriteria.UndocumentedApi.ruleKey>squid:UndocumentedApi</sonar.issue.ignore.multicriteria.UndocumentedApi.ruleKey>
+
         <sonar.jacoco.itReportPath>${project.testresult.directory}/coverage/jacoco/jacoco-it.exec</sonar.jacoco.itReportPath>
         <sonar.jacoco.reportPath>${project.testresult.directory}/coverage/jacoco/jacoco.exec</sonar.jacoco.reportPath>
         <sonar.java.codeCoveragePlugin>jacoco</sonar.java.codeCoveragePlugin>
 
         <sonar.javascript.jstestdriver.reportsPath>${project.testresult.directory}/karma</sonar.javascript.jstestdriver.reportsPath>
+        <!-- For Sonar < 6.2 -->
         <sonar.javascript.lcov.reportPath>${project.testresult.directory}/coverage/report-lcov/lcov.info</sonar.javascript.lcov.reportPath>
+        <!-- For Sonar >= 6.2 -->
+        <sonar.javascript.lcov.reportPaths>${project.testresult.directory}/coverage/report-lcov/lcov.info</sonar.javascript.lcov.reportPaths>
 
         <sonar.sources>${project.basedir}/src/main/</sonar.sources>
         <sonar.surefire.reportsPath>${project.testresult.directory}/surefire-reports</sonar.surefire.reportsPath>
         <sonar.tests>${project.basedir}/src/test/</sonar.tests>
+
         <sortpom-maven-plugin.version>2.5.0</sortpom-maven-plugin.version>
-        <spring-security.version>4.1.3.RELEASE</spring-security.version>
+        <!-- Spring properties -->
         <springfox.version>2.6.1</springfox.version>
+        <undertow.version>1.4.10.Final</undertow.version>
+        <validation-api.version>1.1.0.Final</validation-api.version>
+        <yarn.version>v0.20.3</yarn.version>
     </properties>
 
     <dependencies>
@@ -81,12 +109,10 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-hppc</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-json-org</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -97,12 +123,6 @@
             <artifactId>h2</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.jayway.awaitility</groupId>
-            <artifactId>awaitility</artifactId>
-            <version>${awaitility.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
             <scope>test</scope>
@@ -111,7 +131,7 @@
         <dependency>
             <groupId>com.jcraft</groupId>
             <artifactId>jzlib</artifactId>
-            <version>1.1.2</version>
+            <version>${jzlib.version}</version>
         </dependency>
         <dependency>
             <groupId>com.mattbertolini</groupId>
@@ -177,15 +197,6 @@
         </dependency>
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
-            <artifactId>metrics-graphite</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.dropwizard.metrics</groupId>
-            <artifactId>metrics-healthchecks</artifactId>
-            <version>${dropwizard-metrics.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-json</artifactId>
             <version>${dropwizard-metrics.version}</version>
         </dependency>
@@ -202,12 +213,6 @@
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-servlets</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>metrics-healthchecks</artifactId>
-                    <groupId>io.dropwizard.metrics</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>io.gatling.highcharts</groupId>
@@ -216,19 +221,14 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.prometheus</groupId>
-            <artifactId>simpleclient</artifactId>
-            <version>${prometheus-simpleclient.version}</version>
+            <groupId>io.github.jhipster</groupId>
+            <artifactId>jhipster</artifactId>
+            <version>${jhipster.server.version}</version>
         </dependency>
         <dependency>
-            <groupId>io.prometheus</groupId>
-            <artifactId>simpleclient_dropwizard</artifactId>
-            <version>${prometheus-simpleclient.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.prometheus</groupId>
-            <artifactId>simpleclient_servlet</artifactId>
-            <version>${prometheus-simpleclient.version}</version>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jjwt.version}</version>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
@@ -249,17 +249,10 @@
         <dependency>
             <groupId>javax.cache</groupId>
             <artifactId>cache-api</artifactId>
-            <version>${jcache.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-            <version>${javax.inject.version}</version>
         </dependency>
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
-            <version>${jna.version}</version>
         </dependency>
         <!-- Spring Cloud -->
         <dependency>
@@ -289,7 +282,12 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>${assertj-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>${awaitility.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -308,7 +306,6 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>5.3.3.Final</version>
         </dependency>
         <dependency>
             <groupId>org.liquibase</groupId>
@@ -457,8 +454,8 @@
                                         <artifactId>frontend-maven-plugin</artifactId>
                                         <versionRange>${frontend-maven-plugin.version}</versionRange>
                                         <goals>
-                                            <goal>install-node-and-npm</goal>
-                                            <goal>npm</goal>
+                                            <goal>install-node-and-yarn</goal>
+                                            <goal>yarn</goal>
                                             <goal>bower</goal>
                                             <goal>gulp</goal>
                                         </goals>
@@ -498,7 +495,7 @@
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>0.4.10</version>
+                <version>${docker-maven-plugin.version}</version>
                 <configuration>
                     <imageName>cavavin</imageName>
                     <dockerDirectory>src/main/docker</dockerDirectory>
@@ -532,7 +529,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <annotationProcessorPaths>
                         <path>
@@ -566,8 +563,8 @@
                 <configuration>
                     <rules>
                         <requireMavenVersion>
-                            <message>You are running an older version of Maven. JHipster requires at least Maven 3.0</message>
-                            <version>[3.0.0,)</version>
+                            <message>You are running an older version of Maven. JHipster requires at least Maven ${maven.version}</message>
+                            <version>[${maven.version},)</version>
                         </requireMavenVersion>
                         <requireJavaVersion>
                             <message>You are running an older version of Java. JHipster requires at least JDK ${java.version}</message>
@@ -682,12 +679,12 @@
                     <dependency>
                         <groupId>javax.validation</groupId>
                         <artifactId>validation-api</artifactId>
-                        <version>1.1.0.Final</version>
+                        <version>${validation-api.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>org.javassist</groupId>
                         <artifactId>javassist</artifactId>
-                        <version>3.18.2-GA</version>
+                        <version>${javassist.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>org.liquibase.ext</groupId>
@@ -706,9 +703,9 @@
                     <driver>org.h2.Driver</driver>
                     <url>jdbc:h2:file:./target/h2db/db/cavavin</url>
                     <defaultSchemaName />
-                    <username>cavaVin</username>
+                    <username>cavavin</username>
                     <password />
-                    <referenceUrl>hibernate:spring:com.mbras.cellar.domain?dialect=org.hibernate.dialect.H2Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
+                    <referenceUrl>hibernate:spring:com.mbras.cavavin.domain?dialect=org.hibernate.dialect.H2Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                     <verbose>true</verbose>
                     <logging>debug</logging>
                 </configuration>
@@ -725,8 +722,9 @@
                     <executable>true</executable>
                     <fork>true</fork>
                     <!--
-                    Enable the line below to have remote debugging of your application on port 5005 -->
+                    Enable the line below to have remote debugging of your application on port 5005
                     <jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</jvmArguments>
+                    -->
                 </configuration>
             </plugin>
             <!-- jhipster-needle-maven-add-plugin -->
@@ -744,15 +742,6 @@
             <properties>
                 <profile.swagger>,swagger</profile.swagger>
             </properties>
-        </profile>
-        <profile>
-            <id>shell</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-remote-shell</artifactId>
-                </dependency>
-            </dependencies>
         </profile>
         <profile>
             <id>dev</id>
@@ -798,31 +787,22 @@
                         <version>${frontend-maven-plugin.version}</version>
                         <executions>
                             <execution>
-                                <id>install node and npm</id>
+                                <id>install node and yarn</id>
                                 <goals>
-                                    <goal>install-node-and-npm</goal>
+                                    <goal>install-node-and-yarn</goal>
                                 </goals>
                                 <configuration>
-                                    <nodeVersion>v6.9.1</nodeVersion>
-                                    <npmVersion>3.10.9</npmVersion>
+                                    <nodeVersion>${node.version}</nodeVersion>
+                                    <yarnVersion>${yarn.version}</yarnVersion>
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>npm install</id>
+                                <id>yarn install</id>
                                 <goals>
-                                    <goal>npm</goal>
+                                    <goal>yarn</goal>
                                 </goals>
                                 <configuration>
-                                    <arguments>install</arguments>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>npm rebuild node-sass</id>
-                                <goals>
-                                    <goal>npm</goal>
-                                </goals>
-                                <configuration>
-                                    <arguments>rebuild node-sass</arguments>
+                                    <arguments>install --force</arguments>
                                 </configuration>
                             </execution>
                             <execution>
@@ -857,7 +837,6 @@
                     </plugin>
                     <plugin>
                         <artifactId>maven-clean-plugin</artifactId>
-                        <version>2.5</version>
                         <configuration>
                             <filesets>
                                 <fileset>
@@ -918,7 +897,7 @@
                     <plugin>
                         <groupId>net.alchim31.maven</groupId>
                         <artifactId>scala-maven-plugin</artifactId>
-                        <version>3.2.2</version>
+                        <version>${scala-maven-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>compile</id>
@@ -940,7 +919,7 @@
                         <configuration>
                             <recompileMode>incremental</recompileMode>
                             <verbose>true</verbose>
-                            <scalaVersion>2.11.7</scalaVersion>
+                            <scalaVersion>${scala.version}</scalaVersion>
                         </configuration>
                     </plugin>
                     <plugin>
@@ -994,6 +973,41 @@
                 <dependency>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-undertow</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <!--
+                Profile for monitoring the application with Graphite.
+            -->
+            <id>graphite</id>
+            <dependencies>
+                <dependency>
+                    <groupId>io.dropwizard.metrics</groupId>
+                    <artifactId>metrics-graphite</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <!--
+                Profile for monitoring the application with Prometheus.
+            -->
+            <id>prometheus</id>
+            <dependencies>
+                <dependency>
+                    <groupId>io.prometheus</groupId>
+                    <artifactId>simpleclient</artifactId>
+                    <version>${prometheus-simpleclient.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>io.prometheus</groupId>
+                    <artifactId>simpleclient_dropwizard</artifactId>
+                    <version>${prometheus-simpleclient.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>io.prometheus</groupId>
+                    <artifactId>simpleclient_servlet</artifactId>
+                    <version>${prometheus-simpleclient.version}</version>
                 </dependency>
             </dependencies>
         </profile>

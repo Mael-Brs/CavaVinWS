@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .controller('RegionDialogController', RegionDialogController);
 
     RegionDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Region'];
@@ -32,7 +32,7 @@
         }
 
         function onSaveSuccess (result) {
-            $scope.$emit('cavaVinApp:regionUpdate', result);
+            $scope.$emit('cavavinApp:regionUpdate', result);
             $uibModalInstance.close(result);
             vm.isSaving = false;
         }

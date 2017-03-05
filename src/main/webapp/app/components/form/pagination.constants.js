@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('cavaVinApp')
+        .module('cavavinApp')
         .constant('paginationConstants', {
             'itemsPerPage': 20
         });

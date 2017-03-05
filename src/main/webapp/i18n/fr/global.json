@@ -1,19 +1,19 @@
 {
     "global": {
-        "title": "CavaVin",
+        "title": "Cavavin",
         "browsehappy": "Vous utilisez un <strong>ancien</strong> navigateur. Veuillez <a href=\"http://browsehappy.com/?locale=fr\">mettre à jour votre navigateur</a> pour une meilleure expérience.",
         "menu": {
             "home": "Accueil",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entités",
-                "region": "Region",
-                "color": "Color",
-                "year": "Year",
-                "wine": "Wine",
-                "vintage": "Vintage",
-                "wineInCellar": "Wine In Cellar",
                 "cellar": "Cellar",
+                "color": "Color",
+                "region": "Region",
+                "vintage": "Vintage",
+                "wine": "Wine",
+                "wineInCellar": "Wine In Cellar",
+                "year": "Year",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -118,6 +118,7 @@
         }
     },
     "error": {
+        "internalServerError": "Erreur interne du serveur",
         "server.not.reachable": "Serveur inaccessible",
         "url.not.found": "Non trouvé",
         "NotNull": "Le champ {{fieldName}} ne peut pas être vide !",

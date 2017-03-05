@@ -36,7 +36,7 @@
             "fieldType": "String"
         }
     ],
-    "changelogDate": "20161204094532",
+    "changelogDate": "20170303215710",
     "entityTableName": "wine_in_cellar",
     "dto": "mapstruct",
     "pagination": "no",

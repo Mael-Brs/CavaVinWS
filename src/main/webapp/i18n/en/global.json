@@ -1,19 +1,19 @@
 {
     "global": {
-        "title": "CavaVin",
+        "title": "Cavavin",
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
         "menu": {
             "home": "Home",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entities",
-                "region": "Region",
-                "color": "Color",
-                "year": "Year",
-                "wine": "Wine",
-                "vintage": "Vintage",
-                "wineInCellar": "Wine In Cellar",
                 "cellar": "Cellar",
+                "color": "Color",
+                "region": "Region",
+                "vintage": "Vintage",
+                "wine": "Wine",
+                "wineInCellar": "Wine In Cellar",
+                "year": "Year",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -108,9 +108,9 @@
             "required": "This field is required.",
             "minlength": "This field is required to be at least {{ min }} characters.",
             "maxlength": "This field cannot be longer than {{ max }} characters.",
-            "min": "This field should be more than {{ min }}.",
+            "min": "This field should be at least {{ min }}.",
             "max": "This field cannot be more than {{ max }}.",
-            "minbytes": "This field should be more than {{ min }} bytes.",
+            "minbytes": "This field should be at least {{ min }} bytes.",
             "maxbytes": "This field cannot be more than {{ max }} bytes.",
             "pattern": "This field should follow pattern {{ pattern }}.",
             "number": "This field should be a number.",
@@ -118,6 +118,7 @@
         }
     },
     "error": {
+        "internalServerError": "Internal server error",
         "server.not.reachable": "Server not reachable",
         "url.not.found": "Not found",
         "NotNull": "Field {{ fieldName }} cannot be empty!",
