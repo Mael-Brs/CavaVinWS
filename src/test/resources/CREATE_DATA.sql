@@ -1,5 +1,26 @@
-INSERT INTO PUBLIC.COLOR(ID, COLOR_NAME) VALUES (1, 'Rouge');
-INSERT INTO PUBLIC.REGION(ID, REGION_NAME) VALUES (1, 'Bordeaux');
+INSERT INTO PUBLIC.COLOR(ID, COLOR_NAME) VALUES 
+(1, 'Blanc'),
+(2, 'Rouge'),
+(3, 'Rose');
+
+INSERT INTO PUBLIC.REGION(ID, REGION_NAME) VALUES 
+(1, 'Alsace'),
+(2, 'Beaujolais'),
+(3, 'Bordeaux'),
+(4, 'Bourgogne'),
+(5, 'Champagne'),
+(6, 'Poitou-Charentes'),
+(7, 'Corse'),
+(8, 'Jura'),
+(9, 'Languedoc'),
+(10, 'Provence'),
+(11, 'Roussillon'),
+(12, 'Savoie'),
+(13, 'Sud-Ouest'),
+(14, 'Vallée de la Loire'),
+(15, 'Vallée du Rhône');
+
+
 INSERT INTO PUBLIC.CELLAR(ID, CAPACITY, USER_ID) VALUES (1, 27, 3);
 INSERT INTO PUBLIC.YEAR(ID, NUMBER) VALUES
 (1, 1885),
