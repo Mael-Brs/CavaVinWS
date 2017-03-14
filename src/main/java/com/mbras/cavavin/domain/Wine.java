@@ -3,6 +3,8 @@ package com.mbras.cavavin.domain;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -36,9 +38,11 @@ public class Wine implements Serializable {
     @Column(name = "producer", nullable = false)
     private String producer;
 
+    @Field(type = FieldType.Nested)
     @ManyToOne
     private Region region;
 
+    @Field(type = FieldType.Nested)
     @ManyToOne
     private Color color;
 
