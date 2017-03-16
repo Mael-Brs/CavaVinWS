@@ -46,6 +46,10 @@ public class Wine implements Serializable {
     @ManyToOne
     private Color color;
 
+    @NotNull
+    @Column(name = "creator", nullable = false)
+    private Long creatorId;
+
     public Long getId() {
         return id;
     }
@@ -117,6 +121,19 @@ public class Wine implements Serializable {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public Wine creatorId(Long creatorId) {
+        this.creatorId = creatorId;
+        return this;
     }
 
     @Override
