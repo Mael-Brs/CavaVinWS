@@ -163,5 +163,21 @@ public class WineResource {
             .collect(Collectors.toList());
     }
 
+    /**
+     * SEARCH  /_search/wines?query=:query : search for the wine corresponding
+     * to the query.
+     *
+     * @param name the name of wine to query
+     * @param regionId the id of region to query
+     * @return the result of the search
+     */
+    @GetMapping("/_search/wines")
+    @Timed
+    public List<Wine> searchWines(@RequestParam String name, @RequestParam Long regionId ) {
+        log.debug("REST request to search Wines for name {}", name);
+        return StreamSupport
+            .stream(wineSearchRepository.findByNameAndRegion_Id(name, regionId).spliterator(), false)
+            .collect(Collectors.toList());
+    }
 
 }
