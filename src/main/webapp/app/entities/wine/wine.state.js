@@ -107,6 +107,7 @@
                                 name: null,
                                 appellation: null,
                                 producer: null,
+                                creatorId: null,
                                 id: null
                             };
                         }

@@ -48,6 +48,9 @@ public class WineResourceIntTest {
     private static final String DEFAULT_PRODUCER = "AAAAAAAAAA";
     private static final String UPDATED_PRODUCER = "BBBBBBBBBB";
 
+    private static final Long DEFAULT_CREATOR_ID = 1L;
+    private static final Long UPDATED_CREATOR_ID = 2L;
+
     @Autowired
     private WineRepository wineRepository;
 
@@ -93,7 +96,8 @@ public class WineResourceIntTest {
         Wine wine = new Wine()
                 .name(DEFAULT_NAME)
                 .appellation(DEFAULT_APPELLATION)
-                .producer(DEFAULT_PRODUCER);
+                .producer(DEFAULT_PRODUCER)
+                .creatorId(DEFAULT_CREATOR_ID);
         return wine;
     }
 
@@ -122,6 +126,7 @@ public class WineResourceIntTest {
         assertThat(testWine.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testWine.getAppellation()).isEqualTo(DEFAULT_APPELLATION);
         assertThat(testWine.getProducer()).isEqualTo(DEFAULT_PRODUCER);
+        assertThat(testWine.getCreatorId()).isEqualTo(DEFAULT_CREATOR_ID);
 
         // Validate the Wine in Elasticsearch
         Wine wineEs = wineSearchRepository.findOne(testWine.getId());
@@ -186,6 +191,24 @@ public class WineResourceIntTest {
 
     @Test
     @Transactional
+    public void checkCreatorIdIsRequired() throws Exception {
+        int databaseSizeBeforeTest = wineRepository.findAll().size();
+        // set the field null
+        wine.setCreatorId(null);
+
+        // Create the Wine, which fails.
+
+        restWineMockMvc.perform(post("/api/wines")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(wine)))
+            .andExpect(status().isBadRequest());
+
+        List<Wine> wineList = wineRepository.findAll();
+        assertThat(wineList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllWines() throws Exception {
         // Initialize the database
         wineRepository.saveAndFlush(wine);
@@ -197,7 +220,8 @@ public class WineResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(wine.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].appellation").value(hasItem(DEFAULT_APPELLATION.toString())))
-            .andExpect(jsonPath("$.[*].producer").value(hasItem(DEFAULT_PRODUCER.toString())));
+            .andExpect(jsonPath("$.[*].producer").value(hasItem(DEFAULT_PRODUCER.toString())))
+            .andExpect(jsonPath("$.[*].creatorId").value(hasItem(DEFAULT_CREATOR_ID.intValue())));
     }
 
     @Test
@@ -213,7 +237,8 @@ public class WineResourceIntTest {
             .andExpect(jsonPath("$.id").value(wine.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.appellation").value(DEFAULT_APPELLATION.toString()))
-            .andExpect(jsonPath("$.producer").value(DEFAULT_PRODUCER.toString()));
+            .andExpect(jsonPath("$.producer").value(DEFAULT_PRODUCER.toString()))
+            .andExpect(jsonPath("$.creatorId").value(DEFAULT_CREATOR_ID.intValue()));
     }
 
     @Test
@@ -237,7 +262,8 @@ public class WineResourceIntTest {
         updatedWine
                 .name(UPDATED_NAME)
                 .appellation(UPDATED_APPELLATION)
-                .producer(UPDATED_PRODUCER);
+                .producer(UPDATED_PRODUCER)
+                .creatorId(UPDATED_CREATOR_ID);
 
         restWineMockMvc.perform(put("/api/wines")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -251,6 +277,7 @@ public class WineResourceIntTest {
         assertThat(testWine.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testWine.getAppellation()).isEqualTo(UPDATED_APPELLATION);
         assertThat(testWine.getProducer()).isEqualTo(UPDATED_PRODUCER);
+        assertThat(testWine.getCreatorId()).isEqualTo(UPDATED_CREATOR_ID);
 
         // Validate the Wine in Elasticsearch
         Wine wineEs = wineSearchRepository.findOne(testWine.getId());
@@ -311,7 +338,8 @@ public class WineResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(wine.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].appellation").value(hasItem(DEFAULT_APPELLATION.toString())))
-            .andExpect(jsonPath("$.[*].producer").value(hasItem(DEFAULT_PRODUCER.toString())));
+            .andExpect(jsonPath("$.[*].producer").value(hasItem(DEFAULT_PRODUCER.toString())))
+            .andExpect(jsonPath("$.[*].creatorId").value(hasItem(DEFAULT_CREATOR_ID.intValue())));
     }
 
     @Test
