@@ -9,5 +9,5 @@ import java.util.List;
  * Spring Data Elasticsearch repository for the Wine entity.
  */
 public interface WineSearchRepository extends ElasticsearchRepository<Wine, Long> {
-    List<Wine> findByNameAndRegion_Id(String name, Long regionId);
+    List<Wine> findByNameOrProducer(String name, String producer);
 }

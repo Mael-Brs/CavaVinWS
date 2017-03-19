@@ -3,8 +3,6 @@ package com.mbras.cavavin.domain;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -38,17 +36,15 @@ public class Wine implements Serializable {
     @Column(name = "producer", nullable = false)
     private String producer;
 
-    @Field(type = FieldType.Nested)
+    @NotNull
+    @Column(name = "creator_id", nullable = false)
+    private Long creatorId;
+
     @ManyToOne
     private Region region;
 
-    @Field(type = FieldType.Nested)
     @ManyToOne
     private Color color;
-
-    @NotNull
-    @Column(name = "creator", nullable = false)
-    private Long creatorId;
 
     public Long getId() {
         return id;
@@ -97,6 +93,19 @@ public class Wine implements Serializable {
         this.producer = producer;
     }
 
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public Wine creatorId(Long creatorId) {
+        this.creatorId = creatorId;
+        return this;
+    }
+
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
+    }
+
     public Region getRegion() {
         return region;
     }
@@ -121,19 +130,6 @@ public class Wine implements Serializable {
 
     public void setColor(Color color) {
         this.color = color;
-    }
-
-    public Long getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(Long creatorId) {
-        this.creatorId = creatorId;
-    }
-
-    public Wine creatorId(Long creatorId) {
-        this.creatorId = creatorId;
-        return this;
     }
 
     @Override
@@ -163,6 +159,7 @@ public class Wine implements Serializable {
             ", name='" + name + "'" +
             ", appellation='" + appellation + "'" +
             ", producer='" + producer + "'" +
+            ", creatorId='" + creatorId + "'" +
             '}';
     }
 }

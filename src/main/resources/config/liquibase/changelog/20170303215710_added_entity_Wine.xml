@@ -33,6 +33,10 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="creator_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
             <column name="region_id" type="bigint">
                 <constraints nullable="true" />
             </column>
