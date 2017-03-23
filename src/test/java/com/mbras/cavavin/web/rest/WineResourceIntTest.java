@@ -332,7 +332,7 @@ public class WineResourceIntTest {
         wineSearchRepository.save(wine);
 
         // Search the wine
-        restWineMockMvc.perform(get("/api/_search/wines?query=id:" + wine.getId()))
+        restWineMockMvc.perform(get("/api/_search/wines?name=" + DEFAULT_NAME.toString() + "&producer="))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(wine.getId().intValue())))
