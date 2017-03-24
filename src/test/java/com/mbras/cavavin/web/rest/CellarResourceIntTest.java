@@ -44,6 +44,8 @@ public class CellarResourceIntTest {
 
     private static final Integer DEFAULT_CAPACITY = 1;
     private static final Integer UPDATED_CAPACITY = 2;
+    private static final Integer DEFAULT_SUM_OF_WINE = 0;
+
 
     @Autowired
     private CellarRepository cellarRepository;
@@ -174,7 +176,11 @@ public class CellarResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(cellar.getId().intValue()))
-            .andExpect(jsonPath("$.capacity").value(DEFAULT_CAPACITY));
+            .andExpect(jsonPath("$.capacity").value(DEFAULT_CAPACITY))
+            .andExpect(jsonPath("$.sumOfWine").value(DEFAULT_SUM_OF_WINE))
+            .andExpect(jsonPath("$.wineByRegion").isEmpty())
+            .andExpect(jsonPath("$.wineByColor").isEmpty());
+
     }
 
     @Test
