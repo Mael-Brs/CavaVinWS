@@ -11,7 +11,6 @@ import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -147,21 +146,22 @@ public class WineResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
+
     /**
      * SEARCH  /_search/wines?query=:query : search for the wine corresponding
      * to the query.
      *
-     * @param query the query of the wine search
+     * @param name the name of wine to query
+     * @param producer the name of the producer to query
      * @return the result of the search
      */
     @GetMapping("/_search/wines")
     @Timed
-    public List<Wine> searchWines(@RequestParam String query) {
-        log.debug("REST request to search Wines for query {}", query);
+    public List<Wine> searchWinesByNameOrProducer(@RequestParam String name, @RequestParam String producer) {
+        log.debug("REST request to search Wines for name {}", name);
         return StreamSupport
-            .stream(wineSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .stream(wineSearchRepository.findByNameOrProducer(name, producer).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }

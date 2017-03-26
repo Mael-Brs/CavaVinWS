@@ -19,6 +19,7 @@
             "name": "Name",
             "appellation": "Appellation",
             "producer": "Producer",
+            "creatorId": "Creator Id",
             "region": "Region",
             "color": "Color"
         }

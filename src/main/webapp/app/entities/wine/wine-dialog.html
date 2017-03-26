@@ -43,6 +43,22 @@
                 </p>
             </div>
         </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="cavavinApp.wine.creatorId" for="field_creatorId">Creator Id</label>
+            <input type="number" class="form-control" name="creatorId" id="field_creatorId"
+                    ng-model="vm.wine.creatorId"
+                    required/>
+            <div ng-show="editForm.creatorId.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.creatorId.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.creatorId.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
 
         <div class="form-group">
             <label data-translate="cavavinApp.wine.region" for="field_region">Region</label>
