@@ -8,6 +8,7 @@ import com.mbras.cavavin.repository.WineInCellarRepository;
 import com.mbras.cavavin.repository.search.WineInCellarSearchRepository;
 import com.mbras.cavavin.service.dto.WineInCellarDTO;
 import com.mbras.cavavin.service.mapper.WineInCellarMapper;
+import com.mbras.cavavin.service.util.WineAgingUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +52,9 @@ public class WineInCellarService {
     public WineInCellarDTO save(WineInCellarDTO wineInCellarDTO) {
         log.debug("Request to save WineInCellar : {}", wineInCellarDTO);
         WineInCellar wineInCellar = wineInCellarMapper.wineInCellarDTOToWineInCellar(wineInCellarDTO);
+        if(wineInCellar.getMaxKeep() == null) {
+            wineInCellar = WineAgingUtil.setMaxKeep(wineInCellar);
+        }
         wineInCellar = wineInCellarRepository.save(wineInCellar);
         WineInCellarDTO result = wineInCellarMapper.wineInCellarToWineInCellarDTO(wineInCellar);
         wineInCellarSearchRepository.save(wineInCellar);
