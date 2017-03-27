@@ -3,6 +3,7 @@ package com.mbras.cavavin.service;
 import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.WineByColor;
 import com.mbras.cavavin.domain.WineByRegion;
+import com.mbras.cavavin.domain.WineByYear;
 import com.mbras.cavavin.domain.WineInCellar;
 import com.mbras.cavavin.repository.WineInCellarRepository;
 import com.mbras.cavavin.repository.search.WineInCellarSearchRepository;
@@ -154,7 +155,7 @@ public class WineInCellarService {
     }
 
     /**
-     * GET  /wine-by-color : get number of wine group by color
+     * Get number of wine group by color
      *
      * @return the list of wine by color
      */
@@ -162,5 +163,16 @@ public class WineInCellarService {
     public List<WineByColor> getWineByColor(Long id) {
         log.debug("Request to get number of wine by color");
         return wineInCellarRepository.sumWineByColor(id);
+    }
+
+    /**
+     * Get number of wine group by year
+     *
+     * @return the list of wine by year
+     */
+    @Transactional(readOnly = true)
+    public List<WineByYear> getWineByYear(Long id) {
+        log.debug("Request to get number of wine by color");
+        return wineInCellarRepository.sumWineByYear(id);
     }
 }

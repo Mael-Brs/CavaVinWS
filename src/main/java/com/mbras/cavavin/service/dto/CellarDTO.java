@@ -2,11 +2,10 @@ package com.mbras.cavavin.service.dto;
 
 import com.mbras.cavavin.domain.WineByColor;
 import com.mbras.cavavin.domain.WineByRegion;
+import com.mbras.cavavin.domain.WineByYear;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -27,6 +26,8 @@ public class CellarDTO implements Serializable {
     private List<WineByRegion> wineByRegion;
 
     private List<WineByColor> wineByColor;
+
+    private List<WineByYear> wineByYear;
 
     public Long getId() {
         return id;
@@ -83,6 +84,13 @@ public class CellarDTO implements Serializable {
         this.wineByColor = wineByColor;
     }
 
+    public List<WineByYear> getWineByYear() {
+        return wineByYear;
+    }
+
+    public void setWineByYear(List<WineByYear> wineByYear) {
+        this.wineByYear = wineByYear;
+    }
 
     @Override
     public boolean equals(Object o) {

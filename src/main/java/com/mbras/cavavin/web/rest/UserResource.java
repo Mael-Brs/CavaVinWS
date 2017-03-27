@@ -5,6 +5,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.User;
 import com.mbras.cavavin.domain.WineByColor;
 import com.mbras.cavavin.domain.WineByRegion;
+import com.mbras.cavavin.domain.WineByYear;
 import com.mbras.cavavin.repository.UserRepository;
 import com.mbras.cavavin.repository.search.UserSearchRepository;
 import com.mbras.cavavin.security.AuthoritiesConstants;
@@ -198,12 +199,10 @@ public class UserResource {
         CellarDTO cellarDTO = cellarService.findByUser(login);
         if(cellarDTO != null){
             Long id =  cellarDTO.getId();
-            Long sum = wineInCellarService.getWineSum(id);
-            List<WineByRegion> wineByRegion = wineInCellarService.getWineByRegion(id);
-            List<WineByColor> wineByColor = wineInCellarService.getWineByColor(id);
-            cellarDTO.setSumOfWine(sum);
-            cellarDTO.setWineByRegion(wineByRegion);
-            cellarDTO.setWineByColor(wineByColor);
+            cellarDTO.setSumOfWine(wineInCellarService.getWineSum(id));
+            cellarDTO.setWineByRegion(wineInCellarService.getWineByRegion(id));
+            cellarDTO.setWineByColor(wineInCellarService.getWineByColor(id));
+            cellarDTO.setWineByYear(wineInCellarService.getWineByYear(id));
         }
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(cellarDTO));
     }

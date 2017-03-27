@@ -111,12 +111,10 @@ public class CellarResource {
         log.debug("REST request to get Cellar : {}", id);
         CellarDTO cellarDTO = cellarService.findOne(id);
         if (cellarDTO != null){
-            Long sum = wineInCellarService.getWineSum(id);
-            List<WineByRegion> wineByRegion = wineInCellarService.getWineByRegion(id);
-            List<WineByColor> wineByColor = wineInCellarService.getWineByColor(id);
-            cellarDTO.setSumOfWine(sum);
-            cellarDTO.setWineByRegion(wineByRegion);
-            cellarDTO.setWineByColor(wineByColor);
+            cellarDTO.setSumOfWine(wineInCellarService.getWineSum(id));
+            cellarDTO.setWineByRegion(wineInCellarService.getWineByRegion(id));
+            cellarDTO.setWineByColor(wineInCellarService.getWineByColor(id));
+            cellarDTO.setWineByYear(wineInCellarService.getWineByYear(id));
         }
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(cellarDTO));
     }
