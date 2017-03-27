@@ -1,9 +1,11 @@
 package com.mbras.cavavin.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by Mael on 12/02/2017.
  */
-public class WineByRegion {
+public class WineByRegion implements Serializable {
 
     private String region;
 

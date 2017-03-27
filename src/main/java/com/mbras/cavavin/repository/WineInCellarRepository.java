@@ -2,6 +2,7 @@ package com.mbras.cavavin.repository;
 
 import com.mbras.cavavin.domain.WineByRegion;
 import com.mbras.cavavin.domain.WineByColor;
+import com.mbras.cavavin.domain.WineByYear;
 import com.mbras.cavavin.domain.WineInCellar;
 
 import org.springframework.data.jpa.repository.*;
@@ -24,4 +25,7 @@ public interface WineInCellarRepository extends JpaRepository<WineInCellar,Long>
 
     @Query(value = "select new com.mbras.cavavin.domain.WineByColor(w.vintage.wine.color.colorName, sum(w.quantity)) from WineInCellar w join w.cellar c on c.id = :id group by w.vintage.wine.color.colorName")
     List<WineByColor> sumWineByColor(@Param("id") Long id);
+
+    @Query(value = "select new com.mbras.cavavin.domain.WineByYear(w.vintage.year.number, sum(w.quantity)) from WineInCellar w join w.cellar c on c.id = :id group by w.vintage.year.number")
+    List<WineByYear> sumWineByYear(@Param("id") Long id);
 }
