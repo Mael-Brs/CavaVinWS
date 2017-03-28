@@ -2,8 +2,8 @@ package com.mbras.cavavin.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.service.WineInCellarService;
-import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import com.mbras.cavavin.service.dto.WineInCellarDTO;
+import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,13 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing WineInCellar.
@@ -30,7 +25,7 @@ public class WineInCellarResource {
     private final Logger log = LoggerFactory.getLogger(WineInCellarResource.class);
 
     private static final String ENTITY_NAME = "wineInCellar";
-        
+
     private final WineInCellarService wineInCellarService;
 
     public WineInCellarResource(WineInCellarService wineInCellarService) {
@@ -123,7 +118,7 @@ public class WineInCellarResource {
      * SEARCH  /_search/wine-in-cellars?query=:query : search for the wineInCellar corresponding
      * to the query.
      *
-     * @param query the query of the wineInCellar search 
+     * @param query the query of the wineInCellar search
      * @return the result of the search
      */
     @GetMapping("/_search/wine-in-cellars")

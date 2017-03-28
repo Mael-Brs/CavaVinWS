@@ -1,6 +1,5 @@
 package com.mbras.cavavin.service;
 
-import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.WineByColor;
 import com.mbras.cavavin.domain.WineByRegion;
 import com.mbras.cavavin.domain.WineByYear;
@@ -12,8 +11,8 @@ import com.mbras.cavavin.service.mapper.WineInCellarMapper;
 import com.mbras.cavavin.service.util.WineAgingUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -21,7 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing WineInCellar.
@@ -70,11 +69,10 @@ public class WineInCellarService {
     @Transactional(readOnly = true)
     public List<WineInCellarDTO> findAll() {
         log.debug("Request to get all WineInCellars");
-        List<WineInCellarDTO> result = wineInCellarRepository.findAll().stream()
+
+        return wineInCellarRepository.findAll().stream()
             .map(wineInCellarMapper::wineInCellarToWineInCellarDTO)
             .collect(Collectors.toCollection(LinkedList::new));
-
-        return result;
     }
 
     /**
@@ -87,8 +85,7 @@ public class WineInCellarService {
     public WineInCellarDTO findOne(Long id) {
         log.debug("Request to get WineInCellar : {}", id);
         WineInCellar wineInCellar = wineInCellarRepository.findOne(id);
-        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.wineInCellarToWineInCellarDTO(wineInCellar);
-        return wineInCellarDTO;
+        return wineInCellarMapper.wineInCellarToWineInCellarDTO(wineInCellar);
     }
 
     /**
@@ -100,10 +97,9 @@ public class WineInCellarService {
     @Transactional(readOnly = true)
     public List<WineInCellarDTO> findByCellar(Long id) {
         log.debug("Request to get WineInCellar for cellar : {}", id);
-        List<WineInCellarDTO> result = wineInCellarRepository.findByCellar_Id(id).stream()
+        return wineInCellarRepository.findByCellar_Id(id).stream()
             .map(wineInCellarMapper::wineInCellarToWineInCellarDTO)
             .collect(Collectors.toCollection(LinkedList::new));
-        return result;
     }
 
     /**
@@ -175,4 +171,5 @@ public class WineInCellarService {
         log.debug("Request to get number of wine by color");
         return wineInCellarRepository.sumWineByYear(id);
     }
+
 }

@@ -61,11 +61,10 @@ public class CellarService {
     @Transactional(readOnly = true)
     public List<CellarDTO> findAll() {
         log.debug("Request to get all Cellars");
-        List<CellarDTO> result = cellarRepository.findAll().stream()
+
+        return cellarRepository.findAll().stream()
             .map(cellarMapper::cellarToCellarDTO)
             .collect(Collectors.toCollection(LinkedList::new));
-
-        return result;
     }
 
     /**
@@ -78,8 +77,7 @@ public class CellarService {
     public CellarDTO findOne(Long id) {
         log.debug("Request to get Cellar : {}", id);
         Cellar cellar = cellarRepository.findOne(id);
-        CellarDTO cellarDTO = cellarMapper.cellarToCellarDTO(cellar);
-        return cellarDTO;
+        return cellarMapper.cellarToCellarDTO(cellar);
     }
 
     /**
@@ -92,8 +90,7 @@ public class CellarService {
     public CellarDTO findByUser(String login) {
         log.debug("Request to get Cellar : {}", login);
         Cellar cellar = cellarRepository.findByUser_Login(login);
-        CellarDTO cellarDTO = cellarMapper.cellarToCellarDTO(cellar);
-        return cellarDTO;
+        return cellarMapper.cellarToCellarDTO(cellar);
     }
 
     /**
