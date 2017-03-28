@@ -32,7 +32,7 @@ public class ColorResource {
     private final Logger log = LoggerFactory.getLogger(ColorResource.class);
 
     private static final String ENTITY_NAME = "color";
-        
+
     private final ColorRepository colorRepository;
 
     private final ColorSearchRepository colorSearchRepository;
@@ -95,8 +95,7 @@ public class ColorResource {
     @Timed
     public List<Color> getAllColors() {
         log.debug("REST request to get all Colors");
-        List<Color> colors = colorRepository.findAll();
-        return colors;
+        return colorRepository.findAll();
     }
 
     /**
@@ -132,7 +131,7 @@ public class ColorResource {
      * SEARCH  /_search/colors?query=:query : search for the color corresponding
      * to the query.
      *
-     * @param query the query of the color search 
+     * @param query the query of the color search
      * @return the result of the search
      */
     @GetMapping("/_search/colors")

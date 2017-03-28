@@ -1,11 +1,8 @@
 package com.mbras.cavavin.web.rest;
 
-import com.mbras.cavavin.config.Constants;
 import com.codahale.metrics.annotation.Timed;
+import com.mbras.cavavin.config.Constants;
 import com.mbras.cavavin.domain.User;
-import com.mbras.cavavin.domain.WineByColor;
-import com.mbras.cavavin.domain.WineByRegion;
-import com.mbras.cavavin.domain.WineByYear;
 import com.mbras.cavavin.repository.UserRepository;
 import com.mbras.cavavin.repository.search.UserSearchRepository;
 import com.mbras.cavavin.security.AuthoritiesConstants;
@@ -15,12 +12,11 @@ import com.mbras.cavavin.service.UserService;
 import com.mbras.cavavin.service.WineInCellarService;
 import com.mbras.cavavin.service.dto.CellarDTO;
 import com.mbras.cavavin.service.dto.UserDTO;
-import com.mbras.cavavin.web.rest.vm.ManagedUserVM;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import com.mbras.cavavin.web.rest.util.PaginationUtil;
+import com.mbras.cavavin.web.rest.vm.ManagedUserVM;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -33,11 +29,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing users.

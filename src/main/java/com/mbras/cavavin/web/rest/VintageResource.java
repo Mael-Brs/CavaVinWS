@@ -31,7 +31,7 @@ public class VintageResource {
     private final Logger log = LoggerFactory.getLogger(VintageResource.class);
 
     private static final String ENTITY_NAME = "vintage";
-        
+
     private final VintageRepository vintageRepository;
 
     private final VintageSearchRepository vintageSearchRepository;
@@ -94,8 +94,7 @@ public class VintageResource {
     @Timed
     public List<Vintage> getAllVintages() {
         log.debug("REST request to get all Vintages");
-        List<Vintage> vintages = vintageRepository.findAll();
-        return vintages;
+        return vintageRepository.findAll();
     }
 
     /**
@@ -131,7 +130,7 @@ public class VintageResource {
      * SEARCH  /_search/vintages?query=:query : search for the vintage corresponding
      * to the query.
      *
-     * @param query the query of the vintage search 
+     * @param query the query of the vintage search
      * @return the result of the search
      */
     @GetMapping("/_search/vintages")

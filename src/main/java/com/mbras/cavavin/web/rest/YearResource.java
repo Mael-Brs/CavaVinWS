@@ -32,7 +32,7 @@ public class YearResource {
     private final Logger log = LoggerFactory.getLogger(YearResource.class);
 
     private static final String ENTITY_NAME = "year";
-        
+
     private final YearRepository yearRepository;
 
     private final YearSearchRepository yearSearchRepository;
@@ -95,8 +95,7 @@ public class YearResource {
     @Timed
     public List<Year> getAllYears() {
         log.debug("REST request to get all Years");
-        List<Year> years = yearRepository.findAll();
-        return years;
+        return yearRepository.findAll();
     }
 
     /**
@@ -132,7 +131,7 @@ public class YearResource {
      * SEARCH  /_search/years?query=:query : search for the year corresponding
      * to the query.
      *
-     * @param query the query of the year search 
+     * @param query the query of the year search
      * @return the result of the search
      */
     @GetMapping("/_search/years")

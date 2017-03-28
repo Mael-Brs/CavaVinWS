@@ -32,7 +32,7 @@ public class RegionResource {
     private final Logger log = LoggerFactory.getLogger(RegionResource.class);
 
     private static final String ENTITY_NAME = "region";
-        
+
     private final RegionRepository regionRepository;
 
     private final RegionSearchRepository regionSearchRepository;
@@ -95,8 +95,7 @@ public class RegionResource {
     @Timed
     public List<Region> getAllRegions() {
         log.debug("REST request to get all Regions");
-        List<Region> regions = regionRepository.findAll();
-        return regions;
+        return regionRepository.findAll();
     }
 
     /**
@@ -132,7 +131,7 @@ public class RegionResource {
      * SEARCH  /_search/regions?query=:query : search for the region corresponding
      * to the query.
      *
-     * @param query the query of the region search 
+     * @param query the query of the region search
      * @return the result of the search
      */
     @GetMapping("/_search/regions")

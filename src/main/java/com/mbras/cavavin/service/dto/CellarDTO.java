@@ -103,9 +103,7 @@ public class CellarDTO implements Serializable {
 
         CellarDTO cellarDTO = (CellarDTO) o;
 
-        if ( ! Objects.equals(id, cellarDTO.id)) { return false; }
-
-        return true;
+        return !Objects.equals(id, cellarDTO.id);
     }
 
     @Override
@@ -115,13 +113,14 @@ public class CellarDTO implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("CellarDTO{");
-        sb.append("id=").append(id);
-        sb.append(", capacity=").append(capacity);
-        sb.append(", sumOfWine=").append(sumOfWine);
-        sb.append(", wineByRegion=").append(wineByRegion);
-        sb.append(", wineByColor=").append(wineByColor);
-        sb.append('}');
-        return sb.toString();
+        return "CellarDTO{" +
+            "id=" + id +
+            ", capacity=" + capacity +
+            ", userId=" + userId +
+            ", sumOfWine=" + sumOfWine +
+            ", wineByRegion=" + wineByRegion +
+            ", wineByColor=" + wineByColor +
+            ", wineByYear=" + wineByYear +
+            '}';
     }
 }

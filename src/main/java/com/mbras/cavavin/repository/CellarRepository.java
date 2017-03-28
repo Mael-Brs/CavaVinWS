@@ -1,10 +1,7 @@
 package com.mbras.cavavin.repository;
 
 import com.mbras.cavavin.domain.Cellar;
-
-import org.springframework.data.jpa.repository.*;
-
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * Spring Data JPA repository for the Cellar entity.
