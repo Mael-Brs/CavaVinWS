@@ -53,6 +53,27 @@ public class WineInCellarResource {
     }
 
     /**
+     * POST  /wine-in-cellars : Create a new wineInCellar and a new vintage and a new wine.
+     *
+     * @param wineInCellarDTO the wineInCellarDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new wineInCellarDTO, or with status 400 (Bad Request) if the wineInCellar has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/wine-in-cellars/all")
+    @Timed
+    public ResponseEntity<WineInCellarDTO> createWineInCellarFromScratch(@RequestBody WineInCellarDTO wineInCellarDTO) throws URISyntaxException {
+        log.debug("REST request to save WineInCellar : {}", wineInCellarDTO);
+        if (wineInCellarDTO.getId() != null) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new wineInCellar cannot already have an ID")).body(null);
+        }
+
+        WineInCellarDTO result = wineInCellarService.saveFromScratch(wineInCellarDTO);
+        return ResponseEntity.created(new URI("/api/wine-in-cellars/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    /**
      * PUT  /wine-in-cellars : Updates an existing wineInCellar.
      *
      * @param wineInCellarDTO the wineInCellarDTO to update

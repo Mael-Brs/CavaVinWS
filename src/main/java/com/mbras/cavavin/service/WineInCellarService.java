@@ -1,10 +1,9 @@
 package com.mbras.cavavin.service;
 
-import com.mbras.cavavin.domain.WineByColor;
-import com.mbras.cavavin.domain.WineByRegion;
-import com.mbras.cavavin.domain.WineByYear;
-import com.mbras.cavavin.domain.WineInCellar;
+import com.mbras.cavavin.domain.*;
+import com.mbras.cavavin.repository.VintageRepository;
 import com.mbras.cavavin.repository.WineInCellarRepository;
+import com.mbras.cavavin.repository.WineRepository;
 import com.mbras.cavavin.repository.search.WineInCellarSearchRepository;
 import com.mbras.cavavin.service.dto.WineInCellarDTO;
 import com.mbras.cavavin.service.mapper.WineInCellarMapper;
@@ -37,10 +36,16 @@ public class WineInCellarService {
 
     private final WineInCellarSearchRepository wineInCellarSearchRepository;
 
-    public WineInCellarService(WineInCellarRepository wineInCellarRepository, WineInCellarMapper wineInCellarMapper, WineInCellarSearchRepository wineInCellarSearchRepository) {
+    private final WineRepository wineRepository;
+
+    private  final VintageRepository vintageRepository;
+
+    public WineInCellarService(WineInCellarRepository wineInCellarRepository, WineInCellarMapper wineInCellarMapper, WineInCellarSearchRepository wineInCellarSearchRepository, WineRepository wineRepository, VintageRepository vintageRepository) {
         this.wineInCellarRepository = wineInCellarRepository;
         this.wineInCellarMapper = wineInCellarMapper;
         this.wineInCellarSearchRepository = wineInCellarSearchRepository;
+        this.wineRepository = wineRepository;
+        this.vintageRepository = vintageRepository;
     }
 
     /**
@@ -52,6 +57,33 @@ public class WineInCellarService {
     public WineInCellarDTO save(WineInCellarDTO wineInCellarDTO) {
         log.debug("Request to save WineInCellar : {}", wineInCellarDTO);
         WineInCellar wineInCellar = wineInCellarMapper.wineInCellarDTOToWineInCellar(wineInCellarDTO);
+        if(wineInCellar.getMaxKeep() == null) {
+            wineInCellar = WineAgingUtil.setMaxKeep(wineInCellar);
+        }
+        wineInCellar = wineInCellarRepository.save(wineInCellar);
+        WineInCellarDTO result = wineInCellarMapper.wineInCellarToWineInCellarDTO(wineInCellar);
+        wineInCellarSearchRepository.save(wineInCellar);
+        return result;
+    }
+
+    /**
+     * Save a wineInCellar.
+     *
+     * @param wineInCellarDTO the entity to save
+     * @return the persisted entity
+     */
+    public WineInCellarDTO saveFromScratch(WineInCellarDTO wineInCellarDTO) {
+        log.debug("Request to save WineInCellar : {}", wineInCellarDTO);
+        WineInCellar wineInCellar = wineInCellarMapper.wineInCellarDTOToWineInCellar(wineInCellarDTO);
+        Vintage newVintage = wineInCellar.getVintage();
+        Wine newWine = newVintage.getWine();
+
+        newWine = wineRepository.save(newWine);
+        newVintage.setWine(newWine);
+
+        newVintage = vintageRepository.save(newVintage);
+        wineInCellar.setVintage(newVintage);
+
         if(wineInCellar.getMaxKeep() == null) {
             wineInCellar = WineAgingUtil.setMaxKeep(wineInCellar);
         }
