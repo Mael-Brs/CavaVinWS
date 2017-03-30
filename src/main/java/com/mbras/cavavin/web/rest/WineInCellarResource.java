@@ -96,6 +96,28 @@ public class WineInCellarResource {
     }
 
     /**
+     * PUT  /wine-in-cellars/all : Updates an existing wineInCellar and vinrage and wine.
+     *
+     * @param wineInCellarDTO the wineInCellarDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated wineInCellarDTO,
+     * or with status 400 (Bad Request) if the wineInCellarDTO is not valid,
+     * or with status 500 (Internal Server Error) if the wineInCellarDTO couldnt be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/wine-in-cellars/all")
+    @Timed
+    public ResponseEntity<WineInCellarDTO> updateWineInCellarFromScratch(@RequestBody WineInCellarDTO wineInCellarDTO) throws URISyntaxException {
+        log.debug("REST request to update WineInCellar : {}", wineInCellarDTO);
+        if (wineInCellarDTO.getId() == null) {
+            return createWineInCellar(wineInCellarDTO);
+        }
+        WineInCellarDTO result = wineInCellarService.saveFromScratch(wineInCellarDTO);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, wineInCellarDTO.getId().toString()))
+            .body(result);
+    }
+
+    /**
      * GET  /wine-in-cellars : get all the wineInCellars.
      *
      * @return the ResponseEntity with status 200 (OK) and the list of wineInCellars in body
