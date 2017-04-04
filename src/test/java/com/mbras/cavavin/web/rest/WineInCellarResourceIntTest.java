@@ -2,6 +2,8 @@ package com.mbras.cavavin.web.rest;
 
 import com.mbras.cavavin.CavavinApp;
 
+import com.mbras.cavavin.domain.Vintage;
+import com.mbras.cavavin.domain.Wine;
 import com.mbras.cavavin.domain.WineInCellar;
 import com.mbras.cavavin.repository.WineInCellarRepository;
 import com.mbras.cavavin.service.WineInCellarService;
@@ -56,6 +58,16 @@ public class WineInCellarResourceIntTest {
     private static final String DEFAULT_COMMENTS = "AAAAAAAAAA";
     private static final String UPDATED_COMMENTS = "BBBBBBBBBB";
 
+    private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NAME = "BBBBBBBBBB";
+
+    private static final String DEFAULT_APPELLATION = "AAAAAAAAAA";
+
+    private static final String DEFAULT_PRODUCER = "AAAAAAAAAA";
+
+    private static final Long DEFAULT_CREATOR_ID = 1L;
+
+
     @Autowired
     private WineInCellarRepository wineInCellarRepository;
 
@@ -84,6 +96,10 @@ public class WineInCellarResourceIntTest {
 
     private WineInCellar wineInCellar;
 
+    private Wine wine;
+
+    private Vintage vintage;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -110,10 +126,28 @@ public class WineInCellarResourceIntTest {
         return wineInCellar;
     }
 
+    /**
+     * Create a wine for this test.
+     *
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static Wine createWine(EntityManager em) {
+        Wine wine = new Wine()
+            .name(DEFAULT_NAME)
+            .appellation(DEFAULT_APPELLATION)
+            .producer(DEFAULT_PRODUCER)
+            .creatorId(DEFAULT_CREATOR_ID);
+        return wine;
+    }
+
     @Before
     public void initTest() {
         wineInCellarSearchRepository.deleteAll();
         wineInCellar = createEntity(em);
+        wine = createWine(em);
+        vintage = new Vintage();
+        vintage.setWine(wine);
     }
 
     @Test
@@ -305,6 +339,82 @@ public class WineInCellarResourceIntTest {
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())));
+    }
+
+    @Test
+    @Transactional
+    public void createWineInCellarFromScratch() throws Exception {
+        int databaseSizeBeforeCreate = wineInCellarRepository.findAll().size();
+
+        wineInCellar.setVintage(vintage);
+        // Create the WineInCellar
+        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.wineInCellarToWineInCellarDTO(wineInCellar);
+
+        restWineInCellarMockMvc.perform(post("/api/wine-in-cellars/all")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(wineInCellarDTO)))
+            .andExpect(status().isCreated());
+
+        // Validate the WineInCellar in the database
+        List<WineInCellar> wineInCellarList = wineInCellarRepository.findAll();
+        assertThat(wineInCellarList).hasSize(databaseSizeBeforeCreate + 1);
+        WineInCellar testWineInCellar = wineInCellarList.get(wineInCellarList.size() - 1);
+        assertThat(testWineInCellar.getMinKeep()).isEqualTo(DEFAULT_MIN_KEEP);
+        assertThat(testWineInCellar.getMaxKeep()).isEqualTo(DEFAULT_MAX_KEEP);
+        assertThat(testWineInCellar.getPrice()).isEqualTo(DEFAULT_PRICE);
+        assertThat(testWineInCellar.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
+        assertThat(testWineInCellar.getComments()).isEqualTo(DEFAULT_COMMENTS);
+        assertThat(testWineInCellar.getVintage().getWine().getName()).isEqualTo(DEFAULT_NAME);
+
+        // Validate the WineInCellar in Elasticsearch
+        WineInCellar wineInCellarEs = wineInCellarSearchRepository.findOne(testWineInCellar.getId());
+        assertThat(wineInCellarEs).isEqualToComparingFieldByField(testWineInCellar);
+    }
+
+    @Test
+    @Transactional
+    public void updateWineInCellarFromScratch() throws Exception {
+        // Initialize the database
+        vintage.setWine(wine);
+        wineInCellar.setVintage(vintage);
+        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.wineInCellarToWineInCellarDTO(wineInCellar);
+        wineInCellarDTO = wineInCellarService.saveFromScratch(wineInCellarDTO);
+
+        int databaseSizeBeforeUpdate = wineInCellarRepository.findAll().size();
+
+        // Update the wineInCellar
+        WineInCellar updatedWineInCellar = wineInCellarRepository.findOne(wineInCellarDTO.getId());
+        updatedWineInCellar
+            .minKeep(UPDATED_MIN_KEEP)
+            .maxKeep(UPDATED_MAX_KEEP)
+            .price(UPDATED_PRICE)
+            .quantity(UPDATED_QUANTITY)
+            .comments(UPDATED_COMMENTS);
+
+        wine.name(UPDATED_NAME);
+        vintage.setWine(wine);
+        updatedWineInCellar.setVintage(vintage);
+        WineInCellarDTO updatedWineInCellarDTO = wineInCellarMapper.wineInCellarToWineInCellarDTO(updatedWineInCellar);
+
+        restWineInCellarMockMvc.perform(put("/api/wine-in-cellars")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(updatedWineInCellarDTO)))
+            .andExpect(status().isOk());
+
+        // Validate the WineInCellar in the database
+        List<WineInCellar> wineInCellarList = wineInCellarRepository.findAll();
+        assertThat(wineInCellarList).hasSize(databaseSizeBeforeUpdate);
+        WineInCellar testWineInCellar = wineInCellarList.get(wineInCellarList.size() - 1);
+        assertThat(testWineInCellar.getMinKeep()).isEqualTo(UPDATED_MIN_KEEP);
+        assertThat(testWineInCellar.getMaxKeep()).isEqualTo(UPDATED_MAX_KEEP);
+        assertThat(testWineInCellar.getPrice()).isEqualTo(UPDATED_PRICE);
+        assertThat(testWineInCellar.getQuantity()).isEqualTo(UPDATED_QUANTITY);
+        assertThat(testWineInCellar.getComments()).isEqualTo(UPDATED_COMMENTS);
+        assertThat(testWineInCellar.getVintage().getWine().getName()).isEqualTo(UPDATED_NAME);
+
+        // Validate the WineInCellar in Elasticsearch
+        WineInCellar wineInCellarEs = wineInCellarSearchRepository.findOne(testWineInCellar.getId());
+        assertThat(wineInCellarEs).isEqualToComparingFieldByField(testWineInCellar);
     }
 
     @Test
