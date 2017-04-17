@@ -146,21 +146,19 @@ public class WineResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-
     /**
      * SEARCH  /_search/wines?query=:query : search for the wine corresponding
      * to the query.
      *
-     * @param name the name of wine to query
-     * @param producer the name of the producer to query
+     * @param query the query of the wine search
      * @return the result of the search
      */
     @GetMapping("/_search/wines")
     @Timed
-    public List<Wine> searchWinesByNameOrProducer(@RequestParam String name, @RequestParam String producer) {
-        log.debug("REST request to search Wines for name {}", name);
+    public List<Wine> searchWines(@RequestParam String query) {
+        log.debug("REST request to search Wines for query {}", query);
         return StreamSupport
-            .stream(wineSearchRepository.findByNameOrProducer(name, producer).spliterator(), false)
+            .stream(wineSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
 
