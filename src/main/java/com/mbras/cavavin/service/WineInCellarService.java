@@ -2,6 +2,7 @@ package com.mbras.cavavin.service;
 
 import com.mbras.cavavin.domain.*;
 import com.mbras.cavavin.repository.VintageRepository;
+import com.mbras.cavavin.repository.WineAgingDataRepository;
 import com.mbras.cavavin.repository.WineInCellarRepository;
 import com.mbras.cavavin.repository.WineRepository;
 import com.mbras.cavavin.repository.search.VintageSearchRepository;
@@ -9,7 +10,6 @@ import com.mbras.cavavin.repository.search.WineInCellarSearchRepository;
 import com.mbras.cavavin.repository.search.WineSearchRepository;
 import com.mbras.cavavin.service.dto.WineInCellarDTO;
 import com.mbras.cavavin.service.mapper.WineInCellarMapper;
-import com.mbras.cavavin.service.util.WineAgingUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -44,9 +44,11 @@ public class WineInCellarService {
 
     private final VintageSearchRepository vintageSearchRepository;
 
-    private  final VintageRepository vintageRepository;
+    private final VintageRepository vintageRepository;
 
-    public WineInCellarService(WineInCellarRepository wineInCellarRepository, WineInCellarMapper wineInCellarMapper, WineInCellarSearchRepository wineInCellarSearchRepository, WineRepository wineRepository, WineSearchRepository wineSearchRepository, VintageSearchRepository vintageSearchRepository, VintageRepository vintageRepository) {
+    private final WineAgingDataRepository wineAgingDataRepository;
+
+    public WineInCellarService(WineInCellarRepository wineInCellarRepository, WineInCellarMapper wineInCellarMapper, WineInCellarSearchRepository wineInCellarSearchRepository, WineRepository wineRepository, WineSearchRepository wineSearchRepository, VintageSearchRepository vintageSearchRepository, VintageRepository vintageRepository, WineAgingDataRepository wineAgingDataRepository) {
         this.wineInCellarRepository = wineInCellarRepository;
         this.wineInCellarMapper = wineInCellarMapper;
         this.wineInCellarSearchRepository = wineInCellarSearchRepository;
@@ -54,6 +56,7 @@ public class WineInCellarService {
         this.wineSearchRepository = wineSearchRepository;
         this.vintageSearchRepository = vintageSearchRepository;
         this.vintageRepository = vintageRepository;
+        this.wineAgingDataRepository = wineAgingDataRepository;
     }
 
     /**
@@ -65,14 +68,15 @@ public class WineInCellarService {
     public WineInCellarDTO save(WineInCellarDTO wineInCellarDTO) {
         log.debug("Request to save WineInCellar : {}", wineInCellarDTO);
         WineInCellar wineInCellar = wineInCellarMapper.wineInCellarDTOToWineInCellar(wineInCellarDTO);
-        if(wineInCellar.getMaxKeep() == null) {
-            wineInCellar = WineAgingUtil.setMaxKeep(wineInCellar);
+        if(wineInCellar.getMaxKeep() == null || wineInCellar.getMinKeep() == null) {
+            setWineAgingData(wineInCellar);
         }
         wineInCellar = wineInCellarRepository.save(wineInCellar);
         WineInCellarDTO result = wineInCellarMapper.wineInCellarToWineInCellarDTO(wineInCellar);
         wineInCellarSearchRepository.save(wineInCellar);
         return result;
     }
+
 
     /**
      * Save a wineInCellar.
@@ -94,8 +98,8 @@ public class WineInCellarService {
         vintageSearchRepository.save(newVintage);
         wineInCellar.setVintage(newVintage);
 
-        if(wineInCellar.getMaxKeep() == null) {
-            wineInCellar = WineAgingUtil.setMaxKeep(wineInCellar);
+        if(wineInCellar.getMaxKeep() == null || wineInCellar.getMinKeep() == null) {
+            setWineAgingData(wineInCellar);
         }
         wineInCellar = wineInCellarRepository.save(wineInCellar);
         WineInCellarDTO result = wineInCellarMapper.wineInCellarToWineInCellarDTO(wineInCellar);
@@ -212,6 +216,15 @@ public class WineInCellarService {
     public List<WineByYear> getWineByYear(Long id) {
         log.debug("Request to get number of wine by color");
         return wineInCellarRepository.sumWineByYear(id);
+    }
+
+    private void setWineAgingData(WineInCellar wineInCellar) {
+        Wine wine = wineInCellar.getVintage().getWine();
+        WineAgingData wineAgingData = wineAgingDataRepository.findByColorAndRegion(wine.getColor(), wine.getRegion());
+        if(wineAgingData != null) {
+            wineInCellar.setMinKeep(wineAgingData.getMinKeep());
+            wineInCellar.setMaxKeep(wineAgingData.getMaxKeep());
+        }
     }
 
 }

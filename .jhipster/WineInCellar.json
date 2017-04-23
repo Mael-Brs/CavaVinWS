@@ -29,7 +29,10 @@
         },
         {
             "fieldName": "quantity",
-            "fieldType": "Integer"
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "comments",
