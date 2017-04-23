@@ -12,9 +12,6 @@ import java.util.Map;
  */
 public final class WineAgingUtil {
 
-    private WineAgingUtil() {
-    }
-
     private static final Map<String, Integer> redMap;
     static {
         redMap = new HashMap<>();
@@ -52,6 +49,9 @@ public final class WineAgingUtil {
         pinkMap.put(RegionEnum.LANGUEDOC.getValue(), 3);
         pinkMap.put(RegionEnum.PROVENCE.getValue(), 3);
         pinkMap.put(RegionEnum.RHONE.getValue(), 2);
+    }
+
+    private WineAgingUtil() {
     }
 
     public static WineInCellar setMaxKeep(WineInCellar wineInCellar){
