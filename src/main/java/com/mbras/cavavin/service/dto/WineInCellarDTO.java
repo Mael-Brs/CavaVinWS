@@ -1,7 +1,9 @@
 package com.mbras.cavavin.service.dto;
 
+
 import com.mbras.cavavin.domain.Vintage;
 
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,6 +22,7 @@ public class WineInCellarDTO implements Serializable {
 
     private Double price;
 
+    @NotNull
     private Integer quantity;
 
     private String comments;
@@ -127,6 +130,7 @@ public class WineInCellarDTO implements Serializable {
             ", price='" + price + "'" +
             ", quantity='" + quantity + "'" +
             ", comments='" + comments + "'" +
+            ", apogee='" + apogee + "'" +
             '}';
     }
 }

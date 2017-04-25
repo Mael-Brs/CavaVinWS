@@ -34,7 +34,7 @@
             </column>
 
             <column name="quantity" type="integer">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="comments" type="varchar(255)">
