@@ -5,6 +5,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -33,7 +34,8 @@ public class WineInCellar implements Serializable {
     @Column(name = "price")
     private Double price;
 
-    @Column(name = "quantity")
+    @NotNull
+    @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
     @Column(name = "comments")
@@ -194,12 +196,12 @@ public class WineInCellar implements Serializable {
     public String toString() {
         return "WineInCellar{" +
             "id=" + id +
-            ", minKeep=" + minKeep +
-            ", maxKeep=" + maxKeep +
-            ", price=" + price +
-            ", quantity=" + quantity +
-            ", comments='" + comments + '\'' +
-            ", apogee=" + apogee +
+            ", minKeep='" + minKeep + "'" +
+            ", maxKeep='" + maxKeep + "'" +
+            ", price='" + price + "'" +
+            ", quantity='" + quantity + "'" +
+            ", comments='" + comments + "'" +
+            ", apogee='" + apogee + "'" +
             '}';
     }
 }

@@ -201,6 +201,25 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    public void checkQuantityIsRequired() throws Exception {
+        int databaseSizeBeforeTest = wineInCellarRepository.findAll().size();
+        // set the field null
+        wineInCellar.setQuantity(null);
+
+        // Create the WineInCellar, which fails.
+        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.wineInCellarToWineInCellarDTO(wineInCellar);
+
+        restWineInCellarMockMvc.perform(post("/api/wine-in-cellars")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(wineInCellarDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<WineInCellar> wineInCellarList = wineInCellarRepository.findAll();
+        assertThat(wineInCellarList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllWineInCellars() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
