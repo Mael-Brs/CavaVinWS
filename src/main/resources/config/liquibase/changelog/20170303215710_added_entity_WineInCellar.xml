@@ -34,7 +34,7 @@
             </column>
 
             <column name="quantity" type="integer">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="comments" type="varchar(255)">
@@ -51,6 +51,6 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
     </changeSet>
 </databaseChangeLog>
