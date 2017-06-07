@@ -44,7 +44,7 @@ public class WineInCellar implements Serializable {
     @ManyToOne
     private Cellar cellar;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.EAGER)
     private Vintage vintage;
 
     @Transient
