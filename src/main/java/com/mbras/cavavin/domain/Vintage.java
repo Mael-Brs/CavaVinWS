@@ -27,10 +27,10 @@ public class Vintage implements Serializable {
     @Column(name = "bare_code")
     private Integer bareCode;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.EAGER)
     private Year year;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.EAGER)
     private Wine wine;
 
     public Long getId() {

@@ -40,10 +40,10 @@ public class Wine implements Serializable {
     @Column(name = "creator_id", nullable = false)
     private Long creatorId;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.EAGER)
     private Region region;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.EAGER)
     private Color color;
 
     public Long getId() {
