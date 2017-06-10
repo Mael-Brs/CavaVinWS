@@ -15,6 +15,7 @@
                 "wineInCellar": "Wine In Cellar",
                 "year": "Year",
                 "wineAgingData": "Wine Aging Data",
+                "pinnedVintage": "Pinned Vintage",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
