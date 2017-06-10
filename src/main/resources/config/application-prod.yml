@@ -23,6 +23,7 @@ spring:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:postgresql://localhost:5432/cavavin
         username: cavavin
+        password: mdp@cavavin
     jpa:
         database-platform: io.github.jhipster.domain.util.FixedPostgreSQL82Dialect
         database: POSTGRESQL
@@ -40,6 +41,8 @@ spring:
     mail:
         host: smtp.gmail.com
         port: 587
+        username: mael.bras@gmail.com
+        password: ***REMOVED***
         protocol: smtp
         tls: true
         properties.mail.smtp:
@@ -100,6 +103,7 @@ jhipster:
                 token-validity-in-seconds-for-remember-me: 2592000
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: cavavin@localhost
+        base-url: http://mael.synology.me:8082
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         graphite:
