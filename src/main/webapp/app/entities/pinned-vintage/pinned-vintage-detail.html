@@ -1,0 +1,27 @@
+
+<div>
+    <h2><span data-translate="cavavinApp.pinnedVintage.detail.title">Pinned Vintage</span> {{vm.pinnedVintage.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="cavavinApp.pinnedVintage.user">User</span></dt>
+        <dd>
+            {{vm.pinnedVintage.userLogin}}
+        </dd>
+        <dt><span data-translate="cavavinApp.pinnedVintage.vintage">Vintage</span></dt>
+        <dd>
+            <a ui-sref="vintage-detail({id:vm.pinnedVintage.vintageId})">{{vm.pinnedVintage.vintageId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="pinned-vintage-detail.edit({id:vm.pinnedVintage.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

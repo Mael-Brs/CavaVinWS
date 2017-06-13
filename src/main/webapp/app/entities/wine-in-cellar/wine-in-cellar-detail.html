@@ -1,0 +1,47 @@
+
+<div>
+    <h2><span data-translate="cavavinApp.wineInCellar.detail.title">Wine In Cellar</span> {{vm.wineInCellar.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="cavavinApp.wineInCellar.minKeep">Min Keep</span></dt>
+        <dd>
+            <span>{{vm.wineInCellar.minKeep}}</span>
+        </dd>
+        <dt><span data-translate="cavavinApp.wineInCellar.maxKeep">Max Keep</span></dt>
+        <dd>
+            <span>{{vm.wineInCellar.maxKeep}}</span>
+        </dd>
+        <dt><span data-translate="cavavinApp.wineInCellar.price">Price</span></dt>
+        <dd>
+            <span>{{vm.wineInCellar.price}}</span>
+        </dd>
+        <dt><span data-translate="cavavinApp.wineInCellar.quantity">Quantity</span></dt>
+        <dd>
+            <span>{{vm.wineInCellar.quantity}}</span>
+        </dd>
+        <dt><span data-translate="cavavinApp.wineInCellar.comments">Comments</span></dt>
+        <dd>
+            <span>{{vm.wineInCellar.comments}}</span>
+        </dd>
+        <dt><span data-translate="cavavinApp.wineInCellar.cellar">Cellar</span></dt>
+        <dd>
+            <a ui-sref="cellar-detail({id:vm.wineInCellar.cellarId})">{{vm.wineInCellar.cellarId}}</a>
+        </dd>
+        <dt><span data-translate="cavavinApp.wineInCellar.vintage">Vintage</span></dt>
+        <dd>
+            <a ui-sref="vintage-detail({id:vm.wineInCellar.vintageId})">{{vm.wineInCellar.vintageId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="wine-in-cellar-detail.edit({id:vm.wineInCellar.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

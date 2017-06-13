@@ -1,0 +1,28 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "year",
+            "otherEntityName": "year",
+            "otherEntityField": "number"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "wine",
+            "otherEntityName": "wine",
+            "otherEntityField": "name"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "bareCode",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20170303215710",
+    "entityTableName": "vintage",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

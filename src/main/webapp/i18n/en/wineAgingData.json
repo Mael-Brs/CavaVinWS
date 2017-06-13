@@ -1,0 +1,25 @@
+{
+    "cavavinApp": {
+        "wineAgingData" : {
+            "home": {
+                "title": "Wine Aging Data",
+                "createLabel": "Create a new Wine Aging Data",
+                "createOrEditLabel": "Create or edit a Wine Aging Data",
+                "search": "Search for Wine Aging Data"
+            },
+            "created": "A new Wine Aging Data is created with identifier {{ param }}",
+            "updated": "A Wine Aging Data is updated with identifier {{ param }}",
+            "deleted": "A Wine Aging Data is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Wine Aging Data {{ id }}?"
+            },
+            "detail": {
+                "title": "Wine Aging Data"
+            },
+            "minKeep": "Min Keep",
+            "maxKeep": "Max Keep",
+            "color": "Color",
+            "region": "Region"
+        }
+    }
+}
