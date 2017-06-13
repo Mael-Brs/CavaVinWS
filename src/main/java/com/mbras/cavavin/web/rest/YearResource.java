@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -69,7 +70,7 @@ public class YearResource {
      * @param year the year to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated year,
      * or with status 400 (Bad Request) if the year is not valid,
-     * or with status 500 (Internal Server Error) if the year couldnt be updated
+     * or with status 500 (Internal Server Error) if the year couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/years")
@@ -142,6 +143,5 @@ public class YearResource {
             .stream(yearSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }

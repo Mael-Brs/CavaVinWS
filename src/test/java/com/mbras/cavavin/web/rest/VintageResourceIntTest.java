@@ -66,7 +66,7 @@ public class VintageResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-            VintageResource vintageResource = new VintageResource(vintageRepository, vintageSearchRepository);
+        VintageResource vintageResource = new VintageResource(vintageRepository, vintageSearchRepository);
         this.restVintageMockMvc = MockMvcBuilders.standaloneSetup(vintageResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -81,7 +81,7 @@ public class VintageResourceIntTest {
      */
     public static Vintage createEntity(EntityManager em) {
         Vintage vintage = new Vintage()
-                .bareCode(DEFAULT_BARE_CODE);
+            .bareCode(DEFAULT_BARE_CODE);
         return vintage;
     }
 
@@ -97,7 +97,6 @@ public class VintageResourceIntTest {
         int databaseSizeBeforeCreate = vintageRepository.findAll().size();
 
         // Create the Vintage
-
         restVintageMockMvc.perform(post("/api/vintages")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(vintage)))
@@ -120,13 +119,12 @@ public class VintageResourceIntTest {
         int databaseSizeBeforeCreate = vintageRepository.findAll().size();
 
         // Create the Vintage with an existing ID
-        Vintage existingVintage = new Vintage();
-        existingVintage.setId(1L);
+        vintage.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restVintageMockMvc.perform(post("/api/vintages")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingVintage)))
+            .content(TestUtil.convertObjectToJsonBytes(vintage)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -181,7 +179,7 @@ public class VintageResourceIntTest {
         // Update the vintage
         Vintage updatedVintage = vintageRepository.findOne(vintage.getId());
         updatedVintage
-                .bareCode(UPDATED_BARE_CODE);
+            .bareCode(UPDATED_BARE_CODE);
 
         restVintageMockMvc.perform(put("/api/vintages")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -255,7 +253,17 @@ public class VintageResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Vintage.class);
+        Vintage vintage1 = new Vintage();
+        vintage1.setId(1L);
+        Vintage vintage2 = new Vintage();
+        vintage2.setId(vintage1.getId());
+        assertThat(vintage1).isEqualTo(vintage2);
+        vintage2.setId(2L);
+        assertThat(vintage1).isNotEqualTo(vintage2);
+        vintage1.setId(null);
+        assertThat(vintage1).isNotEqualTo(vintage2);
     }
 }

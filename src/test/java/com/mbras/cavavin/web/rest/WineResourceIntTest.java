@@ -94,10 +94,10 @@ public class WineResourceIntTest {
      */
     public static Wine createEntity(EntityManager em) {
         Wine wine = new Wine()
-                .name(DEFAULT_NAME)
-                .appellation(DEFAULT_APPELLATION)
-                .producer(DEFAULT_PRODUCER)
-                .creatorId(DEFAULT_CREATOR_ID);
+            .name(DEFAULT_NAME)
+            .appellation(DEFAULT_APPELLATION)
+            .producer(DEFAULT_PRODUCER)
+            .creatorId(DEFAULT_CREATOR_ID);
         return wine;
     }
 
@@ -113,7 +113,6 @@ public class WineResourceIntTest {
         int databaseSizeBeforeCreate = wineRepository.findAll().size();
 
         // Create the Wine
-
         restWineMockMvc.perform(post("/api/wines")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(wine)))
@@ -139,13 +138,12 @@ public class WineResourceIntTest {
         int databaseSizeBeforeCreate = wineRepository.findAll().size();
 
         // Create the Wine with an existing ID
-        Wine existingWine = new Wine();
-        existingWine.setId(1L);
+        wine.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restWineMockMvc.perform(post("/api/wines")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingWine)))
+            .content(TestUtil.convertObjectToJsonBytes(wine)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -260,10 +258,10 @@ public class WineResourceIntTest {
         // Update the wine
         Wine updatedWine = wineRepository.findOne(wine.getId());
         updatedWine
-                .name(UPDATED_NAME)
-                .appellation(UPDATED_APPELLATION)
-                .producer(UPDATED_PRODUCER)
-                .creatorId(UPDATED_CREATOR_ID);
+            .name(UPDATED_NAME)
+            .appellation(UPDATED_APPELLATION)
+            .producer(UPDATED_PRODUCER)
+            .creatorId(UPDATED_CREATOR_ID);
 
         restWineMockMvc.perform(put("/api/wines")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -343,7 +341,17 @@ public class WineResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Wine.class);
+        Wine wine1 = new Wine();
+        wine1.setId(1L);
+        Wine wine2 = new Wine();
+        wine2.setId(wine1.getId());
+        assertThat(wine1).isEqualTo(wine2);
+        wine2.setId(2L);
+        assertThat(wine1).isNotEqualTo(wine2);
+        wine1.setId(null);
+        assertThat(wine1).isNotEqualTo(wine2);
     }
 }

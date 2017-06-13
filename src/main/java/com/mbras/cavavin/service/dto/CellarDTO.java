@@ -36,6 +36,7 @@ public class CellarDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
     public Integer getCapacity() {
         return capacity;
     }
@@ -102,25 +103,22 @@ public class CellarDTO implements Serializable {
         }
 
         CellarDTO cellarDTO = (CellarDTO) o;
-
-        return !Objects.equals(id, cellarDTO.id);
+        if(cellarDTO.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), cellarDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "CellarDTO{" +
-            "id=" + id +
-            ", capacity=" + capacity +
-            ", userId=" + userId +
-            ", sumOfWine=" + sumOfWine +
-            ", wineByRegion=" + wineByRegion +
-            ", wineByColor=" + wineByColor +
-            ", wineByYear=" + wineByYear +
-            '}';
+            "id=" + getId() +
+            ", capacity='" + getCapacity() + "'" +
+            "}";
     }
 }
