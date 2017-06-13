@@ -3,7 +3,6 @@ package com.mbras.cavavin.web.rest;
 import com.mbras.cavavin.CavavinApp;
 
 import com.mbras.cavavin.domain.PinnedVintage;
-import com.mbras.cavavin.domain.User;
 import com.mbras.cavavin.domain.Vintage;
 import com.mbras.cavavin.repository.PinnedVintageRepository;
 import com.mbras.cavavin.repository.search.PinnedVintageSearchRepository;
@@ -85,11 +84,6 @@ public class PinnedVintageResourceIntTest {
      */
     public static PinnedVintage createEntity(EntityManager em) {
         PinnedVintage pinnedVintage = new PinnedVintage();
-        // Add required entity
-        User user = UserResourceIntTest.createEntity(em);
-        em.persist(user);
-        em.flush();
-        pinnedVintage.setUser(user);
         // Add required entity
         Vintage vintage = VintageResourceIntTest.createEntity(em);
         em.persist(vintage);
