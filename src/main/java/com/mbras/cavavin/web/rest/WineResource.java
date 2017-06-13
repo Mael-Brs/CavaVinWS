@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -74,7 +75,7 @@ public class WineResource {
      * @param wine the wine to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated wine,
      * or with status 400 (Bad Request) if the wine is not valid,
-     * or with status 500 (Internal Server Error) if the wine couldnt be updated
+     * or with status 500 (Internal Server Error) if the wine couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/wines")

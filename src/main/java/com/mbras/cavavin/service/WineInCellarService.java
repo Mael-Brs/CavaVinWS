@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing WineInCellar.
@@ -67,16 +67,15 @@ public class WineInCellarService {
      */
     public WineInCellarDTO save(WineInCellarDTO wineInCellarDTO) {
         log.debug("Request to save WineInCellar : {}", wineInCellarDTO);
-        WineInCellar wineInCellar = wineInCellarMapper.wineInCellarDTOToWineInCellar(wineInCellarDTO);
+        WineInCellar wineInCellar = wineInCellarMapper.toEntity(wineInCellarDTO);
         if(wineInCellar.getMaxKeep() == null || wineInCellar.getMinKeep() == null) {
             setWineAgingData(wineInCellar);
         }
         wineInCellar = wineInCellarRepository.save(wineInCellar);
-        WineInCellarDTO result = wineInCellarMapper.wineInCellarToWineInCellarDTO(wineInCellar);
+        WineInCellarDTO result = wineInCellarMapper.toDto(wineInCellar);
         wineInCellarSearchRepository.save(wineInCellar);
         return result;
     }
-
 
     /**
      * Save a wineInCellar.
@@ -86,7 +85,7 @@ public class WineInCellarService {
      */
     public WineInCellarDTO saveFromScratch(WineInCellarDTO wineInCellarDTO) {
         log.debug("Request to save WineInCellar : {}", wineInCellarDTO);
-        WineInCellar wineInCellar = wineInCellarMapper.wineInCellarDTOToWineInCellar(wineInCellarDTO);
+        WineInCellar wineInCellar = wineInCellarMapper.toEntity(wineInCellarDTO);
         Vintage newVintage = wineInCellar.getVintage();
         Wine newWine = newVintage.getWine();
 
@@ -102,7 +101,7 @@ public class WineInCellarService {
             setWineAgingData(wineInCellar);
         }
         wineInCellar = wineInCellarRepository.save(wineInCellar);
-        WineInCellarDTO result = wineInCellarMapper.wineInCellarToWineInCellarDTO(wineInCellar);
+        WineInCellarDTO result = wineInCellarMapper.toDto(wineInCellar);
         wineInCellarSearchRepository.save(wineInCellar);
         return result;
     }
@@ -115,9 +114,8 @@ public class WineInCellarService {
     @Transactional(readOnly = true)
     public List<WineInCellarDTO> findAll() {
         log.debug("Request to get all WineInCellars");
-
         return wineInCellarRepository.findAll().stream()
-            .map(wineInCellarMapper::wineInCellarToWineInCellarDTO)
+            .map(wineInCellarMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -131,7 +129,7 @@ public class WineInCellarService {
     public WineInCellarDTO findOne(Long id) {
         log.debug("Request to get WineInCellar : {}", id);
         WineInCellar wineInCellar = wineInCellarRepository.findOne(id);
-        return wineInCellarMapper.wineInCellarToWineInCellarDTO(wineInCellar);
+        return wineInCellarMapper.toDto(wineInCellar);
     }
 
     /**
@@ -144,7 +142,7 @@ public class WineInCellarService {
     public List<WineInCellarDTO> findByCellar(Long id) {
         log.debug("Request to get WineInCellar for cellar : {}", id);
         return wineInCellarRepository.findByCellar_Id(id).stream()
-            .map(wineInCellarMapper::wineInCellarToWineInCellarDTO)
+            .map(wineInCellarMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -170,7 +168,7 @@ public class WineInCellarService {
         log.debug("Request to search WineInCellars for query {}", query);
         return StreamSupport
             .stream(wineInCellarSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .map(wineInCellarMapper::wineInCellarToWineInCellarDTO)
+            .map(wineInCellarMapper::toDto)
             .collect(Collectors.toList());
     }
 
@@ -226,5 +224,4 @@ public class WineInCellarService {
             wineInCellar.setMaxKeep(wineAgingData.getMaxKeep());
         }
     }
-
 }
