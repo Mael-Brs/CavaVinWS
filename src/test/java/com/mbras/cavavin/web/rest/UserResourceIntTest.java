@@ -103,12 +103,6 @@ public class UserResourceIntTest {
     @Autowired
     private EntityManager em;
 
-    @Autowired
-    private CellarService cellarService;
-
-    @Autowired
-    private WineInCellarService wineInCellarService;
-
     private MockMvc restUserMockMvc;
 
     private User user;
@@ -116,7 +110,7 @@ public class UserResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        UserResource userResource = new UserResource(userRepository, mailService, userService, userSearchRepository, cellarService, wineInCellarService);
+        UserResource userResource = new UserResource(userRepository, mailService, userService, userSearchRepository);
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(userResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
