@@ -523,7 +523,7 @@
                     <!--<runMultipleSimulations>true</runMultipleSimulations>-->
                     <!-- This will force Gatling to ask which simulation to run
                       This is useful when you have multiple simulations -->
-                    <simulationClass>*</simulationClass>
+                    <simulationClass>WineInCellarGatlingTest</simulationClass>
                 </configuration>
             </plugin>
             <plugin>

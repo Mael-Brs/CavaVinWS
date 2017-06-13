@@ -8,7 +8,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity PinnedVintage and its DTO PinnedVintageDTO.
  */
-@Mapper(componentModel = "spring", uses = {UserMapper.class})
+@Mapper(componentModel = "spring", uses = {UserMapper.class })
 public interface PinnedVintageMapper extends EntityMapper <PinnedVintageDTO, PinnedVintage> {
 
     @Mapping(source = "user.id", target = "userId")
