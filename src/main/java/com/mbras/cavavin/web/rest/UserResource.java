@@ -77,17 +77,11 @@ public class UserResource {
 
     private final UserSearchRepository userSearchRepository;
 
-    private CellarService cellarService;
-
-    private WineInCellarService wineInCellarService;
-
-    public UserResource(UserRepository userRepository, MailService mailService, UserService userService, UserSearchRepository userSearchRepository, CellarService cellarService, WineInCellarService wineInCellarService) {
+    public UserResource(UserRepository userRepository, MailService mailService, UserService userService, UserSearchRepository userSearchRepository) {
         this.userRepository = userRepository;
         this.mailService = mailService;
         this.userService = userService;
         this.userSearchRepository = userSearchRepository;
-        this.cellarService = cellarService;
-        this.wineInCellarService = wineInCellarService;
     }
 
     /**
@@ -194,27 +188,6 @@ public class UserResource {
         return ResponseUtil.wrapOrNotFound(
             userService.getUserWithAuthoritiesByLogin(login)
                 .map(UserDTO::new));
-    }
-
-    /**
-     * GET  /users/:login/cellars : get cellars for this user.
-     *
-     * @param login the login of the user to find
-     * @return the ResponseEntity with status 200 (OK) and with body the "login" user, or with status 404 (Not Found)
-     */
-    @GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}/cellars")
-    @Timed
-    public ResponseEntity<CellarDTO> getCellarForUser(@PathVariable String login) {
-        log.debug("REST request to get cellars for User : {}", login);
-        CellarDTO cellarDTO = cellarService.findByUser(login);
-        if(cellarDTO != null){
-            Long id =  cellarDTO.getId();
-            cellarDTO.setSumOfWine(wineInCellarService.getWineSum(id));
-            cellarDTO.setWineByRegion(wineInCellarService.getWineByRegion(id));
-            cellarDTO.setWineByColor(wineInCellarService.getWineByColor(id));
-            cellarDTO.setWineByYear(wineInCellarService.getWineByYear(id));
-        }
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(cellarDTO));
     }
 
     /**
