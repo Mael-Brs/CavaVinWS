@@ -141,25 +141,25 @@ public class Wine implements Serializable {
             return false;
         }
         Wine wine = (Wine) o;
-        if (wine.id == null || id == null) {
+        if (wine.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, wine.id);
+        return Objects.equals(getId(), wine.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Wine{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", appellation='" + appellation + "'" +
-            ", producer='" + producer + "'" +
-            ", creatorId='" + creatorId + "'" +
-            '}';
+            "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", appellation='" + getAppellation() + "'" +
+            ", producer='" + getProducer() + "'" +
+            ", creatorId='" + getCreatorId() + "'" +
+            "}";
     }
 }

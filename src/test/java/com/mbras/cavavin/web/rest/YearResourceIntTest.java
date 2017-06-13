@@ -66,7 +66,7 @@ public class YearResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-            YearResource yearResource = new YearResource(yearRepository, yearSearchRepository);
+        YearResource yearResource = new YearResource(yearRepository, yearSearchRepository);
         this.restYearMockMvc = MockMvcBuilders.standaloneSetup(yearResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -81,7 +81,7 @@ public class YearResourceIntTest {
      */
     public static Year createEntity(EntityManager em) {
         Year year = new Year()
-                .number(DEFAULT_NUMBER);
+            .number(DEFAULT_NUMBER);
         return year;
     }
 
@@ -97,7 +97,6 @@ public class YearResourceIntTest {
         int databaseSizeBeforeCreate = yearRepository.findAll().size();
 
         // Create the Year
-
         restYearMockMvc.perform(post("/api/years")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(year)))
@@ -120,13 +119,12 @@ public class YearResourceIntTest {
         int databaseSizeBeforeCreate = yearRepository.findAll().size();
 
         // Create the Year with an existing ID
-        Year existingYear = new Year();
-        existingYear.setId(1L);
+        year.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restYearMockMvc.perform(post("/api/years")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingYear)))
+            .content(TestUtil.convertObjectToJsonBytes(year)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -199,7 +197,7 @@ public class YearResourceIntTest {
         // Update the year
         Year updatedYear = yearRepository.findOne(year.getId());
         updatedYear
-                .number(UPDATED_NUMBER);
+            .number(UPDATED_NUMBER);
 
         restYearMockMvc.perform(put("/api/years")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -273,7 +271,17 @@ public class YearResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Year.class);
+        Year year1 = new Year();
+        year1.setId(1L);
+        Year year2 = new Year();
+        year2.setId(year1.getId());
+        assertThat(year1).isEqualTo(year2);
+        year2.setId(2L);
+        assertThat(year1).isNotEqualTo(year2);
+        year1.setId(null);
+        assertThat(year1).isNotEqualTo(year2);
     }
 }

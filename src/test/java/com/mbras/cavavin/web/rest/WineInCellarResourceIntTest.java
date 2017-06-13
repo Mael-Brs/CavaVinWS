@@ -118,11 +118,11 @@ public class WineInCellarResourceIntTest {
      */
     public static WineInCellar createEntity(EntityManager em) {
         WineInCellar wineInCellar = new WineInCellar()
-                .minKeep(DEFAULT_MIN_KEEP)
-                .maxKeep(DEFAULT_MAX_KEEP)
-                .price(DEFAULT_PRICE)
-                .quantity(DEFAULT_QUANTITY)
-                .comments(DEFAULT_COMMENTS);
+            .minKeep(DEFAULT_MIN_KEEP)
+            .maxKeep(DEFAULT_MAX_KEEP)
+            .price(DEFAULT_PRICE)
+            .quantity(DEFAULT_QUANTITY)
+            .comments(DEFAULT_COMMENTS);
         return wineInCellar;
     }
 
@@ -156,8 +156,7 @@ public class WineInCellarResourceIntTest {
         int databaseSizeBeforeCreate = wineInCellarRepository.findAll().size();
 
         // Create the WineInCellar
-        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.wineInCellarToWineInCellarDTO(wineInCellar);
-
+        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.toDto(wineInCellar);
         restWineInCellarMockMvc.perform(post("/api/wine-in-cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(wineInCellarDTO)))
@@ -184,14 +183,13 @@ public class WineInCellarResourceIntTest {
         int databaseSizeBeforeCreate = wineInCellarRepository.findAll().size();
 
         // Create the WineInCellar with an existing ID
-        WineInCellar existingWineInCellar = new WineInCellar();
-        existingWineInCellar.setId(1L);
-        WineInCellarDTO existingWineInCellarDTO = wineInCellarMapper.wineInCellarToWineInCellarDTO(existingWineInCellar);
+        wineInCellar.setId(1L);
+        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.toDto(wineInCellar);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restWineInCellarMockMvc.perform(post("/api/wine-in-cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingWineInCellarDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(wineInCellarDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -207,7 +205,7 @@ public class WineInCellarResourceIntTest {
         wineInCellar.setQuantity(null);
 
         // Create the WineInCellar, which fails.
-        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.wineInCellarToWineInCellarDTO(wineInCellar);
+        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.toDto(wineInCellar);
 
         restWineInCellarMockMvc.perform(post("/api/wine-in-cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -273,12 +271,12 @@ public class WineInCellarResourceIntTest {
         // Update the wineInCellar
         WineInCellar updatedWineInCellar = wineInCellarRepository.findOne(wineInCellar.getId());
         updatedWineInCellar
-                .minKeep(UPDATED_MIN_KEEP)
-                .maxKeep(UPDATED_MAX_KEEP)
-                .price(UPDATED_PRICE)
-                .quantity(UPDATED_QUANTITY)
-                .comments(UPDATED_COMMENTS);
-        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.wineInCellarToWineInCellarDTO(updatedWineInCellar);
+            .minKeep(UPDATED_MIN_KEEP)
+            .maxKeep(UPDATED_MAX_KEEP)
+            .price(UPDATED_PRICE)
+            .quantity(UPDATED_QUANTITY)
+            .comments(UPDATED_COMMENTS);
+        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.toDto(updatedWineInCellar);
 
         restWineInCellarMockMvc.perform(put("/api/wine-in-cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -306,7 +304,7 @@ public class WineInCellarResourceIntTest {
         int databaseSizeBeforeUpdate = wineInCellarRepository.findAll().size();
 
         // Create the WineInCellar
-        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.wineInCellarToWineInCellarDTO(wineInCellar);
+        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.toDto(wineInCellar);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restWineInCellarMockMvc.perform(put("/api/wine-in-cellars")
@@ -367,7 +365,7 @@ public class WineInCellarResourceIntTest {
 
         wineInCellar.setVintage(vintage);
         // Create the WineInCellar
-        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.wineInCellarToWineInCellarDTO(wineInCellar);
+        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.toDto(wineInCellar);
 
         restWineInCellarMockMvc.perform(post("/api/wine-in-cellars/all")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -396,7 +394,7 @@ public class WineInCellarResourceIntTest {
         // Initialize the database
         vintage.setWine(wine);
         wineInCellar.setVintage(vintage);
-        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.wineInCellarToWineInCellarDTO(wineInCellar);
+        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.toDto(wineInCellar);
         wineInCellarDTO = wineInCellarService.saveFromScratch(wineInCellarDTO);
 
         int databaseSizeBeforeUpdate = wineInCellarRepository.findAll().size();
@@ -413,7 +411,7 @@ public class WineInCellarResourceIntTest {
         wine.name(UPDATED_NAME);
         vintage.setWine(wine);
         updatedWineInCellar.setVintage(vintage);
-        WineInCellarDTO updatedWineInCellarDTO = wineInCellarMapper.wineInCellarToWineInCellarDTO(updatedWineInCellar);
+        WineInCellarDTO updatedWineInCellarDTO = wineInCellarMapper.toDto(updatedWineInCellar);
 
         restWineInCellarMockMvc.perform(put("/api/wine-in-cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -437,7 +435,40 @@ public class WineInCellarResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(WineInCellar.class);
+        WineInCellar wineInCellar1 = new WineInCellar();
+        wineInCellar1.setId(1L);
+        WineInCellar wineInCellar2 = new WineInCellar();
+        wineInCellar2.setId(wineInCellar1.getId());
+        assertThat(wineInCellar1).isEqualTo(wineInCellar2);
+        wineInCellar2.setId(2L);
+        assertThat(wineInCellar1).isNotEqualTo(wineInCellar2);
+        wineInCellar1.setId(null);
+        assertThat(wineInCellar1).isNotEqualTo(wineInCellar2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(WineInCellarDTO.class);
+        WineInCellarDTO wineInCellarDTO1 = new WineInCellarDTO();
+        wineInCellarDTO1.setId(1L);
+        WineInCellarDTO wineInCellarDTO2 = new WineInCellarDTO();
+        assertThat(wineInCellarDTO1).isNotEqualTo(wineInCellarDTO2);
+        wineInCellarDTO2.setId(wineInCellarDTO1.getId());
+        assertThat(wineInCellarDTO1).isEqualTo(wineInCellarDTO2);
+        wineInCellarDTO2.setId(2L);
+        assertThat(wineInCellarDTO1).isNotEqualTo(wineInCellarDTO2);
+        wineInCellarDTO1.setId(null);
+        assertThat(wineInCellarDTO1).isNotEqualTo(wineInCellarDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(wineInCellarMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(wineInCellarMapper.fromId(null)).isNull();
     }
 }

@@ -105,23 +105,23 @@ public class WineAgingData implements Serializable {
             return false;
         }
         WineAgingData wineAgingData = (WineAgingData) o;
-        if (wineAgingData.id == null || id == null) {
+        if (wineAgingData.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, wineAgingData.id);
+        return Objects.equals(getId(), wineAgingData.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "WineAgingData{" +
-            "id=" + id +
-            ", minKeep='" + minKeep + "'" +
-            ", maxKeep='" + maxKeep + "'" +
-            '}';
+            "id=" + getId() +
+            ", minKeep='" + getMinKeep() + "'" +
+            ", maxKeep='" + getMaxKeep() + "'" +
+            "}";
     }
 }
