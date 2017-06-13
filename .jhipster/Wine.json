@@ -1,0 +1,49 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "region",
+            "otherEntityName": "region",
+            "otherEntityField": "regionName"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "color",
+            "otherEntityName": "color",
+            "otherEntityField": "colorName"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "appellation",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "producer",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "creatorId",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170303215710",
+    "entityTableName": "wine",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

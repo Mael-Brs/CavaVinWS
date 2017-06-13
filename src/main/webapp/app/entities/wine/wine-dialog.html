@@ -1,0 +1,84 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myWineLabel" data-translate="cavavinApp.wine.home.createOrEditLabel">Create or edit a Wine</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.wine.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.wine.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="cavavinApp.wine.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                    ng-model="vm.wine.name"
+                    required/>
+            <div ng-show="editForm.name.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="cavavinApp.wine.appellation" for="field_appellation">Appellation</label>
+            <input type="text" class="form-control" name="appellation" id="field_appellation"
+                    ng-model="vm.wine.appellation"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="cavavinApp.wine.producer" for="field_producer">Producer</label>
+            <input type="text" class="form-control" name="producer" id="field_producer"
+                    ng-model="vm.wine.producer"
+                    required/>
+            <div ng-show="editForm.producer.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.producer.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="cavavinApp.wine.creatorId" for="field_creatorId">Creator Id</label>
+            <input type="number" class="form-control" name="creatorId" id="field_creatorId"
+                    ng-model="vm.wine.creatorId"
+                    required/>
+            <div ng-show="editForm.creatorId.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.creatorId.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.creatorId.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="cavavinApp.wine.region" for="field_region">Region</label>
+            <select class="form-control" id="field_region" name="region" ng-model="vm.wine.region" ng-options="region as region.regionName for region in vm.regions track by region.id">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="cavavinApp.wine.color" for="field_color">Color</label>
+            <select class="form-control" id="field_color" name="color" ng-model="vm.wine.color" ng-options="color as color.colorName for color in vm.colors track by color.id">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

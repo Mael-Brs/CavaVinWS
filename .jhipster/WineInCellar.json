@@ -1,0 +1,47 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "cellar",
+            "otherEntityName": "cellar",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "vintage",
+            "otherEntityName": "vintage",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "minKeep",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "maxKeep",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "price",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "quantity",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "comments",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170303215710",
+    "entityTableName": "wine_in_cellar",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass"
+}
