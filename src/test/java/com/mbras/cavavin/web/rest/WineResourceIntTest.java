@@ -79,7 +79,7 @@ public class WineResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-            WineResource wineResource = new WineResource(wineRepository, wineSearchRepository, vintageRepository);
+            WineResource wineResource = new WineResource(wineRepository, wineSearchRepository);
         this.restWineMockMvc = MockMvcBuilders.standaloneSetup(wineResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

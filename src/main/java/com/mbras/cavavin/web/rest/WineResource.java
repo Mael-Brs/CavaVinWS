@@ -40,12 +40,9 @@ public class WineResource {
 
     private final WineSearchRepository wineSearchRepository;
 
-    private VintageRepository vintageRepository;
-
-    public WineResource(WineRepository wineRepository, WineSearchRepository wineSearchRepository, VintageRepository vintageRepository) {
+    public WineResource(WineRepository wineRepository, WineSearchRepository wineSearchRepository) {
         this.wineRepository = wineRepository;
         this.wineSearchRepository = wineSearchRepository;
-        this.vintageRepository = vintageRepository;
     }
 
     /**
@@ -118,19 +115,6 @@ public class WineResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(wine));
     }
 
-    /**
-     * GET  /wines/:id/vintages : get vintages for the "id" wine.
-     *
-     * @param id the id of the wine to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the wine, or with status 404 (Not Found)
-     */
-    @GetMapping("/wines/{id}/vintages")
-    @Timed
-    public ResponseEntity<List<Vintage>> getVintageByWine(@PathVariable Long id) {
-        log.debug("REST request to get Wine : {}", id);
-        List<Vintage> vintages = vintageRepository.findByWine_Id(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(vintages));
-    }
 
     /**
      * DELETE  /wines/:id : delete the "id" wine.
