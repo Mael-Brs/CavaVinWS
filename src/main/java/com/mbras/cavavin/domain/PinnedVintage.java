@@ -25,8 +25,7 @@ public class PinnedVintage implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @ManyToOne(optional = false)
-    @NotNull
+    @ManyToOne
     private User user;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
