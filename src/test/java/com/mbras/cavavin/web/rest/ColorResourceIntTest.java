@@ -66,7 +66,7 @@ public class ColorResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-            ColorResource colorResource = new ColorResource(colorRepository, colorSearchRepository);
+        ColorResource colorResource = new ColorResource(colorRepository, colorSearchRepository);
         this.restColorMockMvc = MockMvcBuilders.standaloneSetup(colorResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -81,7 +81,7 @@ public class ColorResourceIntTest {
      */
     public static Color createEntity(EntityManager em) {
         Color color = new Color()
-                .colorName(DEFAULT_COLOR_NAME);
+            .colorName(DEFAULT_COLOR_NAME);
         return color;
     }
 
@@ -97,7 +97,6 @@ public class ColorResourceIntTest {
         int databaseSizeBeforeCreate = colorRepository.findAll().size();
 
         // Create the Color
-
         restColorMockMvc.perform(post("/api/colors")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(color)))
@@ -120,13 +119,12 @@ public class ColorResourceIntTest {
         int databaseSizeBeforeCreate = colorRepository.findAll().size();
 
         // Create the Color with an existing ID
-        Color existingColor = new Color();
-        existingColor.setId(1L);
+        color.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restColorMockMvc.perform(post("/api/colors")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingColor)))
+            .content(TestUtil.convertObjectToJsonBytes(color)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -199,7 +197,7 @@ public class ColorResourceIntTest {
         // Update the color
         Color updatedColor = colorRepository.findOne(color.getId());
         updatedColor
-                .colorName(UPDATED_COLOR_NAME);
+            .colorName(UPDATED_COLOR_NAME);
 
         restColorMockMvc.perform(put("/api/colors")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -273,7 +271,17 @@ public class ColorResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Color.class);
+        Color color1 = new Color();
+        color1.setId(1L);
+        Color color2 = new Color();
+        color2.setId(color1.getId());
+        assertThat(color1).isEqualTo(color2);
+        color2.setId(2L);
+        assertThat(color1).isNotEqualTo(color2);
+        color1.setId(null);
+        assertThat(color1).isNotEqualTo(color2);
     }
 }

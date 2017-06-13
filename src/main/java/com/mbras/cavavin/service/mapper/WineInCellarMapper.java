@@ -4,31 +4,26 @@ import com.mbras.cavavin.domain.*;
 import com.mbras.cavavin.service.dto.WineInCellarDTO;
 
 import org.mapstruct.*;
-import java.util.List;
 
 /**
  * Mapper for the entity WineInCellar and its DTO WineInCellarDTO.
  */
-@Mapper(componentModel = "spring", uses = {})
-public interface WineInCellarMapper {
+@Mapper(componentModel = "spring", uses = {CellarMapper.class })
+public interface WineInCellarMapper extends EntityMapper <WineInCellarDTO, WineInCellar> {
 
     @Mapping(source = "cellar.id", target = "cellarId")
-    WineInCellarDTO wineInCellarToWineInCellarDTO(WineInCellar wineInCellar);
 
-    List<WineInCellarDTO> wineInCellarsToWineInCellarDTOs(List<WineInCellar> wineInCellars);
+    WineInCellarDTO toDto(WineInCellar wineInCellar);
 
     @Mapping(source = "cellarId", target = "cellar")
-    WineInCellar wineInCellarDTOToWineInCellar(WineInCellarDTO wineInCellarDTO);
 
-    List<WineInCellar> wineInCellarDTOsToWineInCellars(List<WineInCellarDTO> wineInCellarDTOs);
-
-    default Cellar cellarFromId(Long id) {
+    WineInCellar toEntity(WineInCellarDTO wineInCellarDTO);
+    default WineInCellar fromId(Long id) {
         if (id == null) {
             return null;
         }
-        Cellar cellar = new Cellar();
-        cellar.setId(id);
-        return cellar;
+        WineInCellar wineInCellar = new WineInCellar();
+        wineInCellar.setId(id);
+        return wineInCellar;
     }
-
 }

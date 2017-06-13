@@ -7,8 +7,8 @@ import com.mbras.cavavin.service.dto.CellarDTO;
 import com.mbras.cavavin.service.mapper.CellarMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -46,9 +46,9 @@ public class CellarService {
      */
     public CellarDTO save(CellarDTO cellarDTO) {
         log.debug("Request to save Cellar : {}", cellarDTO);
-        Cellar cellar = cellarMapper.cellarDTOToCellar(cellarDTO);
+        Cellar cellar = cellarMapper.toEntity(cellarDTO);
         cellar = cellarRepository.save(cellar);
-        CellarDTO result = cellarMapper.cellarToCellarDTO(cellar);
+        CellarDTO result = cellarMapper.toDto(cellar);
         cellarSearchRepository.save(cellar);
         return result;
     }
@@ -61,9 +61,8 @@ public class CellarService {
     @Transactional(readOnly = true)
     public List<CellarDTO> findAll() {
         log.debug("Request to get all Cellars");
-
         return cellarRepository.findAll().stream()
-            .map(cellarMapper::cellarToCellarDTO)
+            .map(cellarMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -77,7 +76,7 @@ public class CellarService {
     public CellarDTO findOne(Long id) {
         log.debug("Request to get Cellar : {}", id);
         Cellar cellar = cellarRepository.findOne(id);
-        return cellarMapper.cellarToCellarDTO(cellar);
+        return cellarMapper.toDto(cellar);
     }
 
     /**
@@ -90,7 +89,7 @@ public class CellarService {
     public CellarDTO findByUser(String login) {
         log.debug("Request to get Cellar : {}", login);
         Cellar cellar = cellarRepository.findByUser_Login(login);
-        return cellarMapper.cellarToCellarDTO(cellar);
+        return cellarMapper.toDto(cellar);
     }
 
     /**
@@ -115,7 +114,7 @@ public class CellarService {
         log.debug("Request to search Cellars for query {}", query);
         return StreamSupport
             .stream(cellarSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .map(cellarMapper::cellarToCellarDTO)
+            .map(cellarMapper::toDto)
             .collect(Collectors.toList());
     }
 }

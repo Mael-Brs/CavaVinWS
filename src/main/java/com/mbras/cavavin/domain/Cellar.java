@@ -108,26 +108,22 @@ public class Cellar implements Serializable {
             return false;
         }
         Cellar cellar = (Cellar) o;
-        if (cellar.id == null || id == null) {
+        if (cellar.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, cellar.id);
+        return Objects.equals(getId(), cellar.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Cellar{" +
-            "id=" + id +
-            ", capacity=" + capacity +
-            ", user=" + user +
-            ", sumOfWine=" + sumOfWine +
-            ", wineByRegion=" + wineByRegion +
-            ", wineByColor=" + wineByColor +
-            '}';
+            "id=" + getId() +
+            ", capacity='" + getCapacity() + "'" +
+            "}";
     }
 }

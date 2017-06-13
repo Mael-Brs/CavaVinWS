@@ -59,6 +59,7 @@ local.properties
 *.ipr
 *.ids
 *.orig
+classes/
 
 ######################
 # Visual Studio Code
@@ -140,7 +141,3 @@ Desktop.ini
 # ESLint
 ######################
 .eslintcache
-
-src/main/resources/.h2.server.properties
-src/main/resources/config/application-dev.yml
-src/main/resources/config/application-prod.yml
