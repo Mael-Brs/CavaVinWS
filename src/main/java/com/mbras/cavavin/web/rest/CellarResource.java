@@ -1,6 +1,7 @@
 package com.mbras.cavavin.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.mbras.cavavin.config.Constants;
 import com.mbras.cavavin.service.CellarService;
 import com.mbras.cavavin.service.WineInCellarService;
 import com.mbras.cavavin.service.dto.WineInCellarDTO;
@@ -107,6 +108,27 @@ public class CellarResource {
         log.debug("REST request to get Cellar : {}", id);
         CellarDTO cellarDTO = cellarService.findOne(id);
         if (cellarDTO != null){
+            cellarDTO.setSumOfWine(wineInCellarService.getWineSum(id));
+            cellarDTO.setWineByRegion(wineInCellarService.getWineByRegion(id));
+            cellarDTO.setWineByColor(wineInCellarService.getWineByColor(id));
+            cellarDTO.setWineByYear(wineInCellarService.getWineByYear(id));
+        }
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(cellarDTO));
+    }
+
+    /**
+     * GET  /users/:login/cellars : get cellars for this user.
+     *
+     * @param login the login of the user to find
+     * @return the ResponseEntity with status 200 (OK) and with body the "login" user, or with status 404 (Not Found)
+     */
+    @GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}/cellars")
+    @Timed
+    public ResponseEntity<CellarDTO> getCellarForUser(@PathVariable String login) {
+        log.debug("REST request to get cellars for User : {}", login);
+        CellarDTO cellarDTO = cellarService.findByUser(login);
+        if(cellarDTO != null){
+            Long id =  cellarDTO.getId();
             cellarDTO.setSumOfWine(wineInCellarService.getWineSum(id));
             cellarDTO.setWineByRegion(wineInCellarService.getWineByRegion(id));
             cellarDTO.setWineByColor(wineInCellarService.getWineByColor(id));
