@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,7 +32,7 @@ public class WineAgingDataResource {
     private final Logger log = LoggerFactory.getLogger(WineAgingDataResource.class);
 
     private static final String ENTITY_NAME = "wineAgingData";
-        
+
     private final WineAgingDataRepository wineAgingDataRepository;
 
     private final WineAgingDataSearchRepository wineAgingDataSearchRepository;
@@ -68,7 +69,7 @@ public class WineAgingDataResource {
      * @param wineAgingData the wineAgingData to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated wineAgingData,
      * or with status 400 (Bad Request) if the wineAgingData is not valid,
-     * or with status 500 (Internal Server Error) if the wineAgingData couldnt be updated
+     * or with status 500 (Internal Server Error) if the wineAgingData couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/wine-aging-data")
@@ -94,8 +95,7 @@ public class WineAgingDataResource {
     @Timed
     public List<WineAgingData> getAllWineAgingData() {
         log.debug("REST request to get all WineAgingData");
-        List<WineAgingData> wineAgingData = wineAgingDataRepository.findAll();
-        return wineAgingData;
+        return wineAgingDataRepository.findAll();
     }
 
     /**
@@ -131,7 +131,7 @@ public class WineAgingDataResource {
      * SEARCH  /_search/wine-aging-data?query=:query : search for the wineAgingData corresponding
      * to the query.
      *
-     * @param query the query of the wineAgingData search 
+     * @param query the query of the wineAgingData search
      * @return the result of the search
      */
     @GetMapping("/_search/wine-aging-data")
@@ -142,6 +142,5 @@ public class WineAgingDataResource {
             .stream(wineAgingDataSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }

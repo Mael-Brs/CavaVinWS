@@ -2,8 +2,8 @@ package com.mbras.cavavin.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.service.WineInCellarService;
-import com.mbras.cavavin.service.dto.WineInCellarDTO;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
+import com.mbras.cavavin.service.dto.WineInCellarDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +13,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
+
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing WineInCellar.
@@ -80,7 +84,7 @@ public class WineInCellarResource {
      * @param wineInCellarDTO the wineInCellarDTO to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated wineInCellarDTO,
      * or with status 400 (Bad Request) if the wineInCellarDTO is not valid,
-     * or with status 500 (Internal Server Error) if the wineInCellarDTO couldnt be updated
+     * or with status 500 (Internal Server Error) if the wineInCellarDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/wine-in-cellars")
@@ -171,6 +175,5 @@ public class WineInCellarResource {
         log.debug("REST request to search WineInCellars for query {}", query);
         return wineInCellarService.search(query);
     }
-
 
 }

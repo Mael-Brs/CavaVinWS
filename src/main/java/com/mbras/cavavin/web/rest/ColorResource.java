@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -69,7 +70,7 @@ public class ColorResource {
      * @param color the color to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated color,
      * or with status 400 (Bad Request) if the color is not valid,
-     * or with status 500 (Internal Server Error) if the color couldnt be updated
+     * or with status 500 (Internal Server Error) if the color couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/colors")
@@ -142,6 +143,5 @@ public class ColorResource {
             .stream(colorSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }
