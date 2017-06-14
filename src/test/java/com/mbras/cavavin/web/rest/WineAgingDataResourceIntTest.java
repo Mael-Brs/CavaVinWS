@@ -69,7 +69,7 @@ public class WineAgingDataResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-            WineAgingDataResource wineAgingDataResource = new WineAgingDataResource(wineAgingDataRepository, wineAgingDataSearchRepository);
+        WineAgingDataResource wineAgingDataResource = new WineAgingDataResource(wineAgingDataRepository, wineAgingDataSearchRepository);
         this.restWineAgingDataMockMvc = MockMvcBuilders.standaloneSetup(wineAgingDataResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -84,8 +84,8 @@ public class WineAgingDataResourceIntTest {
      */
     public static WineAgingData createEntity(EntityManager em) {
         WineAgingData wineAgingData = new WineAgingData()
-                .minKeep(DEFAULT_MIN_KEEP)
-                .maxKeep(DEFAULT_MAX_KEEP);
+            .minKeep(DEFAULT_MIN_KEEP)
+            .maxKeep(DEFAULT_MAX_KEEP);
         return wineAgingData;
     }
 
@@ -101,7 +101,6 @@ public class WineAgingDataResourceIntTest {
         int databaseSizeBeforeCreate = wineAgingDataRepository.findAll().size();
 
         // Create the WineAgingData
-
         restWineAgingDataMockMvc.perform(post("/api/wine-aging-data")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(wineAgingData)))
@@ -125,13 +124,12 @@ public class WineAgingDataResourceIntTest {
         int databaseSizeBeforeCreate = wineAgingDataRepository.findAll().size();
 
         // Create the WineAgingData with an existing ID
-        WineAgingData existingWineAgingData = new WineAgingData();
-        existingWineAgingData.setId(1L);
+        wineAgingData.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restWineAgingDataMockMvc.perform(post("/api/wine-aging-data")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingWineAgingData)))
+            .content(TestUtil.convertObjectToJsonBytes(wineAgingData)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -188,8 +186,8 @@ public class WineAgingDataResourceIntTest {
         // Update the wineAgingData
         WineAgingData updatedWineAgingData = wineAgingDataRepository.findOne(wineAgingData.getId());
         updatedWineAgingData
-                .minKeep(UPDATED_MIN_KEEP)
-                .maxKeep(UPDATED_MAX_KEEP);
+            .minKeep(UPDATED_MIN_KEEP)
+            .maxKeep(UPDATED_MAX_KEEP);
 
         restWineAgingDataMockMvc.perform(put("/api/wine-aging-data")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -265,7 +263,17 @@ public class WineAgingDataResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(WineAgingData.class);
+        WineAgingData wineAgingData1 = new WineAgingData();
+        wineAgingData1.setId(1L);
+        WineAgingData wineAgingData2 = new WineAgingData();
+        wineAgingData2.setId(wineAgingData1.getId());
+        assertThat(wineAgingData1).isEqualTo(wineAgingData2);
+        wineAgingData2.setId(2L);
+        assertThat(wineAgingData1).isNotEqualTo(wineAgingData2);
+        wineAgingData1.setId(null);
+        assertThat(wineAgingData1).isNotEqualTo(wineAgingData2);
     }
 }

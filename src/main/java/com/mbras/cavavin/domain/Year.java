@@ -26,7 +26,7 @@ public class Year implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "number", nullable = false)
+    @Column(name = "jhi_number", nullable = false)
     private Integer number;
 
     public Long getId() {
@@ -59,22 +59,22 @@ public class Year implements Serializable {
             return false;
         }
         Year year = (Year) o;
-        if (year.id == null || id == null) {
+        if (year.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, year.id);
+        return Objects.equals(getId(), year.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Year{" +
-            "id=" + id +
-            ", number='" + number + "'" +
-            '}';
+            "id=" + getId() +
+            ", number='" + getNumber() + "'" +
+            "}";
     }
 }

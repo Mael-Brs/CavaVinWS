@@ -59,22 +59,22 @@ public class Color implements Serializable {
             return false;
         }
         Color color = (Color) o;
-        if (color.id == null || id == null) {
+        if (color.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, color.id);
+        return Objects.equals(getId(), color.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Color{" +
-            "id=" + id +
-            ", colorName='" + colorName + "'" +
-            '}';
+            "id=" + getId() +
+            ", colorName='" + getColorName() + "'" +
+            "}";
     }
 }

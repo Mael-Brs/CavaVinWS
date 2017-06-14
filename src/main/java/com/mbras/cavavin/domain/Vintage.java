@@ -89,22 +89,22 @@ public class Vintage implements Serializable {
             return false;
         }
         Vintage vintage = (Vintage) o;
-        if (vintage.id == null || id == null) {
+        if (vintage.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, vintage.id);
+        return Objects.equals(getId(), vintage.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Vintage{" +
-            "id=" + id +
-            ", bareCode='" + bareCode + "'" +
-            '}';
+            "id=" + getId() +
+            ", bareCode='" + getBareCode() + "'" +
+            "}";
     }
 }

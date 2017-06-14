@@ -40,6 +40,7 @@ public class WineInCellarDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
     public Integer getMinKeep() {
         return minKeep;
     }
@@ -47,6 +48,7 @@ public class WineInCellarDTO implements Serializable {
     public void setMinKeep(Integer minKeep) {
         this.minKeep = minKeep;
     }
+
     public Integer getMaxKeep() {
         return maxKeep;
     }
@@ -54,6 +56,7 @@ public class WineInCellarDTO implements Serializable {
     public void setMaxKeep(Integer maxKeep) {
         this.maxKeep = maxKeep;
     }
+
     public Double getPrice() {
         return price;
     }
@@ -61,6 +64,7 @@ public class WineInCellarDTO implements Serializable {
     public void setPrice(Double price) {
         this.price = price;
     }
+
     public Integer getQuantity() {
         return quantity;
     }
@@ -68,6 +72,7 @@ public class WineInCellarDTO implements Serializable {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
     public String getComments() {
         return comments;
     }
@@ -110,27 +115,26 @@ public class WineInCellarDTO implements Serializable {
         }
 
         WineInCellarDTO wineInCellarDTO = (WineInCellarDTO) o;
-
-        if ( ! Objects.equals(id, wineInCellarDTO.id)) { return false; }
-
-        return true;
+        if(wineInCellarDTO.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), wineInCellarDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "WineInCellarDTO{" +
-            "id=" + id +
-            ", minKeep='" + minKeep + "'" +
-            ", maxKeep='" + maxKeep + "'" +
-            ", price='" + price + "'" +
-            ", quantity='" + quantity + "'" +
-            ", comments='" + comments + "'" +
-            ", apogee='" + apogee + "'" +
-            '}';
+            "id=" + getId() +
+            ", minKeep='" + getMinKeep() + "'" +
+            ", maxKeep='" + getMaxKeep() + "'" +
+            ", price='" + getPrice() + "'" +
+            ", quantity='" + getQuantity() + "'" +
+            ", comments='" + getComments() + "'" +
+            "}";
     }
 }
