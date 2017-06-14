@@ -181,27 +181,26 @@ public class WineInCellar implements Serializable {
             return false;
         }
         WineInCellar wineInCellar = (WineInCellar) o;
-        if (wineInCellar.id == null || id == null) {
+        if (wineInCellar.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, wineInCellar.id);
+        return Objects.equals(getId(), wineInCellar.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "WineInCellar{" +
-            "id=" + id +
-            ", minKeep='" + minKeep + "'" +
-            ", maxKeep='" + maxKeep + "'" +
-            ", price='" + price + "'" +
-            ", quantity='" + quantity + "'" +
-            ", comments='" + comments + "'" +
-            ", apogee='" + apogee + "'" +
-            '}';
+            "id=" + getId() +
+            ", minKeep='" + getMinKeep() + "'" +
+            ", maxKeep='" + getMaxKeep() + "'" +
+            ", price='" + getPrice() + "'" +
+            ", quantity='" + getQuantity() + "'" +
+            ", comments='" + getComments() + "'" +
+            "}";
     }
 }

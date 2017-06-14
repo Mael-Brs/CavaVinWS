@@ -96,7 +96,7 @@ public class CellarResourceIntTest {
      */
     public static Cellar createEntity(EntityManager em) {
         Cellar cellar = new Cellar()
-                .capacity(DEFAULT_CAPACITY);
+            .capacity(DEFAULT_CAPACITY);
         return cellar;
     }
 
@@ -112,8 +112,7 @@ public class CellarResourceIntTest {
         int databaseSizeBeforeCreate = cellarRepository.findAll().size();
 
         // Create the Cellar
-        CellarDTO cellarDTO = cellarMapper.cellarToCellarDTO(cellar);
-
+        CellarDTO cellarDTO = cellarMapper.toDto(cellar);
         restCellarMockMvc.perform(post("/api/cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(cellarDTO)))
@@ -136,14 +135,13 @@ public class CellarResourceIntTest {
         int databaseSizeBeforeCreate = cellarRepository.findAll().size();
 
         // Create the Cellar with an existing ID
-        Cellar existingCellar = new Cellar();
-        existingCellar.setId(1L);
-        CellarDTO existingCellarDTO = cellarMapper.cellarToCellarDTO(existingCellar);
+        cellar.setId(1L);
+        CellarDTO cellarDTO = cellarMapper.toDto(cellar);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCellarMockMvc.perform(post("/api/cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingCellarDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(cellarDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -202,8 +200,8 @@ public class CellarResourceIntTest {
         // Update the cellar
         Cellar updatedCellar = cellarRepository.findOne(cellar.getId());
         updatedCellar
-                .capacity(UPDATED_CAPACITY);
-        CellarDTO cellarDTO = cellarMapper.cellarToCellarDTO(updatedCellar);
+            .capacity(UPDATED_CAPACITY);
+        CellarDTO cellarDTO = cellarMapper.toDto(updatedCellar);
 
         restCellarMockMvc.perform(put("/api/cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -227,7 +225,7 @@ public class CellarResourceIntTest {
         int databaseSizeBeforeUpdate = cellarRepository.findAll().size();
 
         // Create the Cellar
-        CellarDTO cellarDTO = cellarMapper.cellarToCellarDTO(cellar);
+        CellarDTO cellarDTO = cellarMapper.toDto(cellar);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restCellarMockMvc.perform(put("/api/cellars")
@@ -278,7 +276,40 @@ public class CellarResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Cellar.class);
+        Cellar cellar1 = new Cellar();
+        cellar1.setId(1L);
+        Cellar cellar2 = new Cellar();
+        cellar2.setId(cellar1.getId());
+        assertThat(cellar1).isEqualTo(cellar2);
+        cellar2.setId(2L);
+        assertThat(cellar1).isNotEqualTo(cellar2);
+        cellar1.setId(null);
+        assertThat(cellar1).isNotEqualTo(cellar2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(CellarDTO.class);
+        CellarDTO cellarDTO1 = new CellarDTO();
+        cellarDTO1.setId(1L);
+        CellarDTO cellarDTO2 = new CellarDTO();
+        assertThat(cellarDTO1).isNotEqualTo(cellarDTO2);
+        cellarDTO2.setId(cellarDTO1.getId());
+        assertThat(cellarDTO1).isEqualTo(cellarDTO2);
+        cellarDTO2.setId(2L);
+        assertThat(cellarDTO1).isNotEqualTo(cellarDTO2);
+        cellarDTO1.setId(null);
+        assertThat(cellarDTO1).isNotEqualTo(cellarDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(cellarMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(cellarMapper.fromId(null)).isNull();
     }
 }
