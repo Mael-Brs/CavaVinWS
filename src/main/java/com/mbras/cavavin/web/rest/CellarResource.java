@@ -1,13 +1,12 @@
 package com.mbras.cavavin.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.mbras.cavavin.domain.WineByColor;
-import com.mbras.cavavin.domain.WineByRegion;
+import com.mbras.cavavin.config.Constants;
 import com.mbras.cavavin.service.CellarService;
 import com.mbras.cavavin.service.WineInCellarService;
-import com.mbras.cavavin.service.dto.CellarDTO;
 import com.mbras.cavavin.service.dto.WineInCellarDTO;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
+import com.mbras.cavavin.service.dto.CellarDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +15,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
+
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Cellar.
@@ -38,7 +41,6 @@ public class CellarResource {
         this.cellarService = cellarService;
         this.wineInCellarService = wineInCellarService;
     }
-
 
     /**
      * POST  /cellars : Create a new cellar.
@@ -66,7 +68,7 @@ public class CellarResource {
      * @param cellarDTO the cellarDTO to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated cellarDTO,
      * or with status 400 (Bad Request) if the cellarDTO is not valid,
-     * or with status 500 (Internal Server Error) if the cellarDTO couldnt be updated
+     * or with status 500 (Internal Server Error) if the cellarDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/cellars")
@@ -106,6 +108,27 @@ public class CellarResource {
         log.debug("REST request to get Cellar : {}", id);
         CellarDTO cellarDTO = cellarService.findOne(id);
         if (cellarDTO != null){
+            cellarDTO.setSumOfWine(wineInCellarService.getWineSum(id));
+            cellarDTO.setWineByRegion(wineInCellarService.getWineByRegion(id));
+            cellarDTO.setWineByColor(wineInCellarService.getWineByColor(id));
+            cellarDTO.setWineByYear(wineInCellarService.getWineByYear(id));
+        }
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(cellarDTO));
+    }
+
+    /**
+     * GET  /users/:login/cellars : get cellars for this user.
+     *
+     * @param login the login of the user to find
+     * @return the ResponseEntity with status 200 (OK) and with body the "login" user, or with status 404 (Not Found)
+     */
+    @GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}/cellars")
+    @Timed
+    public ResponseEntity<CellarDTO> getCellarForUser(@PathVariable String login) {
+        log.debug("REST request to get cellars for User : {}", login);
+        CellarDTO cellarDTO = cellarService.findByUser(login);
+        if(cellarDTO != null){
+            Long id =  cellarDTO.getId();
             cellarDTO.setSumOfWine(wineInCellarService.getWineSum(id));
             cellarDTO.setWineByRegion(wineInCellarService.getWineByRegion(id));
             cellarDTO.setWineByColor(wineInCellarService.getWineByColor(id));
@@ -155,6 +178,5 @@ public class CellarResource {
         log.debug("REST request to search Cellars for query {}", query);
         return cellarService.search(query);
     }
-
 
 }

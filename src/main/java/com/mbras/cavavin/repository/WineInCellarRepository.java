@@ -4,6 +4,7 @@ import com.mbras.cavavin.domain.WineByRegion;
 import com.mbras.cavavin.domain.WineByColor;
 import com.mbras.cavavin.domain.WineByYear;
 import com.mbras.cavavin.domain.WineInCellar;
+import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
@@ -14,6 +15,7 @@ import java.util.List;
  * Spring Data JPA repository for the WineInCellar entity.
  */
 @SuppressWarnings("unused")
+@Repository
 public interface WineInCellarRepository extends JpaRepository<WineInCellar,Long> {
 	List<WineInCellar> findByCellar_Id(Long id);
 

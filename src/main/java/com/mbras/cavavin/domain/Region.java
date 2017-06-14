@@ -59,22 +59,22 @@ public class Region implements Serializable {
             return false;
         }
         Region region = (Region) o;
-        if (region.id == null || id == null) {
+        if (region.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, region.id);
+        return Objects.equals(getId(), region.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Region{" +
-            "id=" + id +
-            ", regionName='" + regionName + "'" +
-            '}';
+            "id=" + getId() +
+            ", regionName='" + getRegionName() + "'" +
+            "}";
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -68,7 +69,7 @@ public class VintageResource {
      * @param vintage the vintage to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated vintage,
      * or with status 400 (Bad Request) if the vintage is not valid,
-     * or with status 500 (Internal Server Error) if the vintage couldnt be updated
+     * or with status 500 (Internal Server Error) if the vintage couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/vintages")
@@ -112,6 +113,20 @@ public class VintageResource {
     }
 
     /**
+     * GET  /wines/:id/vintages : get vintages for the "id" wine.
+     *
+     * @param id the id of the wine to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the wine, or with status 404 (Not Found)
+     */
+    @GetMapping("/wines/{id}/vintages")
+    @Timed
+    public ResponseEntity<List<Vintage>> getVintageByWine(@PathVariable Long id) {
+        log.debug("REST request to get Wine : {}", id);
+        List<Vintage> vintages = vintageRepository.findByWine_Id(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(vintages));
+    }
+
+    /**
      * DELETE  /vintages/:id : delete the "id" vintage.
      *
      * @param id the id of the vintage to delete
@@ -141,6 +156,5 @@ public class VintageResource {
             .stream(vintageSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }

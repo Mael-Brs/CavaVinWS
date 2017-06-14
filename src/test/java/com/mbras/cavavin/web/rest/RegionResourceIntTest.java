@@ -66,7 +66,7 @@ public class RegionResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-            RegionResource regionResource = new RegionResource(regionRepository, regionSearchRepository);
+        RegionResource regionResource = new RegionResource(regionRepository, regionSearchRepository);
         this.restRegionMockMvc = MockMvcBuilders.standaloneSetup(regionResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -81,7 +81,7 @@ public class RegionResourceIntTest {
      */
     public static Region createEntity(EntityManager em) {
         Region region = new Region()
-                .regionName(DEFAULT_REGION_NAME);
+            .regionName(DEFAULT_REGION_NAME);
         return region;
     }
 
@@ -97,7 +97,6 @@ public class RegionResourceIntTest {
         int databaseSizeBeforeCreate = regionRepository.findAll().size();
 
         // Create the Region
-
         restRegionMockMvc.perform(post("/api/regions")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(region)))
@@ -120,13 +119,12 @@ public class RegionResourceIntTest {
         int databaseSizeBeforeCreate = regionRepository.findAll().size();
 
         // Create the Region with an existing ID
-        Region existingRegion = new Region();
-        existingRegion.setId(1L);
+        region.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restRegionMockMvc.perform(post("/api/regions")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingRegion)))
+            .content(TestUtil.convertObjectToJsonBytes(region)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -199,7 +197,7 @@ public class RegionResourceIntTest {
         // Update the region
         Region updatedRegion = regionRepository.findOne(region.getId());
         updatedRegion
-                .regionName(UPDATED_REGION_NAME);
+            .regionName(UPDATED_REGION_NAME);
 
         restRegionMockMvc.perform(put("/api/regions")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -273,7 +271,17 @@ public class RegionResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Region.class);
+        Region region1 = new Region();
+        region1.setId(1L);
+        Region region2 = new Region();
+        region2.setId(region1.getId());
+        assertThat(region1).isEqualTo(region2);
+        region2.setId(2L);
+        assertThat(region1).isNotEqualTo(region2);
+        region1.setId(null);
+        assertThat(region1).isNotEqualTo(region2);
     }
 }
