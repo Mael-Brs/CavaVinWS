@@ -22,7 +22,7 @@
         </div>
         <div class="form-group">
             <label data-translate="cavavinApp.pinnedVintage.vintage" for="field_vintage">Vintage</label>
-            <select class="form-control" id="field_vintage" name="vintage" ng-model="vm.pinnedVintage.vintageId" ng-options="vintage.id as vintage.id for vintage in vm.vintages"             required>
+            <select class="form-control" id="field_vintage" name="vintage" ng-model="vm.pinnedVintage.vintage.id" ng-options="vintage.id as vintage.id for vintage in vm.vintages"             required>
             </select>
         </div>
         <div ng-show="editForm.vintage.$invalid">
