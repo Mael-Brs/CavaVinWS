@@ -1,6 +1,7 @@
 package com.mbras.cavavin.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.mbras.cavavin.config.Constants;
 import com.mbras.cavavin.domain.PinnedVintage;
 
 import com.mbras.cavavin.repository.PinnedVintageRepository;
@@ -106,6 +107,19 @@ public class PinnedVintageResource {
     public List<PinnedVintageDTO> getAllPinnedVintages() {
         log.debug("REST request to get all PinnedVintages");
         List<PinnedVintage> pinnedVintages = pinnedVintageRepository.findAll();
+        return pinnedVintageMapper.toDto(pinnedVintages);
+    }
+
+    /**
+     * GET  /pinned-vintages : get all the pinnedVintages.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of pinnedVintages in body
+     */
+    @GetMapping("/users/current/pinned-vintages")
+    @Timed
+    public List<PinnedVintageDTO> getAllPinnedVintagesForUser() {
+        log.debug("REST request to get all PinnedVintages for current user");
+        List<PinnedVintage> pinnedVintages = pinnedVintageRepository.findByUserIsCurrentUser();
         return pinnedVintageMapper.toDto(pinnedVintages);
     }
 
