@@ -13,7 +13,9 @@
     <include file="classpath:config/liquibase/changelog/20170303215710_added_entity_WineInCellar.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170303215710_added_entity_Year.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170423143923_added_entity_WineAgingData.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170425183653_changelog.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170610134422_added_entity_PinnedVintage.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170630195147_changelog.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170303215710_added_entity_constraints_Cellar.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170303215710_added_entity_constraints_Vintage.xml" relativeToChangelogFile="false"/>
