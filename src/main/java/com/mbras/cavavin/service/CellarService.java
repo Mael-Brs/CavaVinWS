@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing Cellar.
@@ -82,13 +82,13 @@ public class CellarService {
     /**
      *  Get all cellars for given user login
      *
-     *  @param login the login of the User for cellar to retrieve
+     *  @param id the login of the User for cellar to retrieve
      *  @return the entity
      */
     @Transactional(readOnly = true)
-    public CellarDTO findByUser(String login) {
-        log.debug("Request to get Cellar : {}", login);
-        Cellar cellar = cellarRepository.findByUser_Login(login);
+    public CellarDTO findByUser(Long id) {
+        log.debug("Request to get Cellar : {}", id);
+        Cellar cellar = cellarRepository.findByUser_id(id);
         return cellarMapper.toDto(cellar);
     }
 
