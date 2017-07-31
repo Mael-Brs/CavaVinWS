@@ -68,7 +68,7 @@ class PinnedVintageGatlingTest extends Simulation {
             .exec(http("Create new pinnedVintage")
             .post("/api/pinned-vintages")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null}""")).asJSON
+            .body(StringBody("""{"id":null, "userId":null}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_pinnedVintage_url"))).exitHereIfFailed
             .pause(10)

@@ -6,8 +6,6 @@ import com.mbras.cavavin.domain.PinnedVintage;
 import com.mbras.cavavin.domain.Vintage;
 import com.mbras.cavavin.repository.PinnedVintageRepository;
 import com.mbras.cavavin.repository.search.PinnedVintageSearchRepository;
-import com.mbras.cavavin.service.dto.PinnedVintageDTO;
-import com.mbras.cavavin.service.mapper.PinnedVintageMapper;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -41,11 +39,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = CavavinApp.class)
 public class PinnedVintageResourceIntTest {
 
-    @Autowired
-    private PinnedVintageRepository pinnedVintageRepository;
+    private static final Long DEFAULT_USER_ID = 1L;
+    private static final Long UPDATED_USER_ID = 2L;
 
     @Autowired
-    private PinnedVintageMapper pinnedVintageMapper;
+    private PinnedVintageRepository pinnedVintageRepository;
 
     @Autowired
     private PinnedVintageSearchRepository pinnedVintageSearchRepository;
@@ -69,7 +67,7 @@ public class PinnedVintageResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        PinnedVintageResource pinnedVintageResource = new PinnedVintageResource(pinnedVintageRepository, pinnedVintageMapper, pinnedVintageSearchRepository);
+        PinnedVintageResource pinnedVintageResource = new PinnedVintageResource(pinnedVintageRepository, pinnedVintageSearchRepository);
         this.restPinnedVintageMockMvc = MockMvcBuilders.standaloneSetup(pinnedVintageResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -83,7 +81,8 @@ public class PinnedVintageResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static PinnedVintage createEntity(EntityManager em) {
-        PinnedVintage pinnedVintage = new PinnedVintage();
+        PinnedVintage pinnedVintage = new PinnedVintage()
+            .userId(DEFAULT_USER_ID);
         // Add required entity
         Vintage vintage = VintageResourceIntTest.createEntity(em);
         em.persist(vintage);
@@ -104,16 +103,16 @@ public class PinnedVintageResourceIntTest {
         int databaseSizeBeforeCreate = pinnedVintageRepository.findAll().size();
 
         // Create the PinnedVintage
-        PinnedVintageDTO pinnedVintageDTO = pinnedVintageMapper.toDto(pinnedVintage);
         restPinnedVintageMockMvc.perform(post("/api/pinned-vintages")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(pinnedVintageDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(pinnedVintage)))
             .andExpect(status().isCreated());
 
         // Validate the PinnedVintage in the database
         List<PinnedVintage> pinnedVintageList = pinnedVintageRepository.findAll();
         assertThat(pinnedVintageList).hasSize(databaseSizeBeforeCreate + 1);
         PinnedVintage testPinnedVintage = pinnedVintageList.get(pinnedVintageList.size() - 1);
+        assertThat(testPinnedVintage.getUserId()).isEqualTo(DEFAULT_USER_ID);
 
         // Validate the PinnedVintage in Elasticsearch
         PinnedVintage pinnedVintageEs = pinnedVintageSearchRepository.findOne(testPinnedVintage.getId());
@@ -127,17 +126,34 @@ public class PinnedVintageResourceIntTest {
 
         // Create the PinnedVintage with an existing ID
         pinnedVintage.setId(1L);
-        PinnedVintageDTO pinnedVintageDTO = pinnedVintageMapper.toDto(pinnedVintage);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restPinnedVintageMockMvc.perform(post("/api/pinned-vintages")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(pinnedVintageDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(pinnedVintage)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
         List<PinnedVintage> pinnedVintageList = pinnedVintageRepository.findAll();
         assertThat(pinnedVintageList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    public void checkUserIdIsRequired() throws Exception {
+        int databaseSizeBeforeTest = pinnedVintageRepository.findAll().size();
+        // set the field null
+        pinnedVintage.setUserId(null);
+
+        // Create the PinnedVintage, which fails.
+
+        restPinnedVintageMockMvc.perform(post("/api/pinned-vintages")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(pinnedVintage)))
+            .andExpect(status().isBadRequest());
+
+        List<PinnedVintage> pinnedVintageList = pinnedVintageRepository.findAll();
+        assertThat(pinnedVintageList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -150,7 +166,8 @@ public class PinnedVintageResourceIntTest {
         restPinnedVintageMockMvc.perform(get("/api/pinned-vintages?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(pinnedVintage.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(pinnedVintage.getId().intValue())))
+            .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID.intValue())));
     }
 
     @Test
@@ -163,7 +180,8 @@ public class PinnedVintageResourceIntTest {
         restPinnedVintageMockMvc.perform(get("/api/pinned-vintages/{id}", pinnedVintage.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(pinnedVintage.getId().intValue()));
+            .andExpect(jsonPath("$.id").value(pinnedVintage.getId().intValue()))
+            .andExpect(jsonPath("$.userId").value(DEFAULT_USER_ID.intValue()));
     }
 
     @Test
@@ -184,17 +202,19 @@ public class PinnedVintageResourceIntTest {
 
         // Update the pinnedVintage
         PinnedVintage updatedPinnedVintage = pinnedVintageRepository.findOne(pinnedVintage.getId());
-        PinnedVintageDTO pinnedVintageDTO = pinnedVintageMapper.toDto(updatedPinnedVintage);
+        updatedPinnedVintage
+            .userId(UPDATED_USER_ID);
 
         restPinnedVintageMockMvc.perform(put("/api/pinned-vintages")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(pinnedVintageDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(updatedPinnedVintage)))
             .andExpect(status().isOk());
 
         // Validate the PinnedVintage in the database
         List<PinnedVintage> pinnedVintageList = pinnedVintageRepository.findAll();
         assertThat(pinnedVintageList).hasSize(databaseSizeBeforeUpdate);
         PinnedVintage testPinnedVintage = pinnedVintageList.get(pinnedVintageList.size() - 1);
+        assertThat(testPinnedVintage.getUserId()).isEqualTo(UPDATED_USER_ID);
 
         // Validate the PinnedVintage in Elasticsearch
         PinnedVintage pinnedVintageEs = pinnedVintageSearchRepository.findOne(testPinnedVintage.getId());
@@ -207,12 +227,11 @@ public class PinnedVintageResourceIntTest {
         int databaseSizeBeforeUpdate = pinnedVintageRepository.findAll().size();
 
         // Create the PinnedVintage
-        PinnedVintageDTO pinnedVintageDTO = pinnedVintageMapper.toDto(pinnedVintage);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restPinnedVintageMockMvc.perform(put("/api/pinned-vintages")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(pinnedVintageDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(pinnedVintage)))
             .andExpect(status().isCreated());
 
         // Validate the PinnedVintage in the database
@@ -253,7 +272,8 @@ public class PinnedVintageResourceIntTest {
         restPinnedVintageMockMvc.perform(get("/api/_search/pinned-vintages?query=id:" + pinnedVintage.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(pinnedVintage.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(pinnedVintage.getId().intValue())))
+            .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID.intValue())));
     }
 
     @Test
@@ -269,28 +289,5 @@ public class PinnedVintageResourceIntTest {
         assertThat(pinnedVintage1).isNotEqualTo(pinnedVintage2);
         pinnedVintage1.setId(null);
         assertThat(pinnedVintage1).isNotEqualTo(pinnedVintage2);
-    }
-
-    @Test
-    @Transactional
-    public void dtoEqualsVerifier() throws Exception {
-        TestUtil.equalsVerifier(PinnedVintageDTO.class);
-        PinnedVintageDTO pinnedVintageDTO1 = new PinnedVintageDTO();
-        pinnedVintageDTO1.setId(1L);
-        PinnedVintageDTO pinnedVintageDTO2 = new PinnedVintageDTO();
-        assertThat(pinnedVintageDTO1).isNotEqualTo(pinnedVintageDTO2);
-        pinnedVintageDTO2.setId(pinnedVintageDTO1.getId());
-        assertThat(pinnedVintageDTO1).isEqualTo(pinnedVintageDTO2);
-        pinnedVintageDTO2.setId(2L);
-        assertThat(pinnedVintageDTO1).isNotEqualTo(pinnedVintageDTO2);
-        pinnedVintageDTO1.setId(null);
-        assertThat(pinnedVintageDTO1).isNotEqualTo(pinnedVintageDTO2);
-    }
-
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(pinnedVintageMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(pinnedVintageMapper.fromId(null)).isNull();
     }
 }
