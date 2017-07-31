@@ -4,9 +4,9 @@ import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.config.Constants;
 import com.mbras.cavavin.service.CellarService;
 import com.mbras.cavavin.service.WineInCellarService;
+import com.mbras.cavavin.service.dto.CellarDTO;
 import com.mbras.cavavin.service.dto.WineInCellarDTO;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
-import com.mbras.cavavin.service.dto.CellarDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,12 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Cellar.
@@ -119,14 +115,14 @@ public class CellarResource {
     /**
      * GET  /users/:login/cellars : get cellars for this user.
      *
-     * @param login the login of the user to find
+     * @param userId the login of the user to find
      * @return the ResponseEntity with status 200 (OK) and with body the "login" user, or with status 404 (Not Found)
      */
-    @GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}/cellars")
+    @GetMapping("/users/{userId}/cellars")
     @Timed
-    public ResponseEntity<CellarDTO> getCellarForUser(@PathVariable String login) {
-        log.debug("REST request to get cellars for User : {}", login);
-        CellarDTO cellarDTO = cellarService.findByUser(login);
+    public ResponseEntity<CellarDTO> getCellarForUser(@PathVariable Long userId) {
+        log.debug("REST request to get cellars for User : {}", userId);
+        CellarDTO cellarDTO = cellarService.findByUser(userId);
         if(cellarDTO != null){
             Long id =  cellarDTO.getId();
             cellarDTO.setSumOfWine(wineInCellarService.getWineSum(id));
