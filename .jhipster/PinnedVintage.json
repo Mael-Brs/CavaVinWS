@@ -2,14 +2,6 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipName": "user",
-            "otherEntityName": "user",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "login",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "pinnedVintage"
-        },
-        {
             "relationshipName": "vintage",
             "otherEntityName": "vintage",
             "relationshipType": "many-to-one",
@@ -19,9 +11,17 @@
             "otherEntityField": "id"
         }
     ],
-    "fields": [],
+    "fields": [
+        {
+            "fieldName": "userId",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
     "changelogDate": "20170610134422",
-    "dto": "mapstruct",
+    "dto": "no",
     "service": "no",
     "entityTableName": "pinned_vintage",
     "pagination": "no"
