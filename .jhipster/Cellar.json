@@ -1,24 +1,22 @@
 {
     "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "one-to-one",
-            "relationshipName": "user",
-            "otherEntityName": "user",
-            "otherEntityField": "login",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "cellar"
-        }
-    ],
+    "relationships": [],
     "fields": [
         {
             "fieldName": "capacity",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "userId",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "changelogDate": "20170303215710",
     "entityTableName": "cellar",
-    "dto": "mapstruct",
+    "dto": "no",
     "pagination": "no",
     "service": "serviceClass"
 }
