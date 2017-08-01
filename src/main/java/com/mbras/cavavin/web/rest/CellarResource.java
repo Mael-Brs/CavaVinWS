@@ -1,11 +1,9 @@
 package com.mbras.cavavin.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.mbras.cavavin.config.Constants;
+import com.mbras.cavavin.domain.Cellar;
 import com.mbras.cavavin.service.CellarService;
 import com.mbras.cavavin.service.WineInCellarService;
-import com.mbras.cavavin.service.dto.CellarDTO;
-import com.mbras.cavavin.service.dto.WineInCellarDTO;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -13,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -41,18 +40,18 @@ public class CellarResource {
     /**
      * POST  /cellars : Create a new cellar.
      *
-     * @param cellarDTO the cellarDTO to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new cellarDTO, or with status 400 (Bad Request) if the cellar has already an ID
+     * @param cellar the cellar to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new cellar, or with status 400 (Bad Request) if the cellar has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/cellars")
     @Timed
-    public ResponseEntity<CellarDTO> createCellar(@RequestBody CellarDTO cellarDTO) throws URISyntaxException {
-        log.debug("REST request to save Cellar : {}", cellarDTO);
-        if (cellarDTO.getId() != null) {
+    public ResponseEntity<Cellar> createCellar(@Valid @RequestBody Cellar cellar) throws URISyntaxException {
+        log.debug("REST request to save Cellar : {}", cellar);
+        if (cellar.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new cellar cannot already have an ID")).body(null);
         }
-        CellarDTO result = cellarService.save(cellarDTO);
+        Cellar result = cellarService.save(cellar);
         return ResponseEntity.created(new URI("/api/cellars/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -61,22 +60,22 @@ public class CellarResource {
     /**
      * PUT  /cellars : Updates an existing cellar.
      *
-     * @param cellarDTO the cellarDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated cellarDTO,
-     * or with status 400 (Bad Request) if the cellarDTO is not valid,
-     * or with status 500 (Internal Server Error) if the cellarDTO couldn't be updated
+     * @param cellar the cellar to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated cellar,
+     * or with status 400 (Bad Request) if the cellar is not valid,
+     * or with status 500 (Internal Server Error) if the cellar couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/cellars")
     @Timed
-    public ResponseEntity<CellarDTO> updateCellar(@RequestBody CellarDTO cellarDTO) throws URISyntaxException {
-        log.debug("REST request to update Cellar : {}", cellarDTO);
-        if (cellarDTO.getId() == null) {
-            return createCellar(cellarDTO);
+    public ResponseEntity<Cellar> updateCellar(@Valid @RequestBody Cellar cellar) throws URISyntaxException {
+        log.debug("REST request to update Cellar : {}", cellar);
+        if (cellar.getId() == null) {
+            return createCellar(cellar);
         }
-        CellarDTO result = cellarService.save(cellarDTO);
+        Cellar result = cellarService.save(cellar);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, cellarDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, cellar.getId().toString()))
             .body(result);
     }
 
@@ -87,7 +86,7 @@ public class CellarResource {
      */
     @GetMapping("/cellars")
     @Timed
-    public List<CellarDTO> getAllCellars() {
+    public List<Cellar> getAllCellars() {
         log.debug("REST request to get all Cellars");
         return cellarService.findAll();
     }
@@ -95,62 +94,48 @@ public class CellarResource {
     /**
      * GET  /cellars/:id : get the "id" cellar.
      *
-     * @param id the id of the cellarDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the cellarDTO, or with status 404 (Not Found)
+     * @param id the id of the cellar to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the cellar, or with status 404 (Not Found)
      */
     @GetMapping("/cellars/{id}")
     @Timed
-    public ResponseEntity<CellarDTO> getCellar(@PathVariable Long id) {
+    public ResponseEntity<Cellar> getCellar(@PathVariable Long id) {
         log.debug("REST request to get Cellar : {}", id);
-        CellarDTO cellarDTO = cellarService.findOne(id);
-        if (cellarDTO != null){
-            cellarDTO.setSumOfWine(wineInCellarService.getWineSum(id));
-            cellarDTO.setWineByRegion(wineInCellarService.getWineByRegion(id));
-            cellarDTO.setWineByColor(wineInCellarService.getWineByColor(id));
-            cellarDTO.setWineByYear(wineInCellarService.getWineByYear(id));
+        Cellar cellar = cellarService.findOne(id);
+        if (cellar != null){
+            cellar.setSumOfWine(wineInCellarService.getWineSum(id));
+            cellar.setWineByRegion(wineInCellarService.getWineByRegion(id));
+            cellar.setWineByColor(wineInCellarService.getWineByColor(id));
+            cellar.setWineByYear(wineInCellarService.getWineByYear(id));
         }
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(cellarDTO));
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(cellar));
     }
 
     /**
-     * GET  /users/:login/cellars : get cellars for this user.
+     * GET  /users/:id/cellars : get cellars for this user.
      *
      * @param userId the login of the user to find
      * @return the ResponseEntity with status 200 (OK) and with body the "login" user, or with status 404 (Not Found)
      */
     @GetMapping("/users/{userId}/cellars")
     @Timed
-    public ResponseEntity<CellarDTO> getCellarForUser(@PathVariable Long userId) {
+    public ResponseEntity<Cellar> getCellarForUser(@PathVariable Long userId) {
         log.debug("REST request to get cellars for User : {}", userId);
-        CellarDTO cellarDTO = cellarService.findByUser(userId);
-        if(cellarDTO != null){
-            Long id =  cellarDTO.getId();
-            cellarDTO.setSumOfWine(wineInCellarService.getWineSum(id));
-            cellarDTO.setWineByRegion(wineInCellarService.getWineByRegion(id));
-            cellarDTO.setWineByColor(wineInCellarService.getWineByColor(id));
-            cellarDTO.setWineByYear(wineInCellarService.getWineByYear(id));
+        Cellar cellar = cellarService.findByUser(userId);
+        if(cellar != null){
+            Long id =  cellar.getId();
+            cellar.setSumOfWine(wineInCellarService.getWineSum(id));
+            cellar.setWineByRegion(wineInCellarService.getWineByRegion(id));
+            cellar.setWineByColor(wineInCellarService.getWineByColor(id));
+            cellar.setWineByYear(wineInCellarService.getWineByYear(id));
         }
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(cellarDTO));
-    }
-
-    /**
-     * GET  /cellars/:id/wine-in-cellars : get the "id" cellar.
-     *
-     * @param id the id of the cellar for wineInCellars to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the wineInCellars, or with status 404 (Not Found)
-     */
-    @GetMapping("/cellars/{id}/wine-in-cellars")
-    @Timed
-    public ResponseEntity<List<WineInCellarDTO>> getWineInCellarForCellar(@PathVariable Long id) {
-        log.debug("REST request to get WineInCellars for Cellar : {}", id);
-        List<WineInCellarDTO> wineInCellars = wineInCellarService.findByCellar(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(wineInCellars));
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(cellar));
     }
 
     /**
      * DELETE  /cellars/:id : delete the "id" cellar.
      *
-     * @param id the id of the cellarDTO to delete
+     * @param id the id of the cellar to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/cellars/{id}")
@@ -170,7 +155,7 @@ public class CellarResource {
      */
     @GetMapping("/_search/cellars")
     @Timed
-    public List<CellarDTO> searchCellars(@RequestParam String query) {
+    public List<Cellar> searchCellars(@RequestParam String query) {
         log.debug("REST request to search Cellars for query {}", query);
         return cellarService.search(query);
     }

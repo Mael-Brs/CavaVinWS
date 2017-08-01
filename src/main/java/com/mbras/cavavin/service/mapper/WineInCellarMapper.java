@@ -8,7 +8,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity WineInCellar and its DTO WineInCellarDTO.
  */
-@Mapper(componentModel = "spring", uses = {CellarMapper.class })
+@Mapper(componentModel = "spring")
 public interface WineInCellarMapper extends EntityMapper <WineInCellarDTO, WineInCellar> {
 
     @Mapping(source = "cellar.id", target = "cellarId")
@@ -16,6 +16,11 @@ public interface WineInCellarMapper extends EntityMapper <WineInCellarDTO, WineI
     WineInCellarDTO toDto(WineInCellar wineInCellar);
 
     @Mapping(source = "cellarId", target = "cellar")
+    default Cellar map(Long id){
+        Cellar cellar = new Cellar();
+        cellar.setId(id);
+        return cellar;
+    }
 
     WineInCellar toEntity(WineInCellarDTO wineInCellarDTO);
     default WineInCellar fromId(Long id) {
