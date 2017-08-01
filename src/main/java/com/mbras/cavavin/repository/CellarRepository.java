@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface CellarRepository extends JpaRepository<Cellar,Long> {
-	Cellar findByUser_id(Long id);
+	Cellar findByUserId(Long id);
 }

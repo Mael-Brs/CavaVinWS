@@ -1,10 +1,13 @@
 package com.mbras.cavavin.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -28,18 +31,25 @@ public class Cellar implements Serializable {
     @Column(name = "capacity")
     private Integer capacity;
 
-    @OneToOne
-    @JoinColumn(unique = true)
-    private User user;
+    @NotNull
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
     @Transient
+    @JsonInclude
     private Long sumOfWine;
 
     @Transient
+    @JsonInclude
     private List<WineByRegion> wineByRegion;
 
     @Transient
+    @JsonInclude
     private List<WineByColor> wineByColor;
+
+    @Transient
+    @JsonInclude
+    private List<WineByYear> wineByYear;
 
     public Long getId() {
         return id;
@@ -62,17 +72,17 @@ public class Cellar implements Serializable {
         this.capacity = capacity;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public Cellar user(User user) {
-        this.user = user;
+    public Cellar userId(Long userId) {
+        this.userId = userId;
         return this;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Long getSumOfWine() {
@@ -99,6 +109,14 @@ public class Cellar implements Serializable {
         this.wineByColor = wineByColor;
     }
 
+    public List<WineByYear> getWineByYear() {
+        return wineByYear;
+    }
+
+    public void setWineByYear(List<WineByYear> wineByYear) {
+        this.wineByYear = wineByYear;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -122,8 +140,13 @@ public class Cellar implements Serializable {
     @Override
     public String toString() {
         return "Cellar{" +
-            "id=" + getId() +
-            ", capacity='" + getCapacity() + "'" +
-            "}";
+            "id=" + id +
+            ", capacity=" + capacity +
+            ", userId=" + userId +
+            ", sumOfWine=" + sumOfWine +
+            ", wineByRegion=" + wineByRegion +
+            ", wineByColor=" + wineByColor +
+            ", wineByYear=" + wineByYear +
+            '}';
     }
 }
