@@ -5,15 +5,14 @@
         .module('cavavinApp')
         .controller('CellarDialogController', CellarDialogController);
 
-    CellarDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'entity', 'Cellar', 'User'];
+    CellarDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Cellar'];
 
-    function CellarDialogController ($timeout, $scope, $stateParams, $uibModalInstance, $q, entity, Cellar, User) {
+    function CellarDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Cellar) {
         var vm = this;
 
         vm.cellar = entity;
         vm.clear = clear;
         vm.save = save;
-        vm.users = User.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
