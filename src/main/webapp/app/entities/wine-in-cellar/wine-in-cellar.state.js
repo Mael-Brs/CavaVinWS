@@ -109,6 +109,7 @@
                                 price: null,
                                 quantity: null,
                                 comments: null,
+                                cellarId: null,
                                 id: null
                             };
                         }

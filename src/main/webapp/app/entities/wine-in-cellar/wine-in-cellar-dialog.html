@@ -53,16 +53,16 @@
                     ng-model="vm.wineInCellar.comments"
                     />
         </div>
-
         <div class="form-group">
-            <label data-translate="cavavinApp.wineInCellar.cellar" for="field_cellar">Cellar</label>
-            <select class="form-control" id="field_cellar" name="cellar" ng-model="vm.wineInCellar.cellarId" ng-options="cellar.id as cellar.id for cellar in vm.cellars"            >
+            <label data-translate="cavavinApp.wineInCellar.cellarId" for="field_cellarId">Cellar</label>
+            <select class="form-control" id="field_cellarId" name="cellarId" ng-model="vm.wineInCellar.cellarId" ng-options="cellar.id as cellar.id for cellar in vm.cellars"            >
                 <option value=""></option>
             </select>
         </div>
+
         <div class="form-group">
             <label data-translate="cavavinApp.wineInCellar.vintage" for="field_vintage">Vintage</label>
-            <select class="form-control" id="field_vintage" name="vintage" ng-model="vm.wineInCellar.vintage" ng-options="vintage as vintage.wine.name for vintage in vm.vintages track by vintage.wine.id"            >
+            <select class="form-control" id="field_vintage" name="vintage" ng-model="vm.wineInCellar.vintage" ng-options="vintage as vintage.id for vintage in vm.vintages track by vintage.id">
                 <option value=""></option>
             </select>
         </div>
