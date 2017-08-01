@@ -41,10 +41,10 @@ public class WineInCellar implements Serializable {
     @Column(name = "comments")
     private String comments;
 
-    @ManyToOne
-    private Cellar cellar;
+    @Column(name = "cellar_id")
+    private Long cellarId;
 
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne
     private Vintage vintage;
 
     @Transient
@@ -129,17 +129,17 @@ public class WineInCellar implements Serializable {
         this.comments = comments;
     }
 
-    public Cellar getCellar() {
-        return cellar;
+    public Long getCellarId() {
+        return cellarId;
     }
 
-    public WineInCellar cellar(Cellar cellar) {
-        this.cellar = cellar;
+    public WineInCellar cellarId(Long cellarId) {
+        this.cellarId = cellarId;
         return this;
     }
 
-    public void setCellar(Cellar cellar) {
-        this.cellar = cellar;
+    public void setCellarId(Long cellarId) {
+        this.cellarId = cellarId;
     }
 
     public Vintage getVintage() {
@@ -201,6 +201,7 @@ public class WineInCellar implements Serializable {
             ", price='" + getPrice() + "'" +
             ", quantity='" + getQuantity() + "'" +
             ", comments='" + getComments() + "'" +
+            ", cellarId='" + getCellarId() + "'" +
             "}";
     }
 }

@@ -8,20 +8,17 @@ import com.mbras.cavavin.repository.WineRepository;
 import com.mbras.cavavin.repository.search.VintageSearchRepository;
 import com.mbras.cavavin.repository.search.WineInCellarSearchRepository;
 import com.mbras.cavavin.repository.search.WineSearchRepository;
-import com.mbras.cavavin.service.dto.WineInCellarDTO;
-import com.mbras.cavavin.service.mapper.WineInCellarMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing WineInCellar.
@@ -33,8 +30,6 @@ public class WineInCellarService {
     private final Logger log = LoggerFactory.getLogger(WineInCellarService.class);
 
     private final WineInCellarRepository wineInCellarRepository;
-
-    private final WineInCellarMapper wineInCellarMapper;
 
     private final WineInCellarSearchRepository wineInCellarSearchRepository;
 
@@ -48,9 +43,8 @@ public class WineInCellarService {
 
     private final WineAgingDataRepository wineAgingDataRepository;
 
-    public WineInCellarService(WineInCellarRepository wineInCellarRepository, WineInCellarMapper wineInCellarMapper, WineInCellarSearchRepository wineInCellarSearchRepository, WineRepository wineRepository, WineSearchRepository wineSearchRepository, VintageSearchRepository vintageSearchRepository, VintageRepository vintageRepository, WineAgingDataRepository wineAgingDataRepository) {
+    public WineInCellarService(WineInCellarRepository wineInCellarRepository, WineInCellarSearchRepository wineInCellarSearchRepository, WineRepository wineRepository, WineSearchRepository wineSearchRepository, VintageSearchRepository vintageSearchRepository, VintageRepository vintageRepository, WineAgingDataRepository wineAgingDataRepository) {
         this.wineInCellarRepository = wineInCellarRepository;
-        this.wineInCellarMapper = wineInCellarMapper;
         this.wineInCellarSearchRepository = wineInCellarSearchRepository;
         this.wineRepository = wineRepository;
         this.wineSearchRepository = wineSearchRepository;
@@ -62,30 +56,27 @@ public class WineInCellarService {
     /**
      * Save a wineInCellar.
      *
-     * @param wineInCellarDTO the entity to save
+     * @param wineInCellar the entity to save
      * @return the persisted entity
      */
-    public WineInCellarDTO save(WineInCellarDTO wineInCellarDTO) {
-        log.debug("Request to save WineInCellar : {}", wineInCellarDTO);
-        WineInCellar wineInCellar = wineInCellarMapper.toEntity(wineInCellarDTO);
+    public WineInCellar save(WineInCellar wineInCellar) {
+        log.debug("Request to save WineInCellar : {}", wineInCellar);
         if(wineInCellar.getMaxKeep() == null || wineInCellar.getMinKeep() == null) {
             setWineAgingData(wineInCellar);
         }
-        wineInCellar = wineInCellarRepository.save(wineInCellar);
-        WineInCellarDTO result = wineInCellarMapper.toDto(wineInCellar);
-        wineInCellarSearchRepository.save(wineInCellar);
+        WineInCellar result = wineInCellarRepository.save(wineInCellar);
+        wineInCellarSearchRepository.save(result);
         return result;
     }
 
     /**
      * Save a wineInCellar.
      *
-     * @param wineInCellarDTO the entity to save
+     * @param wineInCellar the entity to save
      * @return the persisted entity
      */
-    public WineInCellarDTO saveFromScratch(WineInCellarDTO wineInCellarDTO) {
-        log.debug("Request to save WineInCellar : {}", wineInCellarDTO);
-        WineInCellar wineInCellar = wineInCellarMapper.toEntity(wineInCellarDTO);
+    public WineInCellar saveFromScratch(WineInCellar wineInCellar) {
+        log.debug("Request to save WineInCellar : {}", wineInCellar);
         Vintage newVintage = wineInCellar.getVintage();
         Wine newWine = newVintage.getWine();
 
@@ -100,9 +91,9 @@ public class WineInCellarService {
         if(wineInCellar.getMaxKeep() == null || wineInCellar.getMinKeep() == null) {
             setWineAgingData(wineInCellar);
         }
-        wineInCellar = wineInCellarRepository.save(wineInCellar);
-        WineInCellarDTO result = wineInCellarMapper.toDto(wineInCellar);
-        wineInCellarSearchRepository.save(wineInCellar);
+        WineInCellar result = wineInCellarRepository.save(wineInCellar);
+
+        wineInCellarSearchRepository.save(result);
         return result;
     }
 
@@ -112,11 +103,9 @@ public class WineInCellarService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<WineInCellarDTO> findAll() {
+    public List<WineInCellar> findAll() {
         log.debug("Request to get all WineInCellars");
-        return wineInCellarRepository.findAll().stream()
-            .map(wineInCellarMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+        return wineInCellarRepository.findAll();
     }
 
     /**
@@ -126,10 +115,9 @@ public class WineInCellarService {
      *  @return the entity
      */
     @Transactional(readOnly = true)
-    public WineInCellarDTO findOne(Long id) {
+    public WineInCellar findOne(Long id) {
         log.debug("Request to get WineInCellar : {}", id);
-        WineInCellar wineInCellar = wineInCellarRepository.findOne(id);
-        return wineInCellarMapper.toDto(wineInCellar);
+        return wineInCellarRepository.findOne(id);
     }
 
     /**
@@ -139,11 +127,9 @@ public class WineInCellarService {
      *  @return the entity
      */
     @Transactional(readOnly = true)
-    public List<WineInCellarDTO> findByCellar(Long id) {
+    public List<WineInCellar> findByCellar(Long id) {
         log.debug("Request to get WineInCellar for cellar : {}", id);
-        return wineInCellarRepository.findByCellar_Id(id).stream()
-            .map(wineInCellarMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+        return wineInCellarRepository.findByCellarId(id);
     }
 
     /**
@@ -164,11 +150,10 @@ public class WineInCellarService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<WineInCellarDTO> search(String query) {
+    public List<WineInCellar> search(String query) {
         log.debug("Request to search WineInCellars for query {}", query);
         return StreamSupport
             .stream(wineInCellarSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .map(wineInCellarMapper::toDto)
             .collect(Collectors.toList());
     }
 
