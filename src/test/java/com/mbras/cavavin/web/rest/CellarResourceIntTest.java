@@ -146,24 +146,6 @@ public class CellarResourceIntTest {
 
     @Test
     @Transactional
-    public void checkUserIdIsRequired() throws Exception {
-        int databaseSizeBeforeTest = cellarRepository.findAll().size();
-        // set the field null
-        cellar.setUserId(null);
-
-        // Create the Cellar, which fails.
-
-        restCellarMockMvc.perform(post("/api/cellars")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(cellar)))
-            .andExpect(status().isBadRequest());
-
-        List<Cellar> cellarList = cellarRepository.findAll();
-        assertThat(cellarList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllCellars() throws Exception {
         // Initialize the database
         cellarRepository.saveAndFlush(cellar);
