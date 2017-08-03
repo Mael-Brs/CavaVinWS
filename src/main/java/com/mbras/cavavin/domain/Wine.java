@@ -36,8 +36,7 @@ public class Wine implements Serializable {
     @Column(name = "producer", nullable = false)
     private String producer;
 
-    @NotNull
-    @Column(name = "creator_id", nullable = false)
+    @Column(name = "creator_id")
     private Long creatorId;
 
     @ManyToOne(fetch=FetchType.EAGER)

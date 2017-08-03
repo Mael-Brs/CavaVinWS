@@ -35,10 +35,7 @@
         },
         {
             "fieldName": "creatorId",
-            "fieldType": "Long",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "Long"
         }
     ],
     "changelogDate": "20170303215710",
