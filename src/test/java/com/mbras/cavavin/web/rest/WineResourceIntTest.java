@@ -189,24 +189,6 @@ public class WineResourceIntTest {
 
     @Test
     @Transactional
-    public void checkCreatorIdIsRequired() throws Exception {
-        int databaseSizeBeforeTest = wineRepository.findAll().size();
-        // set the field null
-        wine.setCreatorId(null);
-
-        // Create the Wine, which fails.
-
-        restWineMockMvc.perform(post("/api/wines")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(wine)))
-            .andExpect(status().isBadRequest());
-
-        List<Wine> wineList = wineRepository.findAll();
-        assertThat(wineList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllWines() throws Exception {
         // Initialize the database
         wineRepository.saveAndFlush(wine);
