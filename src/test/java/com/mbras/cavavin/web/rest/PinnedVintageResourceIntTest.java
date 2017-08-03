@@ -140,24 +140,6 @@ public class PinnedVintageResourceIntTest {
 
     @Test
     @Transactional
-    public void checkUserIdIsRequired() throws Exception {
-        int databaseSizeBeforeTest = pinnedVintageRepository.findAll().size();
-        // set the field null
-        pinnedVintage.setUserId(null);
-
-        // Create the PinnedVintage, which fails.
-
-        restPinnedVintageMockMvc.perform(post("/api/pinned-vintages")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(pinnedVintage)))
-            .andExpect(status().isBadRequest());
-
-        List<PinnedVintage> pinnedVintageList = pinnedVintageRepository.findAll();
-        assertThat(pinnedVintageList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllPinnedVintages() throws Exception {
         // Initialize the database
         pinnedVintageRepository.saveAndFlush(pinnedVintage);
