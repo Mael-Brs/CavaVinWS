@@ -15,19 +15,9 @@
         </div>
         <div class="form-group">
             <label class="control-label" data-translate="cavavinApp.pinnedVintage.userId" for="field_userId">User Id</label>
-            <input type="number" class="form-control" name="userId" id="field_userId"
-                    ng-model="vm.pinnedVintage.userId"
-                    required/>
-            <div ng-show="editForm.userId.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.userId.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.userId.$error.number" data-translate="entity.validation.number">
-                    This field should be a number.
-                </p>
-            </div>
+            <select class="form-control" id="field_userId" name="userId" ng-model="vm.pinnedVintage.userId" ng-options="user.id as user.login for user in vm.users">
+                <option value=""></option>
+            </select>
         </div>
 
         <div class="form-group">
