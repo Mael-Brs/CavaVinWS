@@ -8,7 +8,10 @@
         },
         {
             "fieldName": "userId",
-            "fieldType": "Long"
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "changelogDate": "20170303215710",
