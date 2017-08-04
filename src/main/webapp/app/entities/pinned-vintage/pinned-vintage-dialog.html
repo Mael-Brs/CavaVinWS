@@ -15,11 +15,15 @@
         </div>
         <div class="form-group">
             <label class="control-label" data-translate="cavavinApp.pinnedVintage.userId" for="field_userId">User Id</label>
-            <select class="form-control" id="field_userId" name="userId" ng-model="vm.pinnedVintage.userId" ng-options="user.id as user.login for user in vm.users">
-                <option value=""></option>
+            <select class="form-control" id="field_userId" name="userId" ng-model="vm.pinnedVintage.userId" ng-options="user.id as user.login for user in vm.users" required>
             </select>
         </div>
-
+        <div ng-show="editForm.userId.$invalid">
+            <p class="help-block"
+               ng-show="editForm.userId.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
+        </div>
         <div class="form-group">
             <label data-translate="cavavinApp.pinnedVintage.vintage" for="field_vintage">Vintage</label>
             <select class="form-control" id="field_vintage" name="vintage" ng-model="vm.pinnedVintage.vintage" ng-options="vintage as vintage.id for vintage in vm.vintages track by vintage.id" required>

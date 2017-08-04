@@ -13,7 +13,8 @@ entity Year {
 entity Wine {
 	name String required,
 	appellation String,
-	producer String required
+	producer String required,
+	creatorId Long
 }
 
 entity Vintage {
@@ -25,11 +26,13 @@ entity WineInCellar {
 	maxKeep Integer,
 	price Double,
     quantity Integer required,
-    comments String
+    comments String,
+	cellarId Long required
 }
 
 entity Cellar {
-	capacity Integer
+	capacity Integer,
+	userId Long required
 }
 
 entity WineAgingData {
@@ -38,24 +41,17 @@ entity WineAgingData {
 }
 
 entity PinnedVintage {
-
-}
-
-relationship OneToOne {
-	Cellar{user(login) required} to User
+	userId Long required,
 }
 
 relationship ManyToOne {
 	Wine{region(regionName) required} to Region,
     Wine{color(colorName) required} to Color,
-    Wine{creator(login)} to User,
     Vintage{year(number) required} to Year,
     Vintage{wine(name) required} to Wine,
-	WineInCellar{cellar required} to Cellar,
     WineInCellar{vintage required} to Vintage,
     WineAgingData{color(colorName) required} to Color,
     WineAgingData{region(regionName) required} to Region,
-    PinnedVintage{user(login) required} to User,
     PinnedVintage{vintage required} to Vintage
 }
 
