@@ -31,7 +31,8 @@ public class Cellar implements Serializable {
     @Column(name = "capacity")
     private Integer capacity;
 
-    @Column(name = "user_id")
+    @NotNull
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
     @Transient

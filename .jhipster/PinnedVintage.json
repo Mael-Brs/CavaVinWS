@@ -14,7 +14,10 @@
     "fields": [
         {
             "fieldName": "userId",
-            "fieldType": "Long"
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "changelogDate": "20170610134422",
