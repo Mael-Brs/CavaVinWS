@@ -18,13 +18,5 @@
                                columnName="creator_id"
                                tableName="wine"/>
 
-        <dropNotNullConstraint columnDataType="bigint"
-                               columnName="vintage_id"
-                               tableName="pinned_vintage"/>
-
-        <dropNotNullConstraint columnDataType="bigint"
-                               columnName="user_id"
-                               tableName="cellar"/>
-
     </changeSet>
 </databaseChangeLog>
