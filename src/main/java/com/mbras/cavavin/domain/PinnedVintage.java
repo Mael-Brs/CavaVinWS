@@ -25,10 +25,12 @@ public class PinnedVintage implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "user_id")
+    @NotNull
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
     @ManyToOne(optional = false)
+    @NotNull
     private Vintage vintage;
 
     public Long getId() {
