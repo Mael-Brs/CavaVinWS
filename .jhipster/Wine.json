@@ -40,7 +40,6 @@
             "fieldType": "Long"
         }
     ],
-    "changelogDate": "20170303215710",
     "entityTableName": "wine",
     "dto": "no",
     "pagination": "no",
