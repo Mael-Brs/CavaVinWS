@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -51,7 +52,7 @@ public class VintageResource {
      */
     @PostMapping("/vintages")
     @Timed
-    public ResponseEntity<Vintage> createVintage(@RequestBody Vintage vintage) throws URISyntaxException {
+    public ResponseEntity<Vintage> createVintage(@Valid @RequestBody Vintage vintage) throws URISyntaxException {
         log.debug("REST request to save Vintage : {}", vintage);
         if (vintage.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new vintage cannot already have an ID")).body(null);
@@ -74,7 +75,7 @@ public class VintageResource {
      */
     @PutMapping("/vintages")
     @Timed
-    public ResponseEntity<Vintage> updateVintage(@RequestBody Vintage vintage) throws URISyntaxException {
+    public ResponseEntity<Vintage> updateVintage(@Valid @RequestBody Vintage vintage) throws URISyntaxException {
         log.debug("REST request to update Vintage : {}", vintage);
         if (vintage.getId() == null) {
             return createVintage(vintage);
