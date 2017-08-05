@@ -129,21 +129,6 @@ public class WineInCellarResourceIntTest {
         return wineInCellar;
     }
 
-    /**
-     * Create a wine for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static Wine createWine(EntityManager em) {
-        Wine wine = new Wine()
-            .name(DEFAULT_NAME)
-            .appellation(DEFAULT_APPELLATION)
-            .producer(DEFAULT_PRODUCER)
-            .creatorId(DEFAULT_CREATOR_ID);
-        return wine;
-    }
-
     @Before
     public void initTest() {
         wineInCellarSearchRepository.deleteAll();
@@ -380,7 +365,7 @@ public class WineInCellarResourceIntTest {
     @Transactional
     public void createWineInCellarFromScratch() throws Exception {
         int databaseSizeBeforeCreate = wineInCellarRepository.findAll().size();
-        wine = createWine(em);
+        wine = WineResourceIntTest.createEntity(em);
         vintage = VintageResourceIntTest.createEntity(em);
         vintage.setWine(wine);
         wineInCellar.setVintage(vintage);
@@ -411,7 +396,7 @@ public class WineInCellarResourceIntTest {
     @Transactional
     public void updateWineInCellarFromScratch() throws Exception {
         // Initialize the database
-        wine = createWine(em);
+        wine = WineResourceIntTest.createEntity(em);
         vintage = VintageResourceIntTest.createEntity(em);
         vintage.setWine(wine);
         wineInCellar.setVintage(vintage);
