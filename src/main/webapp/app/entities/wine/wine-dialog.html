@@ -52,15 +52,25 @@
 
         <div class="form-group">
             <label data-translate="cavavinApp.wine.region" for="field_region">Region</label>
-            <select class="form-control" id="field_region" name="region" ng-model="vm.wine.region" ng-options="region as region.regionName for region in vm.regions track by region.id">
-                <option value=""></option>
+            <select class="form-control" id="field_region" name="region" ng-model="vm.wine.region" ng-options="region as region.regionName for region in vm.regions track by region.id" required>
             </select>
+        </div>
+        <div ng-show="editForm.region.$invalid">
+            <p class="help-block"
+                ng-show="editForm.region.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
         </div>
         <div class="form-group">
             <label data-translate="cavavinApp.wine.color" for="field_color">Color</label>
-            <select class="form-control" id="field_color" name="color" ng-model="vm.wine.color" ng-options="color as color.colorName for color in vm.colors track by color.id">
-                <option value=""></option>
+            <select class="form-control" id="field_color" name="color" ng-model="vm.wine.color" ng-options="color as color.colorName for color in vm.colors track by color.id" required>
             </select>
+        </div>
+        <div ng-show="editForm.color.$invalid">
+            <p class="help-block"
+                ng-show="editForm.color.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
         </div>
     </div>
     <div class="modal-footer">
