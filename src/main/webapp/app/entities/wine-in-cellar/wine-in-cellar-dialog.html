@@ -50,21 +50,29 @@
         <div class="form-group">
             <label class="control-label" data-translate="cavavinApp.wineInCellar.comments" for="field_comments">Comments</label>
             <input type="text" class="form-control" name="comments" id="field_comments"
-                    ng-model="vm.wineInCellar.comments"
-                    />
+                    ng-model="vm.wineInCellar.comments"/>
         </div>
         <div class="form-group">
             <label data-translate="cavavinApp.wineInCellar.cellarId" for="field_cellarId">Cellar</label>
-            <select class="form-control" id="field_cellarId" name="cellarId" ng-model="vm.wineInCellar.cellarId" ng-options="cellar.id as cellar.id for cellar in vm.cellars"            >
-                <option value=""></option>
+            <select class="form-control" id="field_cellarId" name="cellarId" ng-model="vm.wineInCellar.cellarId" ng-options="cellar.id as cellar.id for cellar in vm.cellars" required>
             </select>
         </div>
-
+        <div ng-show="editForm.cellarId.$invalid">
+            <p class="help-block"
+               ng-show="editForm.cellarId.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
+        </div>
         <div class="form-group">
             <label data-translate="cavavinApp.wineInCellar.vintage" for="field_vintage">Vintage</label>
-            <select class="form-control" id="field_vintage" name="vintage" ng-model="vm.wineInCellar.vintage" ng-options="vintage as vintage.id for vintage in vm.vintages track by vintage.id">
-                <option value=""></option>
+            <select class="form-control" id="field_vintage" name="vintage" ng-model="vm.wineInCellar.vintage" ng-options="vintage as vintage.id for vintage in vm.vintages track by vintage.id" required>
             </select>
+        </div>
+        <div ng-show="editForm.vintage.$invalid">
+            <p class="help-block"
+                ng-show="editForm.vintage.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
         </div>
     </div>
     <div class="modal-footer">

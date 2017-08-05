@@ -2,12 +2,10 @@
     "fluentMethods": true,
     "relationships": [
         {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "vintage",
             "otherEntityName": "vintage",
-            "relationshipType": "many-to-one",
-            "relationshipValidateRules": [
-                "required"
-            ],
             "otherEntityField": "id"
         }
     ],
@@ -21,8 +19,8 @@
         }
     ],
     "changelogDate": "20170610134422",
-    "dto": "no",
-    "service": "no",
     "entityTableName": "pinned_vintage",
-    "pagination": "no"
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
 }

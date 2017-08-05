@@ -1,13 +1,16 @@
 package com.mbras.cavavin.web.rest;
 
 import com.mbras.cavavin.CavavinApp;
-import com.mbras.cavavin.domain.Vintage;
+
+import com.mbras.cavavin.domain.Cellar;
 import com.mbras.cavavin.domain.Wine;
 import com.mbras.cavavin.domain.WineInCellar;
+import com.mbras.cavavin.domain.Vintage;
 import com.mbras.cavavin.repository.WineInCellarRepository;
-import com.mbras.cavavin.repository.search.WineInCellarSearchRepository;
 import com.mbras.cavavin.service.WineInCellarService;
+import com.mbras.cavavin.repository.search.WineInCellarSearchRepository;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +30,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -116,6 +118,14 @@ public class WineInCellarResourceIntTest {
             .price(DEFAULT_PRICE)
             .quantity(DEFAULT_QUANTITY)
             .comments(DEFAULT_COMMENTS);
+        // Add required entity
+        Vintage vintage = VintageResourceIntTest.createEntity(em);
+        Cellar cellar = CellarResourceIntTest.createEntity(em);
+        em.persist(vintage);
+        em.persist(cellar);
+        em.flush();
+        wineInCellar.setVintage(vintage);
+        wineInCellar.setCellarId(cellar.getId());
         return wineInCellar;
     }
 
@@ -138,9 +148,6 @@ public class WineInCellarResourceIntTest {
     public void initTest() {
         wineInCellarSearchRepository.deleteAll();
         wineInCellar = createEntity(em);
-        wine = createWine(em);
-        vintage = new Vintage();
-        vintage.setWine(wine);
     }
 
     @Test
@@ -163,6 +170,7 @@ public class WineInCellarResourceIntTest {
         assertThat(testWineInCellar.getPrice()).isEqualTo(DEFAULT_PRICE);
         assertThat(testWineInCellar.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
         assertThat(testWineInCellar.getComments()).isEqualTo(DEFAULT_COMMENTS);
+        assertThat(testWineInCellar.getCellarId()).isEqualTo(wineInCellar.getCellarId().intValue());
 
         // Validate the WineInCellar in Elasticsearch
         WineInCellar wineInCellarEs = wineInCellarSearchRepository.findOne(testWineInCellar.getId());
@@ -208,6 +216,24 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    public void checkCellarIdIsRequired() throws Exception {
+        int databaseSizeBeforeTest = wineInCellarRepository.findAll().size();
+        // set the field null
+        wineInCellar.setCellarId(null);
+
+        // Create the WineInCellar, which fails.
+
+        restWineInCellarMockMvc.perform(post("/api/wine-in-cellars")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(wineInCellar)))
+            .andExpect(status().isBadRequest());
+
+        List<WineInCellar> wineInCellarList = wineInCellarRepository.findAll();
+        assertThat(wineInCellarList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllWineInCellars() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -219,10 +245,11 @@ public class WineInCellarResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(wineInCellar.getId().intValue())))
             .andExpect(jsonPath("$.[*].minKeep").value(hasItem(DEFAULT_MIN_KEEP)))
             .andExpect(jsonPath("$.[*].maxKeep").value(hasItem(DEFAULT_MAX_KEEP)))
-            .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE)))
+            .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
-            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS)))
-            .andExpect(jsonPath("$.[*].apogee").exists());
+            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())))
+            .andExpect(jsonPath("$.[*].apogee").exists())
+            .andExpect(jsonPath("$.[*].cellarId").value(hasItem(wineInCellar.getCellarId().intValue())));
     }
 
     @Test
@@ -240,7 +267,8 @@ public class WineInCellarResourceIntTest {
             .andExpect(jsonPath("$.maxKeep").value(DEFAULT_MAX_KEEP))
             .andExpect(jsonPath("$.price").value(DEFAULT_PRICE.doubleValue()))
             .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY))
-            .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS.toString()));
+            .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS.toString()))
+            .andExpect(jsonPath("$.cellarId").value(wineInCellar.getCellarId().intValue()));
     }
 
     @Test
@@ -282,6 +310,7 @@ public class WineInCellarResourceIntTest {
         assertThat(testWineInCellar.getPrice()).isEqualTo(UPDATED_PRICE);
         assertThat(testWineInCellar.getQuantity()).isEqualTo(UPDATED_QUANTITY);
         assertThat(testWineInCellar.getComments()).isEqualTo(UPDATED_COMMENTS);
+        assertThat(testWineInCellar.getCellarId()).isEqualTo(wineInCellar.getCellarId().intValue());
 
         // Validate the WineInCellar in Elasticsearch
         WineInCellar wineInCellarEs = wineInCellarSearchRepository.findOne(testWineInCellar.getId());
@@ -341,16 +370,19 @@ public class WineInCellarResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(wineInCellar.getId().intValue())))
             .andExpect(jsonPath("$.[*].minKeep").value(hasItem(DEFAULT_MIN_KEEP)))
             .andExpect(jsonPath("$.[*].maxKeep").value(hasItem(DEFAULT_MAX_KEEP)))
-            .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE)))
+            .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
-            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS)));
+            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())))
+            .andExpect(jsonPath("$.[*].cellarId").value(hasItem(wineInCellar.getCellarId().intValue())));
     }
 
     @Test
     @Transactional
     public void createWineInCellarFromScratch() throws Exception {
         int databaseSizeBeforeCreate = wineInCellarRepository.findAll().size();
-
+        wine = createWine(em);
+        vintage = VintageResourceIntTest.createEntity(em);
+        vintage.setWine(wine);
         wineInCellar.setVintage(vintage);
         // Create the WineInCellar
 
@@ -379,6 +411,8 @@ public class WineInCellarResourceIntTest {
     @Transactional
     public void updateWineInCellarFromScratch() throws Exception {
         // Initialize the database
+        wine = createWine(em);
+        vintage = VintageResourceIntTest.createEntity(em);
         vintage.setWine(wine);
         wineInCellar.setVintage(vintage);
         wineInCellarService.saveFromScratch(wineInCellar);

@@ -3,12 +3,14 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "region",
             "otherEntityName": "region",
             "otherEntityField": "regionName"
         },
         {
             "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "color",
             "otherEntityName": "color",
             "otherEntityField": "colorName"
