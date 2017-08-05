@@ -41,10 +41,12 @@ public class WineInCellar implements Serializable {
     @Column(name = "comments")
     private String comments;
 
-    @Column(name = "cellar_id")
+    @NotNull
+    @Column(name = "cellar_id", nullable = false)
     private Long cellarId;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     private Vintage vintage;
 
     @Transient

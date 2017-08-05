@@ -3,12 +3,14 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "year",
             "otherEntityName": "year",
             "otherEntityField": "number"
         },
         {
             "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "wine",
             "otherEntityName": "wine",
             "otherEntityField": "name"
