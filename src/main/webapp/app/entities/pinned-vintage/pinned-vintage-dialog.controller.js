@@ -5,16 +5,16 @@
         .module('cavavinApp')
         .controller('PinnedVintageDialogController', PinnedVintageDialogController);
 
-    PinnedVintageDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'PinnedVintage', 'User', 'Vintage'];
+    PinnedVintageDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'PinnedVintage', 'Vintage', 'User'];
 
-    function PinnedVintageDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, PinnedVintage, User, Vintage) {
+    function PinnedVintageDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, PinnedVintage, Vintage, User) {
         var vm = this;
 
         vm.pinnedVintage = entity;
         vm.clear = clear;
         vm.save = save;
-        vm.users = User.query();
         vm.vintages = Vintage.query();
+        vm.users = User.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

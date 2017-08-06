@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.duration._
 
 /**
- * Performance test for the PinnedVintage entity.
+ * Performance test for the WineInCellar entity.
  */
-class PinnedVintageGatlingTest extends Simulation {
+class WineInCellarGatlingTest extends Simulation {
 
     val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
     // Log all HTTP requests
@@ -42,7 +42,7 @@ class PinnedVintageGatlingTest extends Simulation {
         "Authorization" -> "${access_token}"
     )
 
-    val scn = scenario("Test the PinnedVintage entity")
+    val scn = scenario("Test the WineInCellar entity")
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
@@ -60,26 +60,26 @@ class PinnedVintageGatlingTest extends Simulation {
         .check(status.is(200)))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all pinnedVintages")
-            .get("/api/pinned-vintages")
+            exec(http("Get all wineInCellars")
+            .get("/api/wine-in-cellars")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new pinnedVintage")
-            .post("/api/pinned-vintages")
+            .exec(http("Create new wineInCellar")
+            .post("/api/wine-in-cellars")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "userId":null}""")).asJSON
+            .body(StringBody("""{"id":null, "minKeep":"0", "maxKeep":"0", "price":null, "quantity":"0", "comments":"SAMPLE_TEXT", "cellarId":null}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_pinnedVintage_url"))).exitHereIfFailed
+            .check(headerRegex("Location", "(.*)").saveAs("new_wineInCellar_url"))).exitHereIfFailed
             .pause(10)
             .repeat(5) {
-                exec(http("Get created pinnedVintage")
-                .get("${new_pinnedVintage_url}")
+                exec(http("Get created wineInCellar")
+                .get("${new_wineInCellar_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created pinnedVintage")
-            .delete("${new_pinnedVintage_url}")
+            .exec(http("Delete created wineInCellar")
+            .delete("${new_wineInCellar_url}")
             .headers(headers_http_authenticated))
             .pause(10)
         }
@@ -87,6 +87,6 @@ class PinnedVintageGatlingTest extends Simulation {
     val users = scenario("Users").exec(scn)
 
     setUp(
-        users.inject(rampUsers(100) over (1 minutes))
+        users.inject(rampUsers(Integer.getInteger("users", 100)) over (Integer.getInteger("ramp", 1) minutes))
     ).protocols(httpConf)
 }
