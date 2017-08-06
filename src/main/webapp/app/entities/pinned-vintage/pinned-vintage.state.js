@@ -104,6 +104,7 @@
                     resolve: {
                         entity: function () {
                             return {
+                                userId: null,
                                 id: null
                             };
                         }

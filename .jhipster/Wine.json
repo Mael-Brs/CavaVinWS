@@ -3,12 +3,14 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "region",
             "otherEntityName": "region",
             "otherEntityField": "regionName"
         },
         {
             "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "color",
             "otherEntityName": "color",
             "otherEntityField": "colorName"
@@ -35,13 +37,9 @@
         },
         {
             "fieldName": "creatorId",
-            "fieldType": "Long",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "Long"
         }
     ],
-    "changelogDate": "20170303215710",
     "entityTableName": "wine",
     "dto": "no",
     "pagination": "no",

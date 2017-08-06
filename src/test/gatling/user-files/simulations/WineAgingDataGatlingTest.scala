@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.duration._
 
 /**
- * Performance test for the Cellar entity.
+ * Performance test for the WineAgingData entity.
  */
-class CellarGatlingTest extends Simulation {
+class WineAgingDataGatlingTest extends Simulation {
 
     val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
     // Log all HTTP requests
@@ -42,7 +42,7 @@ class CellarGatlingTest extends Simulation {
         "Authorization" -> "${access_token}"
     )
 
-    val scn = scenario("Test the Cellar entity")
+    val scn = scenario("Test the WineAgingData entity")
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
@@ -60,26 +60,26 @@ class CellarGatlingTest extends Simulation {
         .check(status.is(200)))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all cellars")
-            .get("/api/cellars")
+            exec(http("Get all wineAgingData")
+            .get("/api/wine-aging-data")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new cellar")
-            .post("/api/cellars")
+            .exec(http("Create new wineAgingData")
+            .post("/api/wine-aging-data")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "capacity":"0"}""")).asJSON
+            .body(StringBody("""{"id":null, "minKeep":"0", "maxKeep":"0"}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_cellar_url"))).exitHereIfFailed
+            .check(headerRegex("Location", "(.*)").saveAs("new_wineAgingData_url"))).exitHereIfFailed
             .pause(10)
             .repeat(5) {
-                exec(http("Get created cellar")
-                .get("${new_cellar_url}")
+                exec(http("Get created wineAgingData")
+                .get("${new_wineAgingData_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created cellar")
-            .delete("${new_cellar_url}")
+            .exec(http("Delete created wineAgingData")
+            .delete("${new_wineAgingData_url}")
             .headers(headers_http_authenticated))
             .pause(10)
         }
@@ -87,6 +87,6 @@ class CellarGatlingTest extends Simulation {
     val users = scenario("Users").exec(scn)
 
     setUp(
-        users.inject(rampUsers(100) over (1 minutes))
+        users.inject(rampUsers(Integer.getInteger("users", 100)) over (Integer.getInteger("ramp", 1) minutes))
     ).protocols(httpConf)
 }

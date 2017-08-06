@@ -17,7 +17,7 @@
                 "title": "Cellar"
             },
             "capacity": "Capacity",
-            "user": "User"
+            "userId": "User Id"
         }
     }
 }

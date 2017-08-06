@@ -105,6 +105,7 @@
                         entity: function () {
                             return {
                                 capacity: null,
+                                userId: null,
                                 id: null
                             };
                         }

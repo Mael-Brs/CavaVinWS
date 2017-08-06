@@ -5,6 +5,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -30,10 +31,12 @@ public class WineAgingData implements Serializable {
     @Column(name = "max_keep")
     private Integer maxKeep;
 
-    @ManyToOne
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @NotNull
     private Color color;
 
-    @ManyToOne
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @NotNull
     private Region region;
 
     public Long getId() {
