@@ -25,10 +25,11 @@ public class PinnedVintage implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @ManyToOne
-    private User user;
+    @NotNull
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     @NotNull
     private Vintage vintage;
 
@@ -40,17 +41,17 @@ public class PinnedVintage implements Serializable {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public PinnedVintage user(User user) {
-        this.user = user;
+    public PinnedVintage userId(Long userId) {
+        this.userId = userId;
         return this;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Vintage getVintage() {
@@ -90,6 +91,7 @@ public class PinnedVintage implements Serializable {
     public String toString() {
         return "PinnedVintage{" +
             "id=" + getId() +
+            ", userId='" + getUserId() + "'" +
             "}";
     }
 }

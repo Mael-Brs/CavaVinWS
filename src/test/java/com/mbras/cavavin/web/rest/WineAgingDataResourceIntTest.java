@@ -3,6 +3,8 @@ package com.mbras.cavavin.web.rest;
 import com.mbras.cavavin.CavavinApp;
 
 import com.mbras.cavavin.domain.WineAgingData;
+import com.mbras.cavavin.domain.Color;
+import com.mbras.cavavin.domain.Region;
 import com.mbras.cavavin.repository.WineAgingDataRepository;
 import com.mbras.cavavin.repository.search.WineAgingDataSearchRepository;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
@@ -86,6 +88,16 @@ public class WineAgingDataResourceIntTest {
         WineAgingData wineAgingData = new WineAgingData()
             .minKeep(DEFAULT_MIN_KEEP)
             .maxKeep(DEFAULT_MAX_KEEP);
+        // Add required entity
+        Color color = ColorResourceIntTest.createEntity(em);
+        em.persist(color);
+        em.flush();
+        wineAgingData.setColor(color);
+        // Add required entity
+        Region region = RegionResourceIntTest.createEntity(em);
+        em.persist(region);
+        em.flush();
+        wineAgingData.setRegion(region);
         return wineAgingData;
     }
 

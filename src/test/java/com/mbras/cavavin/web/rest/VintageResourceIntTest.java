@@ -3,6 +3,8 @@ package com.mbras.cavavin.web.rest;
 import com.mbras.cavavin.CavavinApp;
 
 import com.mbras.cavavin.domain.Vintage;
+import com.mbras.cavavin.domain.Year;
+import com.mbras.cavavin.domain.Wine;
 import com.mbras.cavavin.repository.VintageRepository;
 import com.mbras.cavavin.repository.search.VintageSearchRepository;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
@@ -82,6 +84,16 @@ public class VintageResourceIntTest {
     public static Vintage createEntity(EntityManager em) {
         Vintage vintage = new Vintage()
             .bareCode(DEFAULT_BARE_CODE);
+        // Add required entity
+        Year year = YearResourceIntTest.createEntity(em);
+        em.persist(year);
+        em.flush();
+        vintage.setYear(year);
+        // Add required entity
+        Wine wine = WineResourceIntTest.createEntity(em);
+        em.persist(wine);
+        em.flush();
+        vintage.setWine(wine);
         return vintage;
     }
 

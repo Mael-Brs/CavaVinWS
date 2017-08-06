@@ -4,7 +4,7 @@ describe('Controller Tests', function() {
 
     describe('PinnedVintage Management Detail Controller', function() {
         var $scope, $rootScope;
-        var MockEntity, MockPreviousState, MockPinnedVintage, MockUser, MockVintage;
+        var MockEntity, MockPreviousState, MockPinnedVintage, MockVintage;
         var createController;
 
         beforeEach(inject(function($injector) {
@@ -13,7 +13,6 @@ describe('Controller Tests', function() {
             MockEntity = jasmine.createSpy('MockEntity');
             MockPreviousState = jasmine.createSpy('MockPreviousState');
             MockPinnedVintage = jasmine.createSpy('MockPinnedVintage');
-            MockUser = jasmine.createSpy('MockUser');
             MockVintage = jasmine.createSpy('MockVintage');
             
 
@@ -23,7 +22,6 @@ describe('Controller Tests', function() {
                 'entity': MockEntity,
                 'previousState': MockPreviousState,
                 'PinnedVintage': MockPinnedVintage,
-                'User': MockUser,
                 'Vintage': MockVintage
             };
             createController = function() {

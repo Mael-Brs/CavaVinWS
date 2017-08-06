@@ -5,9 +5,9 @@
         .module('cavavinApp')
         .controller('CellarDetailController', CellarDetailController);
 
-    CellarDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Cellar', 'User'];
+    CellarDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Cellar'];
 
-    function CellarDetailController($scope, $rootScope, $stateParams, previousState, entity, Cellar, User) {
+    function CellarDetailController($scope, $rootScope, $stateParams, previousState, entity, Cellar) {
         var vm = this;
 
         vm.cellar = entity;
