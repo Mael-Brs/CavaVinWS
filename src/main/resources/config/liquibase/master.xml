@@ -4,23 +4,22 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <include file="classpath:config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170303215710_added_entity_Cellar.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170303215710_added_entity_Color.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170303215710_added_entity_Region.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170303215710_added_entity_Year.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170630195147_changelog.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170303215710_added_entity_Cellar.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170303215710_added_entity_Color.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170303215710_added_entity_Region.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170303215710_added_entity_Year.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170805164330_added_entity_Wine.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170805201621_added_entity_Vintage.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170805153503_added_entity_WineInCellar.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170423143923_added_entity_WineAgingData.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170610134422_added_entity_PinnedVintage.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170610134422_added_entity_PinnedVintage.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <include file="classpath:config/liquibase/changelog/20170303215710_added_entity_constraints_Cellar.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170303215710_added_entity_constraints_Cellar.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170805164330_added_entity_constraints_Wine.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170805201621_added_entity_constraints_Vintage.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170805153503_added_entity_constraints_WineInCellar.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170423143923_added_entity_constraints_WineAgingData.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170610134422_added_entity_constraints_PinnedVintage.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170610134422_added_entity_constraints_PinnedVintage.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
