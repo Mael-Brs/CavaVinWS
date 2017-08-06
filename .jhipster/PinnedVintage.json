@@ -2,27 +2,25 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipName": "user",
-            "otherEntityName": "user",
             "relationshipType": "many-to-one",
-            "otherEntityField": "login",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "pinnedVintage"
-        },
-        {
+            "relationshipValidateRules": "required",
             "relationshipName": "vintage",
             "otherEntityName": "vintage",
-            "relationshipType": "many-to-one",
-            "relationshipValidateRules": [
-                "required"
-            ],
             "otherEntityField": "id"
         }
     ],
-    "fields": [],
+    "fields": [
+        {
+            "fieldName": "userId",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
     "changelogDate": "20170610134422",
-    "dto": "mapstruct",
-    "service": "no",
     "entityTableName": "pinned_vintage",
-    "pagination": "no"
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
 }
