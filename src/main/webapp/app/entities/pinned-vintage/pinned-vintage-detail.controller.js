@@ -5,9 +5,9 @@
         .module('cavavinApp')
         .controller('PinnedVintageDetailController', PinnedVintageDetailController);
 
-    PinnedVintageDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'PinnedVintage', 'User', 'Vintage'];
+    PinnedVintageDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'PinnedVintage', 'Vintage'];
 
-    function PinnedVintageDetailController($scope, $rootScope, $stateParams, previousState, entity, PinnedVintage, User, Vintage) {
+    function PinnedVintageDetailController($scope, $rootScope, $stateParams, previousState, entity, PinnedVintage, Vintage) {
         var vm = this;
 
         vm.pinnedVintage = entity;
