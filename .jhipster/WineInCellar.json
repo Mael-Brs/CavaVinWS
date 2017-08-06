@@ -3,12 +3,7 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "cellar",
-            "otherEntityName": "cellar",
-            "otherEntityField": "id"
-        },
-        {
-            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "vintage",
             "otherEntityName": "vintage",
             "otherEntityField": "id"
@@ -37,11 +32,17 @@
         {
             "fieldName": "comments",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "cellarId",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
-    "changelogDate": "20170303215710",
     "entityTableName": "wine_in_cellar",
-    "dto": "mapstruct",
+    "dto": "no",
     "pagination": "no",
     "service": "serviceClass"
 }

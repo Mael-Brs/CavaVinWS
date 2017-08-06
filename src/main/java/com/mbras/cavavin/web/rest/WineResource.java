@@ -1,10 +1,8 @@
 package com.mbras.cavavin.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.mbras.cavavin.domain.Vintage;
 import com.mbras.cavavin.domain.Wine;
 
-import com.mbras.cavavin.repository.VintageRepository;
 import com.mbras.cavavin.repository.WineRepository;
 import com.mbras.cavavin.repository.search.WineSearchRepository;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
@@ -114,7 +112,6 @@ public class WineResource {
         Wine wine = wineRepository.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(wine));
     }
-
 
     /**
      * DELETE  /wines/:id : delete the "id" wine.
