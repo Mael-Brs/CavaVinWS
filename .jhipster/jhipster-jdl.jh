@@ -1,0 +1,58 @@
+entity Region {
+	regionName String required
+}
+
+entity Color {
+	colorName String required
+}
+
+entity Year {
+	number Integer required
+}
+
+entity Wine {
+	name String required,
+	appellation String,
+	producer String required,
+	creatorId Long
+}
+
+entity Vintage {
+	bareCode Integer
+}
+
+entity WineInCellar {
+	minKeep Integer,
+	maxKeep Integer,
+	price Double,
+    quantity Integer required,
+    comments String,
+	cellarId Long required
+}
+
+entity Cellar {
+	capacity Integer,
+	userId Long required
+}
+
+entity WineAgingData {
+	minKeep Integer,
+	maxKeep Integer
+}
+
+entity PinnedVintage {
+	userId Long required,
+}
+
+relationship ManyToOne {
+	Wine{region(regionName) required} to Region,
+    Wine{color(colorName) required} to Color,
+    Vintage{year(number) required} to Year,
+    Vintage{wine(name) required} to Wine,
+    WineInCellar{vintage required} to Vintage,
+    WineAgingData{color(colorName) required} to Color,
+    WineAgingData{region(regionName) required} to Region,
+    PinnedVintage{vintage required} to Vintage
+}
+
+service Cellar, WineInCellar with serviceClass

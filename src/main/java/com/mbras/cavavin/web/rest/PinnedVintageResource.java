@@ -1,14 +1,10 @@
 package com.mbras.cavavin.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.mbras.cavavin.config.Constants;
 import com.mbras.cavavin.domain.PinnedVintage;
-
 import com.mbras.cavavin.repository.PinnedVintageRepository;
 import com.mbras.cavavin.repository.search.PinnedVintageSearchRepository;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
-import com.mbras.cavavin.service.dto.PinnedVintageDTO;
-import com.mbras.cavavin.service.mapper.PinnedVintageMapper;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,13 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing PinnedVintage.
@@ -39,34 +34,29 @@ public class PinnedVintageResource {
 
     private final PinnedVintageRepository pinnedVintageRepository;
 
-    private final PinnedVintageMapper pinnedVintageMapper;
-
     private final PinnedVintageSearchRepository pinnedVintageSearchRepository;
 
-    public PinnedVintageResource(PinnedVintageRepository pinnedVintageRepository, PinnedVintageMapper pinnedVintageMapper, PinnedVintageSearchRepository pinnedVintageSearchRepository) {
+    public PinnedVintageResource(PinnedVintageRepository pinnedVintageRepository, PinnedVintageSearchRepository pinnedVintageSearchRepository) {
         this.pinnedVintageRepository = pinnedVintageRepository;
-        this.pinnedVintageMapper = pinnedVintageMapper;
         this.pinnedVintageSearchRepository = pinnedVintageSearchRepository;
     }
 
     /**
      * POST  /pinned-vintages : Create a new pinnedVintage.
      *
-     * @param pinnedVintageDTO the pinnedVintageDTO to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new pinnedVintageDTO, or with status 400 (Bad Request) if the pinnedVintage has already an ID
+     * @param pinnedVintage the pinnedVintage to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new pinnedVintage, or with status 400 (Bad Request) if the pinnedVintage has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/pinned-vintages")
     @Timed
-    public ResponseEntity<PinnedVintageDTO> createPinnedVintage(@Valid @RequestBody PinnedVintageDTO pinnedVintageDTO) throws URISyntaxException {
-        log.debug("REST request to save PinnedVintage : {}", pinnedVintageDTO);
-        if (pinnedVintageDTO.getId() != null) {
+    public ResponseEntity<PinnedVintage> createPinnedVintage(@Valid @RequestBody PinnedVintage pinnedVintage) throws URISyntaxException {
+        log.debug("REST request to save PinnedVintage : {}", pinnedVintage);
+        if (pinnedVintage.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new pinnedVintage cannot already have an ID")).body(null);
         }
-        PinnedVintage pinnedVintage = pinnedVintageMapper.toEntity(pinnedVintageDTO);
-        pinnedVintage = pinnedVintageRepository.save(pinnedVintage);
-        PinnedVintageDTO result = pinnedVintageMapper.toDto(pinnedVintage);
-        pinnedVintageSearchRepository.save(pinnedVintage);
+        PinnedVintage result = pinnedVintageRepository.save(pinnedVintage);
+        pinnedVintageSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/pinned-vintages/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -75,25 +65,23 @@ public class PinnedVintageResource {
     /**
      * PUT  /pinned-vintages : Updates an existing pinnedVintage.
      *
-     * @param pinnedVintageDTO the pinnedVintageDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated pinnedVintageDTO,
-     * or with status 400 (Bad Request) if the pinnedVintageDTO is not valid,
-     * or with status 500 (Internal Server Error) if the pinnedVintageDTO couldn't be updated
+     * @param pinnedVintage the pinnedVintage to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated pinnedVintage,
+     * or with status 400 (Bad Request) if the pinnedVintage is not valid,
+     * or with status 500 (Internal Server Error) if the pinnedVintage couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/pinned-vintages")
     @Timed
-    public ResponseEntity<PinnedVintageDTO> updatePinnedVintage(@Valid @RequestBody PinnedVintageDTO pinnedVintageDTO) throws URISyntaxException {
-        log.debug("REST request to update PinnedVintage : {}", pinnedVintageDTO);
-        if (pinnedVintageDTO.getId() == null) {
-            return createPinnedVintage(pinnedVintageDTO);
+    public ResponseEntity<PinnedVintage> updatePinnedVintage(@Valid @RequestBody PinnedVintage pinnedVintage) throws URISyntaxException {
+        log.debug("REST request to update PinnedVintage : {}", pinnedVintage);
+        if (pinnedVintage.getId() == null) {
+            return createPinnedVintage(pinnedVintage);
         }
-        PinnedVintage pinnedVintage = pinnedVintageMapper.toEntity(pinnedVintageDTO);
-        pinnedVintage = pinnedVintageRepository.save(pinnedVintage);
-        PinnedVintageDTO result = pinnedVintageMapper.toDto(pinnedVintage);
-        pinnedVintageSearchRepository.save(pinnedVintage);
+        PinnedVintage result = pinnedVintageRepository.save(pinnedVintage);
+        pinnedVintageSearchRepository.save(result);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, pinnedVintageDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, pinnedVintage.getId().toString()))
             .body(result);
     }
 
@@ -104,10 +92,9 @@ public class PinnedVintageResource {
      */
     @GetMapping("/pinned-vintages")
     @Timed
-    public List<PinnedVintageDTO> getAllPinnedVintages() {
+    public List<PinnedVintage> getAllPinnedVintages() {
         log.debug("REST request to get all PinnedVintages");
-        List<PinnedVintage> pinnedVintages = pinnedVintageRepository.findAll();
-        return pinnedVintageMapper.toDto(pinnedVintages);
+        return pinnedVintageRepository.findAll();
     }
 
     /**
@@ -115,33 +102,31 @@ public class PinnedVintageResource {
      *
      * @return the ResponseEntity with status 200 (OK) and the list of pinnedVintages in body
      */
-    @GetMapping("/users/current/pinned-vintages")
+    @GetMapping("/users/{id}/pinned-vintages")
     @Timed
-    public List<PinnedVintageDTO> getAllPinnedVintagesForUser() {
-        log.debug("REST request to get all PinnedVintages for current user");
-        List<PinnedVintage> pinnedVintages = pinnedVintageRepository.findByUserIsCurrentUser();
-        return pinnedVintageMapper.toDto(pinnedVintages);
+    public List<PinnedVintage> getAllPinnedVintagesForUser(@PathVariable Long id) {
+        log.debug("REST request to get all PinnedVintages for user {}", id);
+        return pinnedVintageRepository.findByUserId(id);
     }
 
     /**
      * GET  /pinned-vintages/:id : get the "id" pinnedVintage.
      *
-     * @param id the id of the pinnedVintageDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the pinnedVintageDTO, or with status 404 (Not Found)
+     * @param id the id of the pinnedVintage to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the pinnedVintage, or with status 404 (Not Found)
      */
     @GetMapping("/pinned-vintages/{id}")
     @Timed
-    public ResponseEntity<PinnedVintageDTO> getPinnedVintage(@PathVariable Long id) {
+    public ResponseEntity<PinnedVintage> getPinnedVintage(@PathVariable Long id) {
         log.debug("REST request to get PinnedVintage : {}", id);
         PinnedVintage pinnedVintage = pinnedVintageRepository.findOne(id);
-        PinnedVintageDTO pinnedVintageDTO = pinnedVintageMapper.toDto(pinnedVintage);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(pinnedVintageDTO));
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(pinnedVintage));
     }
 
     /**
      * DELETE  /pinned-vintages/:id : delete the "id" pinnedVintage.
      *
-     * @param id the id of the pinnedVintageDTO to delete
+     * @param id the id of the pinnedVintage to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/pinned-vintages/{id}")
@@ -162,11 +147,10 @@ public class PinnedVintageResource {
      */
     @GetMapping("/_search/pinned-vintages")
     @Timed
-    public List<PinnedVintageDTO> searchPinnedVintages(@RequestParam String query) {
+    public List<PinnedVintage> searchPinnedVintages(@RequestParam String query) {
         log.debug("REST request to search PinnedVintages for query {}", query);
         return StreamSupport
             .stream(pinnedVintageSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .map(pinnedVintageMapper::toDto)
             .collect(Collectors.toList());
     }
 

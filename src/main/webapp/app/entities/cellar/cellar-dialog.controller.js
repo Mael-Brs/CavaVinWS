@@ -5,9 +5,9 @@
         .module('cavavinApp')
         .controller('CellarDialogController', CellarDialogController);
 
-    CellarDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'entity', 'Cellar', 'User'];
+    CellarDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Cellar', 'User'];
 
-    function CellarDialogController ($timeout, $scope, $stateParams, $uibModalInstance, $q, entity, Cellar, User) {
+    function CellarDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Cellar, User) {
         var vm = this;
 
         vm.cellar = entity;

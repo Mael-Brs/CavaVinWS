@@ -3,7 +3,8 @@ package com.mbras.cavavin.web.rest;
 import com.mbras.cavavin.CavavinApp;
 
 import com.mbras.cavavin.domain.Wine;
-import com.mbras.cavavin.repository.VintageRepository;
+import com.mbras.cavavin.domain.Region;
+import com.mbras.cavavin.domain.Color;
 import com.mbras.cavavin.repository.WineRepository;
 import com.mbras.cavavin.repository.search.WineSearchRepository;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
@@ -58,9 +59,6 @@ public class WineResourceIntTest {
     private WineSearchRepository wineSearchRepository;
 
     @Autowired
-    private VintageRepository vintageRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -79,7 +77,7 @@ public class WineResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-            WineResource wineResource = new WineResource(wineRepository, wineSearchRepository);
+        WineResource wineResource = new WineResource(wineRepository, wineSearchRepository);
         this.restWineMockMvc = MockMvcBuilders.standaloneSetup(wineResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -98,6 +96,16 @@ public class WineResourceIntTest {
             .appellation(DEFAULT_APPELLATION)
             .producer(DEFAULT_PRODUCER)
             .creatorId(DEFAULT_CREATOR_ID);
+        // Add required entity
+        Region region = RegionResourceIntTest.createEntity(em);
+        em.persist(region);
+        em.flush();
+        wine.setRegion(region);
+        // Add required entity
+        Color color = ColorResourceIntTest.createEntity(em);
+        em.persist(color);
+        em.flush();
+        wine.setColor(color);
         return wine;
     }
 
@@ -175,24 +183,6 @@ public class WineResourceIntTest {
         int databaseSizeBeforeTest = wineRepository.findAll().size();
         // set the field null
         wine.setProducer(null);
-
-        // Create the Wine, which fails.
-
-        restWineMockMvc.perform(post("/api/wines")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(wine)))
-            .andExpect(status().isBadRequest());
-
-        List<Wine> wineList = wineRepository.findAll();
-        assertThat(wineList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkCreatorIdIsRequired() throws Exception {
-        int databaseSizeBeforeTest = wineRepository.findAll().size();
-        // set the field null
-        wine.setCreatorId(null);
 
         // Create the Wine, which fails.
 

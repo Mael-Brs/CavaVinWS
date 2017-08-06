@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -51,7 +52,7 @@ public class WineAgingDataResource {
      */
     @PostMapping("/wine-aging-data")
     @Timed
-    public ResponseEntity<WineAgingData> createWineAgingData(@RequestBody WineAgingData wineAgingData) throws URISyntaxException {
+    public ResponseEntity<WineAgingData> createWineAgingData(@Valid @RequestBody WineAgingData wineAgingData) throws URISyntaxException {
         log.debug("REST request to save WineAgingData : {}", wineAgingData);
         if (wineAgingData.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new wineAgingData cannot already have an ID")).body(null);
@@ -74,7 +75,7 @@ public class WineAgingDataResource {
      */
     @PutMapping("/wine-aging-data")
     @Timed
-    public ResponseEntity<WineAgingData> updateWineAgingData(@RequestBody WineAgingData wineAgingData) throws URISyntaxException {
+    public ResponseEntity<WineAgingData> updateWineAgingData(@Valid @RequestBody WineAgingData wineAgingData) throws URISyntaxException {
         log.debug("REST request to update WineAgingData : {}", wineAgingData);
         if (wineAgingData.getId() == null) {
             return createWineAgingData(wineAgingData);
