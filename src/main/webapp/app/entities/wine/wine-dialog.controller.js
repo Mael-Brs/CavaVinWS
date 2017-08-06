@@ -5,9 +5,9 @@
         .module('cavavinApp')
         .controller('WineDialogController', WineDialogController);
 
-    WineDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Wine', 'Region', 'Color'];
+    WineDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Wine', 'Region', 'Color', 'User'];
 
-    function WineDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Wine, Region, Color) {
+    function WineDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Wine, Region, Color, User) {
         var vm = this;
 
         vm.wine = entity;
@@ -15,6 +15,7 @@
         vm.save = save;
         vm.regions = Region.query();
         vm.colors = Color.query();
+        vm.users = User.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

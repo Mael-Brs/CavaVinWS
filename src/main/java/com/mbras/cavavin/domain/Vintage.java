@@ -5,6 +5,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -27,10 +28,12 @@ public class Vintage implements Serializable {
     @Column(name = "bare_code")
     private Integer bareCode;
 
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @NotNull
     private Year year;
 
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @NotNull
     private Wine wine;
 
     public Long getId() {
