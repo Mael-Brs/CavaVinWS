@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.duration._
 
 /**
- * Performance test for the Year entity.
+ * Performance test for the Color entity.
  */
-class YearGatlingTest extends Simulation {
+class ColorGatlingTest extends Simulation {
 
     val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
     // Log all HTTP requests
@@ -42,7 +42,7 @@ class YearGatlingTest extends Simulation {
         "Authorization" -> "${access_token}"
     )
 
-    val scn = scenario("Test the Year entity")
+    val scn = scenario("Test the Color entity")
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
@@ -60,26 +60,26 @@ class YearGatlingTest extends Simulation {
         .check(status.is(200)))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all years")
-            .get("/api/years")
+            exec(http("Get all colors")
+            .get("/api/colors")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new year")
-            .post("/api/years")
+            .exec(http("Create new color")
+            .post("/api/colors")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "number":"0"}""")).asJSON
+            .body(StringBody("""{"id":null, "colorName":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_year_url"))).exitHereIfFailed
+            .check(headerRegex("Location", "(.*)").saveAs("new_color_url"))).exitHereIfFailed
             .pause(10)
             .repeat(5) {
-                exec(http("Get created year")
-                .get("${new_year_url}")
+                exec(http("Get created color")
+                .get("${new_color_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created year")
-            .delete("${new_year_url}")
+            .exec(http("Delete created color")
+            .delete("${new_color_url}")
             .headers(headers_http_authenticated))
             .pause(10)
         }
@@ -87,6 +87,6 @@ class YearGatlingTest extends Simulation {
     val users = scenario("Users").exec(scn)
 
     setUp(
-        users.inject(rampUsers(100) over (1 minutes))
+        users.inject(rampUsers(Integer.getInteger("users", 100)) over (Integer.getInteger("ramp", 1) minutes))
     ).protocols(httpConf)
 }
