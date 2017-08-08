@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.duration._
 
 /**
- * Performance test for the WineAgingData entity.
+ * Performance test for the Region entity.
  */
-class WineAgingDataGatlingTest extends Simulation {
+class RegionGatlingTest extends Simulation {
 
     val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
     // Log all HTTP requests
@@ -42,7 +42,7 @@ class WineAgingDataGatlingTest extends Simulation {
         "Authorization" -> "${access_token}"
     )
 
-    val scn = scenario("Test the WineAgingData entity")
+    val scn = scenario("Test the Region entity")
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
@@ -60,26 +60,26 @@ class WineAgingDataGatlingTest extends Simulation {
         .check(status.is(200)))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all wineAgingData")
-            .get("/api/wine-aging-data")
+            exec(http("Get all regions")
+            .get("/api/regions")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new wineAgingData")
-            .post("/api/wine-aging-data")
+            .exec(http("Create new region")
+            .post("/api/regions")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "minKeep":"0", "maxKeep":"0"}""")).asJSON
+            .body(StringBody("""{"id":null, "regionName":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_wineAgingData_url"))).exitHereIfFailed
+            .check(headerRegex("Location", "(.*)").saveAs("new_region_url"))).exitHereIfFailed
             .pause(10)
             .repeat(5) {
-                exec(http("Get created wineAgingData")
-                .get("${new_wineAgingData_url}")
+                exec(http("Get created region")
+                .get("${new_region_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created wineAgingData")
-            .delete("${new_wineAgingData_url}")
+            .exec(http("Delete created region")
+            .delete("${new_region_url}")
             .headers(headers_http_authenticated))
             .pause(10)
         }
@@ -87,6 +87,6 @@ class WineAgingDataGatlingTest extends Simulation {
     val users = scenario("Users").exec(scn)
 
     setUp(
-        users.inject(rampUsers(100) over (1 minutes))
+        users.inject(rampUsers(Integer.getInteger("users", 100)) over (Integer.getInteger("ramp", 1) minutes))
     ).protocols(httpConf)
 }
