@@ -52,6 +52,9 @@ public class WineInCellar implements Serializable {
     @Transient
     private Integer apogee;
 
+    @Column(name = "location")
+    private String location;
+
     public Long getId() {
         return id;
     }
@@ -172,6 +175,14 @@ public class WineInCellar implements Serializable {
         if(this.maxKeep != null && this.vintage != null && this.vintage.getYear() != null){
             this.apogee = this.vintage.getYear().getNumber() + this.maxKeep;
         }
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     @Override

@@ -139,7 +139,7 @@ public class WineInCellarResourceIntTest {
     @Transactional
     public void createWineInCellar() throws Exception {
         int databaseSizeBeforeCreate = wineInCellarRepository.findAll().size();
-
+        wineInCellar.setMaxKeep(null);
         // Create the WineInCellar
         restWineInCellarMockMvc.perform(post("/api/wine-in-cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -151,7 +151,7 @@ public class WineInCellarResourceIntTest {
         assertThat(wineInCellarList).hasSize(databaseSizeBeforeCreate + 1);
         WineInCellar testWineInCellar = wineInCellarList.get(wineInCellarList.size() - 1);
         assertThat(testWineInCellar.getMinKeep()).isEqualTo(DEFAULT_MIN_KEEP);
-        assertThat(testWineInCellar.getMaxKeep()).isEqualTo(DEFAULT_MAX_KEEP);
+        assertThat(testWineInCellar.getMaxKeep()).isNull();
         assertThat(testWineInCellar.getPrice()).isEqualTo(DEFAULT_PRICE);
         assertThat(testWineInCellar.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
         assertThat(testWineInCellar.getComments()).isEqualTo(DEFAULT_COMMENTS);
