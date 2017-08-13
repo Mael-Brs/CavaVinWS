@@ -304,4 +304,19 @@ public class CellarResourceIntTest {
         cellar1.setId(null);
         assertThat(cellar1).isNotEqualTo(cellar2);
     }
+
+    @Test
+    @Transactional
+    public void findByUser() throws Exception {
+        // Initialize the database
+        cellarRepository.saveAndFlush(cellar);
+
+        // Get all the cellarList
+        restCellarMockMvc.perform(get("/api/users/{userId}/cellars", cellar.getUserId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(cellar.getId().intValue())))
+            .andExpect(jsonPath("$.[*].capacity").value(hasItem(DEFAULT_CAPACITY)))
+            .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID.intValue())));
+    }
 }
