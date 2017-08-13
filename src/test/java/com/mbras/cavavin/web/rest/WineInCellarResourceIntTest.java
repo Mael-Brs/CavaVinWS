@@ -266,6 +266,26 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    public void findByCellar() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get the wineInCellar
+        restWineInCellarMockMvc.perform(get("/api/cellars/{id}/wine-in-cellars", wineInCellar.getCellarId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(wineInCellar.getId().intValue())))
+            .andExpect(jsonPath("$.[*].minKeep").value(hasItem(DEFAULT_MIN_KEEP)))
+            .andExpect(jsonPath("$.[*].maxKeep").value(hasItem(DEFAULT_MAX_KEEP)))
+            .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE)))
+            .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
+            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS)))
+            .andExpect(jsonPath("$.[*].apogee").exists())
+            .andExpect(jsonPath("$.[*].cellarId").value(hasItem(wineInCellar.getCellarId().intValue())));
+    }
+
+    @Test
+    @Transactional
     public void updateWineInCellar() throws Exception {
         // Initialize the database
         wineInCellarService.save(wineInCellar);
@@ -396,28 +416,17 @@ public class WineInCellarResourceIntTest {
     @Transactional
     public void updateWineInCellarFromScratch() throws Exception {
         // Initialize the database
-        wine = WineResourceIntTest.createEntity(em);
-        vintage = VintageResourceIntTest.createEntity(em);
-        vintage.setWine(wine);
-        wineInCellar.setVintage(vintage);
         wineInCellarService.saveFromScratch(wineInCellar);
 
         int databaseSizeBeforeUpdate = wineInCellarRepository.findAll().size();
 
         // Update the wineInCellar
         WineInCellar updatedWineInCellar = wineInCellarRepository.findOne(wineInCellar.getId());
-        updatedWineInCellar
-            .minKeep(UPDATED_MIN_KEEP)
-            .maxKeep(UPDATED_MAX_KEEP)
-            .price(UPDATED_PRICE)
-            .quantity(UPDATED_QUANTITY)
-            .comments(UPDATED_COMMENTS);
+        // Clear entity association
+        em.clear();
+        updatedWineInCellar.getVintage().getWine().setName(UPDATED_NAME);
 
-        wine.name(UPDATED_NAME);
-        vintage.setWine(wine);
-        updatedWineInCellar.setVintage(vintage);
-
-        restWineInCellarMockMvc.perform(put("/api/wine-in-cellars")
+        restWineInCellarMockMvc.perform(put("/api/wine-in-cellars/all")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(updatedWineInCellar)))
             .andExpect(status().isOk());
@@ -426,11 +435,6 @@ public class WineInCellarResourceIntTest {
         List<WineInCellar> wineInCellarList = wineInCellarRepository.findAll();
         assertThat(wineInCellarList).hasSize(databaseSizeBeforeUpdate);
         WineInCellar testWineInCellar = wineInCellarList.get(wineInCellarList.size() - 1);
-        assertThat(testWineInCellar.getMinKeep()).isEqualTo(UPDATED_MIN_KEEP);
-        assertThat(testWineInCellar.getMaxKeep()).isEqualTo(UPDATED_MAX_KEEP);
-        assertThat(testWineInCellar.getPrice()).isEqualTo(UPDATED_PRICE);
-        assertThat(testWineInCellar.getQuantity()).isEqualTo(UPDATED_QUANTITY);
-        assertThat(testWineInCellar.getComments()).isEqualTo(UPDATED_COMMENTS);
         assertThat(testWineInCellar.getVintage().getWine().getName()).isEqualTo(UPDATED_NAME);
 
         // Validate the WineInCellar in Elasticsearch
