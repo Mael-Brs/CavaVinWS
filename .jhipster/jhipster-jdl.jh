@@ -27,6 +27,7 @@ entity WineInCellar {
 	price Double,
     quantity Integer required,
     comments String,
+    location String,
 	cellarId Long required
 }
 
