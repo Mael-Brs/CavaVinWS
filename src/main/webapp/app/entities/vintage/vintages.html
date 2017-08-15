@@ -46,9 +46,7 @@
                 <tr ng-repeat="vintage in vm.vintages track by vintage.id">
                     <td><a ui-sref="vintage-detail({id:vintage.id})">{{vintage.id}}</a></td>
                     <td>{{vintage.bareCode}}</td>
-                    <td>
-                        <a ui-sref="year-detail({id:vintage.year.id})">{{vintage.year.number}}</a>
-                    </td>
+                    <td>{{vintage.year}}</td>
                     <td>
                         <a ui-sref="wine-detail({id:vintage.wine.id})">{{vintage.wine.name}}</a>
                     </td>

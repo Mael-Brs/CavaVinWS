@@ -3,7 +3,6 @@ package com.mbras.cavavin.web.rest;
 import com.mbras.cavavin.CavavinApp;
 
 import com.mbras.cavavin.domain.Vintage;
-import com.mbras.cavavin.domain.Year;
 import com.mbras.cavavin.domain.Wine;
 import com.mbras.cavavin.repository.VintageRepository;
 import com.mbras.cavavin.repository.search.VintageSearchRepository;
@@ -42,6 +41,9 @@ public class VintageResourceIntTest {
 
     private static final Integer DEFAULT_BARE_CODE = 1;
     private static final Integer UPDATED_BARE_CODE = 2;
+
+    private static final Integer DEFAULT_YEAR = 1;
+    private static final Integer UPDATED_YEAR = 2;
 
     @Autowired
     private VintageRepository vintageRepository;
@@ -83,12 +85,8 @@ public class VintageResourceIntTest {
      */
     public static Vintage createEntity(EntityManager em) {
         Vintage vintage = new Vintage()
-            .bareCode(DEFAULT_BARE_CODE);
-        // Add required entity
-        Year year = YearResourceIntTest.createEntity(em);
-        em.persist(year);
-        em.flush();
-        vintage.setYear(year);
+            .bareCode(DEFAULT_BARE_CODE)
+            .year(DEFAULT_YEAR);
         // Add required entity
         Wine wine = WineResourceIntTest.createEntity(em);
         em.persist(wine);
@@ -119,6 +117,7 @@ public class VintageResourceIntTest {
         assertThat(vintageList).hasSize(databaseSizeBeforeCreate + 1);
         Vintage testVintage = vintageList.get(vintageList.size() - 1);
         assertThat(testVintage.getBareCode()).isEqualTo(DEFAULT_BARE_CODE);
+        assertThat(testVintage.getYear()).isEqualTo(DEFAULT_YEAR);
 
         // Validate the Vintage in Elasticsearch
         Vintage vintageEs = vintageSearchRepository.findOne(testVintage.getId());
@@ -146,6 +145,24 @@ public class VintageResourceIntTest {
 
     @Test
     @Transactional
+    public void checkYearIsRequired() throws Exception {
+        int databaseSizeBeforeTest = vintageRepository.findAll().size();
+        // set the field null
+        vintage.setYear(null);
+
+        // Create the Vintage, which fails.
+
+        restVintageMockMvc.perform(post("/api/vintages")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(vintage)))
+            .andExpect(status().isBadRequest());
+
+        List<Vintage> vintageList = vintageRepository.findAll();
+        assertThat(vintageList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllVintages() throws Exception {
         // Initialize the database
         vintageRepository.saveAndFlush(vintage);
@@ -155,7 +172,8 @@ public class VintageResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(vintage.getId().intValue())))
-            .andExpect(jsonPath("$.[*].bareCode").value(hasItem(DEFAULT_BARE_CODE)));
+            .andExpect(jsonPath("$.[*].bareCode").value(hasItem(DEFAULT_BARE_CODE)))
+            .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)));
     }
 
     @Test
@@ -169,7 +187,8 @@ public class VintageResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(vintage.getId().intValue()))
-            .andExpect(jsonPath("$.bareCode").value(DEFAULT_BARE_CODE));
+            .andExpect(jsonPath("$.bareCode").value(DEFAULT_BARE_CODE))
+            .andExpect(jsonPath("$.year").value(DEFAULT_YEAR));
     }
 
     @Test
@@ -191,7 +210,8 @@ public class VintageResourceIntTest {
         // Update the vintage
         Vintage updatedVintage = vintageRepository.findOne(vintage.getId());
         updatedVintage
-            .bareCode(UPDATED_BARE_CODE);
+            .bareCode(UPDATED_BARE_CODE)
+            .year(UPDATED_YEAR);
 
         restVintageMockMvc.perform(put("/api/vintages")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -203,6 +223,7 @@ public class VintageResourceIntTest {
         assertThat(vintageList).hasSize(databaseSizeBeforeUpdate);
         Vintage testVintage = vintageList.get(vintageList.size() - 1);
         assertThat(testVintage.getBareCode()).isEqualTo(UPDATED_BARE_CODE);
+        assertThat(testVintage.getYear()).isEqualTo(UPDATED_YEAR);
 
         // Validate the Vintage in Elasticsearch
         Vintage vintageEs = vintageSearchRepository.findOne(testVintage.getId());
@@ -261,7 +282,8 @@ public class VintageResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(vintage.getId().intValue())))
-            .andExpect(jsonPath("$.[*].bareCode").value(hasItem(DEFAULT_BARE_CODE)));
+            .andExpect(jsonPath("$.[*].bareCode").value(hasItem(DEFAULT_BARE_CODE)))
+            .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)));
     }
 
     @Test

@@ -28,9 +28,9 @@ public class Vintage implements Serializable {
     @Column(name = "bare_code")
     private Integer bareCode;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @NotNull
-    private Year year;
+    @Column(name = "jhi_year", nullable = false)
+    private Integer year;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @NotNull
@@ -57,16 +57,16 @@ public class Vintage implements Serializable {
         this.bareCode = bareCode;
     }
 
-    public Year getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public Vintage year(Year year) {
+    public Vintage year(Integer year) {
         this.year = year;
         return this;
     }
 
-    public void setYear(Year year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
@@ -108,6 +108,7 @@ public class Vintage implements Serializable {
         return "Vintage{" +
             "id=" + getId() +
             ", bareCode='" + getBareCode() + "'" +
+            ", year='" + getYear() + "'" +
             "}";
     }
 }
