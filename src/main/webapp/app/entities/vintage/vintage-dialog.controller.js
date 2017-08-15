@@ -5,15 +5,14 @@
         .module('cavavinApp')
         .controller('VintageDialogController', VintageDialogController);
 
-    VintageDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Vintage', 'Year', 'Wine'];
+    VintageDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Vintage', 'Wine'];
 
-    function VintageDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Vintage, Year, Wine) {
+    function VintageDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Vintage, Wine) {
         var vm = this;
 
         vm.vintage = entity;
         vm.clear = clear;
         vm.save = save;
-        vm.years = Year.query();
         vm.wines = Wine.query();
 
         $timeout(function (){

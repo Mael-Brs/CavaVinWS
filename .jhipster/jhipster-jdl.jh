@@ -6,10 +6,6 @@ entity Color {
 	colorName String required
 }
 
-entity Year {
-	number Integer required
-}
-
 entity Wine {
 	name String required,
 	appellation String,
@@ -18,6 +14,7 @@ entity Wine {
 }
 
 entity Vintage {
+	year Integer required,
 	bareCode Integer
 }
 
@@ -48,7 +45,6 @@ entity PinnedVintage {
 relationship ManyToOne {
 	Wine{region(regionName) required} to Region,
     Wine{color(colorName) required} to Color,
-    Vintage{year(number) required} to Year,
     Vintage{wine(name) required} to Wine,
     WineInCellar{vintage required} to Vintage,
     WineAgingData{color(colorName) required} to Color,

@@ -19,18 +19,23 @@
                     ng-model="vm.vintage.bareCode"
                     />
         </div>
-
         <div class="form-group">
-            <label data-translate="cavavinApp.vintage.year" for="field_year">Year</label>
-            <select class="form-control" id="field_year" name="year" ng-model="vm.vintage.year" ng-options="year as year.number for year in vm.years track by year.id" required>
-            </select>
+            <label class="control-label" data-translate="cavavinApp.vintage.year" for="field_year">Year</label>
+            <input type="number" class="form-control" name="year" id="field_year"
+                    ng-model="vm.vintage.year" ng-pattern="/^\d{4}$/"
+                    required/>
+            <div ng-show="editForm.year.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.year.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.year.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
         </div>
-        <div ng-show="editForm.year.$invalid">
-            <p class="help-block"
-                ng-show="editForm.year.$error.required" data-translate="entity.validation.required">
-                This field is required.
-            </p>
-        </div>
+
         <div class="form-group">
             <label data-translate="cavavinApp.vintage.wine" for="field_wine">Wine</label>
             <select class="form-control" id="field_wine" name="wine" ng-model="vm.vintage.wine" ng-options="wine as wine.name for wine in vm.wines track by wine.id" required>
