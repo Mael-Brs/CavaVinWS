@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/year',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ADMIN'],
                 pageTitle: 'cavavinApp.year.home.title'
             },
             views: {
