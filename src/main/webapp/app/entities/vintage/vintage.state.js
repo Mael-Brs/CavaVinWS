@@ -105,6 +105,7 @@
                         entity: function () {
                             return {
                                 bareCode: null,
+                                year: null,
                                 id: null
                             };
                         }
