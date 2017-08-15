@@ -15,4 +15,7 @@ import java.util.List;
 @Repository
 public interface PinnedVintageRepository extends JpaRepository<PinnedVintage,Long> {
     List<PinnedVintage> findByUserId(Long id);
+
+    @Query("select p from PinnedVintage p join User u on u.id = p.userId where u.login = ?#{principal.username}")
+    List<PinnedVintage> findByUserIsCurrentUser();
 }
