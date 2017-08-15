@@ -53,7 +53,7 @@ public class CellarService {
     @Transactional(readOnly = true)
     public List<Cellar> findAll() {
         log.debug("Request to get all Cellars");
-        return cellarRepository.findAll();
+        return cellarRepository.findByUserIsCurrentUser();
     }
 
     /**
