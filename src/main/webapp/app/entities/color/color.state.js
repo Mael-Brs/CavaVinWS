@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/color',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ADMIN'],
                 pageTitle: 'cavavinApp.color.home.title'
             },
             views: {

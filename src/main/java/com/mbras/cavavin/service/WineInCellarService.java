@@ -105,7 +105,7 @@ public class WineInCellarService {
     @Transactional(readOnly = true)
     public List<WineInCellar> findAll() {
         log.debug("Request to get all WineInCellars");
-        return wineInCellarRepository.findAll();
+        return wineInCellarRepository.findByUserIsCurrentUser();
     }
 
     /**

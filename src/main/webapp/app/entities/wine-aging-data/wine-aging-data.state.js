@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/wine-aging-data',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ADMIN'],
                 pageTitle: 'cavavinApp.wineAgingData.home.title'
             },
             views: {
