@@ -4,13 +4,6 @@
         {
             "relationshipType": "many-to-one",
             "relationshipValidateRules": "required",
-            "relationshipName": "year",
-            "otherEntityName": "year",
-            "otherEntityField": "number"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "relationshipValidateRules": "required",
             "relationshipName": "wine",
             "otherEntityName": "wine",
             "otherEntityField": "name"
@@ -20,6 +13,13 @@
         {
             "fieldName": "bareCode",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "year",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "entityTableName": "vintage",

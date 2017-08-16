@@ -94,7 +94,7 @@ public class PinnedVintageResource {
     @Timed
     public List<PinnedVintage> getAllPinnedVintages() {
         log.debug("REST request to get all PinnedVintages");
-        return pinnedVintageRepository.findAll();
+        return pinnedVintageRepository.findByUserIsCurrentUser();
     }
 
     /**
