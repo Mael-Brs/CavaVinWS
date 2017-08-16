@@ -5,9 +5,9 @@
         .module('cavavinApp')
         .controller('VintageDetailController', VintageDetailController);
 
-    VintageDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Vintage', 'Year', 'Wine'];
+    VintageDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Vintage', 'Wine'];
 
-    function VintageDetailController($scope, $rootScope, $stateParams, previousState, entity, Vintage, Year, Wine) {
+    function VintageDetailController($scope, $rootScope, $stateParams, previousState, entity, Vintage, Wine) {
         var vm = this;
 
         vm.vintage = entity;
