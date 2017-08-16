@@ -49,8 +49,12 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="location" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
     </changeSet>
 </databaseChangeLog>
