@@ -19,16 +19,16 @@ import java.util.List;
 public interface WineInCellarRepository extends JpaRepository<WineInCellar,Long> {
 	List<WineInCellar> findByCellarId(Long id);
 
-    @Query(value = "select sum(w.quantity) from WineInCellar w join Cellar c on c.id = :id")
+    @Query(value = "select sum(w.quantity) from WineInCellar w where w.cellarId = :id")
     Long sumWine(@Param("id") Long id);
 
-    @Query(value = "select  new com.mbras.cavavin.domain.WineByRegion(w.vintage.wine.region.regionName, sum(w.quantity)) from WineInCellar w join Cellar c on c.id = :id group by w.vintage.wine.region.regionName")
+    @Query(value = "select  new com.mbras.cavavin.domain.WineByRegion(w.vintage.wine.region.regionName, sum(w.quantity)) from WineInCellar w where w.cellarId = :id group by w.vintage.wine.region.regionName")
     List<WineByRegion> sumWineByRegion(@Param("id") Long id);
 
-    @Query(value = "select new com.mbras.cavavin.domain.WineByColor(w.vintage.wine.color.colorName, sum(w.quantity)) from WineInCellar w join Cellar c on c.id = :id group by w.vintage.wine.color.colorName")
+    @Query(value = "select new com.mbras.cavavin.domain.WineByColor(w.vintage.wine.color.colorName, sum(w.quantity)) from WineInCellar w where w.cellarId = :id group by w.vintage.wine.color.colorName")
     List<WineByColor> sumWineByColor(@Param("id") Long id);
 
-    @Query(value = "select new com.mbras.cavavin.domain.WineByYear(w.vintage.year, sum(w.quantity)) from WineInCellar w join Cellar c on c.id = :id group by w.vintage.year")
+    @Query(value = "select new com.mbras.cavavin.domain.WineByYear(w.vintage.year, sum(w.quantity)) from WineInCellar w where w.cellarId = :id group by w.vintage.year")
     List<WineByYear> sumWineByYear(@Param("id") Long id);
 
     @Query("select w from WineInCellar w join Cellar c on c.id = w.cellarId join User u on u.id = c.userId where u.login = ?#{principal.username}")
