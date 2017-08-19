@@ -68,13 +68,15 @@
                             </button>
                             <button type="submit"
                                     ui-sref="wine.edit({id:wine.id})"
-                                    class="btn btn-primary btn-sm">
+                                    class="btn btn-primary btn-sm"
+                                    is-wine-creator="wine">
                                 <span class="glyphicon glyphicon-pencil"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
                             </button>
                             <button type="submit"
                                     ui-sref="wine.delete({id:wine.id})"
-                                    class="btn btn-danger btn-sm">
+                                    class="btn btn-danger btn-sm"
+                                    has-authority="ROLE_ADMIN">
                                 <span class="glyphicon glyphicon-remove-circle"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
                             </button>
