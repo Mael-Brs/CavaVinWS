@@ -11,7 +11,7 @@
         var vm = this;
 
         vm.wine = entity;
-        vm.previousState = previousState.name;
+        vm.previousState = previousState;
 
         var unsubscribe = $rootScope.$on('cavavinApp:wineUpdate', function(event, result) {
             vm.wine = result;

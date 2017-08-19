@@ -11,7 +11,7 @@
         var vm = this;
 
         vm.color = entity;
-        vm.previousState = previousState.name;
+        vm.previousState = previousState;
 
         var unsubscribe = $rootScope.$on('cavavinApp:colorUpdate', function(event, result) {
             vm.color = result;

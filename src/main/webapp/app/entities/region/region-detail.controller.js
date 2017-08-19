@@ -11,7 +11,7 @@
         var vm = this;
 
         vm.region = entity;
-        vm.previousState = previousState.name;
+        vm.previousState = previousState;
 
         var unsubscribe = $rootScope.$on('cavavinApp:regionUpdate', function(event, result) {
             vm.region = result;
