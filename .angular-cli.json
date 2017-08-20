@@ -5,7 +5,7 @@
     },
     "apps": [{
         "root": "src/main/webapp/",
-        "outDir": "build/www/app",
+        "outDir": "target/www/app",
         "assets": [
             "content",
             "i18n",
@@ -24,6 +24,11 @@
         ],
         "scripts": []
     }],
+    "e2e": {
+        "protractor": {
+            "config": "src/test/javascript/protractor.conf.js"
+        }
+    },
     "lint": [{
             "project": "../../../tsconfig.json"
         },
