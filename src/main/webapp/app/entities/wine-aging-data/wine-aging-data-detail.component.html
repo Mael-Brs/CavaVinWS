@@ -1,0 +1,41 @@
+
+<div *ngIf="wineAgingData">
+    <h2><span jhiTranslate="cavavinApp.wineAgingData.detail.title">Wine Aging Data</span> {{wineAgingData.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="cavavinApp.wineAgingData.minKeep">Min Keep</span></dt>
+        <dd>
+            <span>{{wineAgingData.minKeep}}</span>
+        </dd>
+        <dt><span jhiTranslate="cavavinApp.wineAgingData.maxKeep">Max Keep</span></dt>
+        <dd>
+            <span>{{wineAgingData.maxKeep}}</span>
+        </dd>
+        <dt><span jhiTranslate="cavavinApp.wineAgingData.color">Color</span></dt>
+        <dd>
+            <div *ngIf="wineAgingData.color">
+                <a [routerLink]="['/color', wineAgingData.color?.id]">{{wineAgingData.color?.colorName}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="cavavinApp.wineAgingData.region">Region</span></dt>
+        <dd>
+            <div *ngIf="wineAgingData.region">
+                <a [routerLink]="['/region', wineAgingData.region?.id]">{{wineAgingData.region?.regionName}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'wine-aging-data/'+ wineAgingData.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

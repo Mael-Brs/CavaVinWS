@@ -1,0 +1,23 @@
+{
+    "cavavinApp": {
+        "pinnedVintage" : {
+            "home": {
+                "title": "PinnedVintages",
+                "createLabel": "Créer un nouveau Pinned Vintage",
+                "createOrEditLabel": "Créer ou éditer un Pinned Vintage",
+                "search": "Recherche pour Pinned Vintage"
+            },
+            "created": "Un nouveau Pinned Vintage a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Pinned Vintage avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Pinned Vintage avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Pinned Vintage {{ id }} ?"
+            },
+            "detail": {
+                "title": "Pinned Vintage"
+            },
+            "userId": "User Id",
+            "vintage": "Vintage"
+        }
+    }
+}
