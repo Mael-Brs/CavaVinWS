@@ -19,7 +19,7 @@ module.exports = (config) => {
 
 
         // list of files to exclude
-        exclude: [],
+        exclude: ['e2e/**'],
 
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
@@ -35,7 +35,7 @@ module.exports = (config) => {
         reporters: ['dots', 'junit', 'progress', 'karma-remap-istanbul', 'notify'],
 
         junitReporter: {
-            outputFile: '../../../../build/test-results/karma/TESTS-results.xml'
+            outputFile: '../../../../target/test-results/karma/TESTS-results.xml'
         },
 
         notifyReporter: {
@@ -46,7 +46,7 @@ module.exports = (config) => {
 
         remapIstanbulReporter: {
             reports: { // eslint-disable-line
-                'html': 'build/test-results/coverage',
+                'html': 'target/test-results/coverage',
                 'text-summary': null
             }
         },
