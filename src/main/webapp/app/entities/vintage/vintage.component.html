@@ -57,14 +57,16 @@
                         <button type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'vintage/'+ vintage.id + '/edit'} }]"
                                 replaceUrl="true"
-                                class="btn btn-primary btn-sm">
+                                class="btn btn-primary btn-sm"
+                                *jhiHasAnyAuthority="'ROLE_ADMIN'">
                             <span class="fa fa-pencil"></span>
                             <span class="hidden-md-down" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'vintage/'+ vintage.id + '/delete'} }]"
                                 replaceUrl="true"
-                                class="btn btn-danger btn-sm">
+                                class="btn btn-danger btn-sm"
+                                *jhiHasAnyAuthority="'ROLE_ADMIN'">
                             <span class="fa fa-remove"></span>
                             <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
                         </button>
