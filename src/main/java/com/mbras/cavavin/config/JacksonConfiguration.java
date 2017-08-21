@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class JacksonConfiguration {
 
-    /**
+    /*
      * Support for Hibernate types in Jackson.
      */
     @Bean
@@ -19,7 +19,7 @@ public class JacksonConfiguration {
         return hibernate5Module;
     }
 
-    /**
+    /*
      * Jackson Afterburner module to speed up serialization/deserialization.
      */
     @Bean
