@@ -7,14 +7,6 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entités",
-                "cellar": "Cellar",
-                "color": "Color",
-                "pinnedVintage": "Pinned Vintage",
-                "region": "Region",
-                "vintage": "Vintage",
-                "wine": "Wine",
-                "wineAgingData": "Wine Aging Data",
-                "wineInCellar": "Wine In Cellar",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
