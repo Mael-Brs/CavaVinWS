@@ -1,7 +1,7 @@
 package com.mbras.cavavin.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.config.Constants;
+import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.User;
 import com.mbras.cavavin.repository.UserRepository;
 import com.mbras.cavavin.repository.search.UserSearchRepository;
@@ -9,11 +9,12 @@ import com.mbras.cavavin.security.AuthoritiesConstants;
 import com.mbras.cavavin.service.MailService;
 import com.mbras.cavavin.service.UserService;
 import com.mbras.cavavin.service.dto.UserDTO;
+import com.mbras.cavavin.web.rest.vm.ManagedUserVM;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import com.mbras.cavavin.web.rest.util.PaginationUtil;
-import com.mbras.cavavin.web.rest.vm.ManagedUserVM;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -27,22 +28,20 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing users.
- *
- * <p>This class accesses the User entity, and needs to fetch its collection of authorities.</p>
+ * <p>
+ * This class accesses the User entity, and needs to fetch its collection of authorities.
  * <p>
  * For a normal use-case, it would be better to have an eager relationship between User and Authority,
  * and send everything to the client side: there would be no View Model and DTO, a lot less code, and an outer-join
  * which would be good for performance.
- * </p>
  * <p>
  * We use a View Model and a DTO for 3 reasons:
  * <ul>
@@ -56,7 +55,8 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
  * (which will get lots of data from the database, for each HTTP call).</li>
  * <li> As this manages users, for security reasons, we'd rather have a DTO layer.</li>
  * </ul>
- * <p>Another option would be to have a specific JPA entity graph to handle this case.</p>
+ * <p>
+ * Another option would be to have a specific JPA entity graph to handle this case.
  */
 @RestController
 @RequestMapping("/api")
@@ -74,7 +74,9 @@ public class UserResource {
 
     private final UserSearchRepository userSearchRepository;
 
-    public UserResource(UserRepository userRepository, MailService mailService, UserService userService, UserSearchRepository userSearchRepository) {
+    public UserResource(UserRepository userRepository, MailService mailService,
+            UserService userService, UserSearchRepository userSearchRepository) {
+
         this.userRepository = userRepository;
         this.mailService = mailService;
         this.userService = userService;
@@ -87,7 +89,6 @@ public class UserResource {
      * Creates a new user if the login and email are not already used, and sends an
      * mail with an activation link.
      * The user needs to be activated on creation.
-     * </p>
      *
      * @param managedUserVM the user to create
      * @return the ResponseEntity with status 201 (Created) and with body the new user, or with status 400 (Bad Request) if the login or email is already in use
