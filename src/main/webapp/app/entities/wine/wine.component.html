@@ -67,7 +67,8 @@
                         <button type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'wine/'+ wine.id + '/edit'} }]"
                                 replaceUrl="true"
-                                class="btn btn-primary btn-sm">
+                                class="btn btn-primary btn-sm"
+                                *jhiIsWineCreator="wine">
                             <span class="fa fa-pencil"></span>
                             <span class="hidden-md-down" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
