@@ -13,6 +13,7 @@ import {
     LoginModalService,
     Principal,
     HasAnyAuthorityDirective,
+    IsWineCreatorDirective,
     JhiLoginModalComponent
 } from './';
 
@@ -23,7 +24,8 @@ import {
     ],
     declarations: [
         JhiLoginModalComponent,
-        HasAnyAuthorityDirective
+        HasAnyAuthorityDirective,
+        IsWineCreatorDirective
     ],
     providers: [
         LoginService,
@@ -41,6 +43,7 @@ import {
         CavavinSharedCommonModule,
         JhiLoginModalComponent,
         HasAnyAuthorityDirective,
+        IsWineCreatorDirective,
         DatePipe
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
