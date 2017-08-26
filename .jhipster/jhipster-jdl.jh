@@ -53,3 +53,4 @@ relationship ManyToOne {
 }
 
 service Cellar, WineInCellar with serviceClass
+search Wine with elasticsearch
