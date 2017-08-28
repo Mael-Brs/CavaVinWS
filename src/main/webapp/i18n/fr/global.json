@@ -54,9 +54,9 @@
         "messages": {
             "info": {
                 "authenticated": {
-                    "prefix": "Vous n'êtes pas connecté, ",
-                    "link": " se connecter",
-                    "suffix": "."
+                    "prefix": "Vous n'êtes pas connecté. ",
+                    "link": "Se connecter",
+                    "suffix": ""
                 },
                 "register": {
                     "noaccount": "Vous n'avez pas encore de compte ?",
