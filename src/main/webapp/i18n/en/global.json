@@ -54,9 +54,9 @@
         "messages": {
             "info": {
                 "authenticated": {
-                    "prefix": "You are not logged, please ",
-                    "link": "sign in",
-                    "suffix": "."
+                    "prefix": "You are not logged. ",
+                    "link": "Sign in",
+                    "suffix": ""
                 },
                 "register": {
                     "noaccount": "You don't have an account yet?",
