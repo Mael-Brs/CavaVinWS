@@ -9,13 +9,12 @@
                 "main": "Entités",
                 "cellar": "Cellar",
                 "color": "Color",
+                "pinnedVintage": "Pinned Vintage",
                 "region": "Region",
                 "vintage": "Vintage",
                 "wine": "Wine",
-                "wineInCellar": "Wine In Cellar",
-                "year": "Year",
                 "wineAgingData": "Wine Aging Data",
-                "pinnedVintage": "Pinned Vintage",
+                "wineInCellar": "Wine In Cellar",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -54,8 +53,15 @@
         },
         "messages": {
             "info": {
-                "authenticated": "Vous n'êtes pas connecté, <a class=\"alert-link\" href=\"\" ng-click=\"vm.login()\">se connecter</a>.",
-                "register": "Vous n'avez pas encore de compte ? <a class=\"alert-link\" href=\"\" ng-click=\"vm.register()\">Créer un compte</a>"
+                "authenticated": {
+                    "prefix": "Vous n'êtes pas connecté. ",
+                    "link": "Se connecter",
+                    "suffix": ""
+                },
+                "register": {
+                    "noaccount": "Vous n'avez pas encore de compte ?",
+                    "link": "Créer un compte"
+                }
             },
             "error": {
                 "dontmatch": "Le nouveau mot de passe et sa confirmation ne sont pas égaux !"

@@ -1,5 +1,5 @@
-var dataCacheName = '"cavavinApp-v1';
-var cacheName = '"cavavinApp-1';
+var dataCacheName = 'Cavavin-v1';
+var cacheName = 'Cavavin-1';
 var filesToCache = [
     '/',
     '/index.html'
