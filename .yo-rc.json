@@ -1,6 +1,6 @@
 {
   "generator-jhipster": {
-    "jhipsterVersion": "4.5.3",
+    "jhipsterVersion": "4.6.2",
     "baseName": "cavavin",
     "packageName": "com.mbras.cavavin",
     "packageFolder": "com/mbras/cavavin",
@@ -18,13 +18,13 @@
     "buildTool": "maven",
     "enableSocialSignIn": false,
     "jwtSecretKey": "d96910351020d6ca0c0df813e64a2dac7711e58f",
-    "clientFramework": "angular1",
+    "clientFramework": "angularX",
     "useSass": true,
     "clientPackageManager": "yarn",
     "applicationType": "monolith",
     "testFrameworks": [
       "gatling",
-      "cucumber"
+      "protractor"
     ],
     "jhiPrefix": "jhi",
     "enableTranslation": true,
