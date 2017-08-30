@@ -1,0 +1,81 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myWineLabel" jhiTranslate="cavavinApp.wine.home.createOrEditLabel">Create or edit a Wine</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!wine.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="wine.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wine.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="wine.name" required />
+            <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wine.appellation" for="field_appellation">Appellation</label>
+            <input type="text" class="form-control" name="appellation" id="field_appellation"
+                [(ngModel)]="wine.appellation"  />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wine.producer" for="field_producer">Producer</label>
+            <input type="text" class="form-control" name="producer" id="field_producer"
+                [(ngModel)]="wine.producer" required />
+            <div [hidden]="!(editForm.controls.producer?.dirty && editForm.controls.producer?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.producer?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wine.creatorId" for="field_creatorId">Creator Id</label>
+            <input type="number" class="form-control" name="creatorId" id="field_creatorId"
+                [(ngModel)]="wine.creatorId"  />
+        </div>
+
+        <div class="form-group">
+            <label jhiTranslate="cavavinApp.wine.region" for="field_region">Region</label>
+            <select class="form-control" id="field_region" name="region" [(ngModel)]="wine.region"  required>
+                <option [ngValue]="regionOption.id === wine.region?.id ? wine.region : regionOption" *ngFor="let regionOption of regions; trackBy: trackRegionById">{{regionOption.regionName}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.region?.dirty && editForm.controls.region?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.region?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="cavavinApp.wine.color" for="field_color">Color</label>
+            <select class="form-control" id="field_color" name="color" [(ngModel)]="wine.color"  required>
+                <option [ngValue]="colorOption.id === wine.color?.id ? wine.color : colorOption" *ngFor="let colorOption of colors; trackBy: trackColorById">{{colorOption.colorName}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.color?.dirty && editForm.controls.color?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.color?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>
