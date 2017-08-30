@@ -6,10 +6,8 @@ import com.mbras.cavavin.domain.User;
 import com.mbras.cavavin.repository.UserRepository;
 import com.mbras.cavavin.repository.search.UserSearchRepository;
 import com.mbras.cavavin.security.AuthoritiesConstants;
-import com.mbras.cavavin.service.CellarService;
 import com.mbras.cavavin.service.MailService;
 import com.mbras.cavavin.service.UserService;
-import com.mbras.cavavin.service.WineInCellarService;
 import com.mbras.cavavin.service.dto.UserDTO;
 import com.mbras.cavavin.service.mapper.UserMapper;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
@@ -552,21 +550,17 @@ public class UserResourceIntTest {
 
     @Test
     @Transactional
-    public void testUserEquals() {
-        User userA = new User();
-        assertThat(userA).isEqualTo(userA);
-        assertThat(userA).isNotEqualTo(null);
-        assertThat(userA).isNotEqualTo(new Object());
-        assertThat(userA.toString()).isNotNull();
-
-        userA.setLogin("AAA");
-        User userB = new User();
-        userB.setLogin("BBB");
-        assertThat(userA).isNotEqualTo(userB);
-
-        userB.setLogin("AAA");
-        assertThat(userA).isEqualTo(userB);
-        assertThat(userA.hashCode()).isEqualTo(userB.hashCode());
+    public void testUserEquals() throws Exception {
+        TestUtil.equalsVerifier(User.class);
+        User user1 = new User();
+        user1.setId(1L);
+        User user2 = new User();
+        user2.setId(user1.getId());
+        assertThat(user1).isEqualTo(user2);
+        user2.setId(2L);
+        assertThat(user1).isNotEqualTo(user2);
+        user1.setId(null);
+        assertThat(user1).isNotEqualTo(user2);
     }
 
     @Test

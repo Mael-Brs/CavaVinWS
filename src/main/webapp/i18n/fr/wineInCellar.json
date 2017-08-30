@@ -21,6 +21,7 @@
             "price": "Price",
             "quantity": "Quantity",
             "comments": "Comments",
+            "location": "Location",
             "cellarId": "Cellar Id",
             "vintage": "Vintage"
         }
