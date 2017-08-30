@@ -68,7 +68,7 @@ class WineInCellarGatlingTest extends Simulation {
             .exec(http("Create new wineInCellar")
             .post("/api/wine-in-cellars")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "minKeep":"0", "maxKeep":"0", "price":null, "quantity":"0", "comments":"SAMPLE_TEXT", "cellarId":null}""")).asJSON
+            .body(StringBody("""{"id":null, "minKeep":"0", "maxKeep":"0", "price":null, "quantity":"0", "comments":"SAMPLE_TEXT", "location":"SAMPLE_TEXT", "cellarId":null}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_wineInCellar_url"))).exitHereIfFailed
             .pause(10)

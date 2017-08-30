@@ -142,7 +142,3 @@ Desktop.ini
 ######################
 .eslintcache
 .mvn/jvm.config
-src/main/resources/config/application-prod.yml
-.mvn/jvm - Copie.config
-
-src/main/resources/config/application-prod.yml
