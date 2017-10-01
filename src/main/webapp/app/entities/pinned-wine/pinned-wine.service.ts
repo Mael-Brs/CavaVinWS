@@ -2,32 +2,32 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
-import { PinnedVintage } from './pinned-vintage.model';
+import { PinnedWine } from './pinned-wine.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
 
 @Injectable()
-export class PinnedVintageService {
+export class PinnedWineService {
 
-    private resourceUrl = 'api/pinned-vintages';
-    private resourceSearchUrl = 'api/_search/pinned-vintages';
+    private resourceUrl = 'api/pinned-wines';
+    private resourceSearchUrl = 'api/_search/pinned-wines';
 
     constructor(private http: Http) { }
 
-    create(pinnedVintage: PinnedVintage): Observable<PinnedVintage> {
-        const copy = this.convert(pinnedVintage);
+    create(pinnedWine: PinnedWine): Observable<PinnedWine> {
+        const copy = this.convert(pinnedWine);
         return this.http.post(this.resourceUrl, copy).map((res: Response) => {
             return res.json();
         });
     }
 
-    update(pinnedVintage: PinnedVintage): Observable<PinnedVintage> {
-        const copy = this.convert(pinnedVintage);
+    update(pinnedWine: PinnedWine): Observable<PinnedWine> {
+        const copy = this.convert(pinnedWine);
         return this.http.put(this.resourceUrl, copy).map((res: Response) => {
             return res.json();
         });
     }
 
-    find(id: number): Observable<PinnedVintage> {
+    find(id: number): Observable<PinnedWine> {
         return this.http.get(`${this.resourceUrl}/${id}`).map((res: Response) => {
             return res.json();
         });
@@ -54,8 +54,8 @@ export class PinnedVintageService {
         return new ResponseWrapper(res.headers, jsonResponse, res.status);
     }
 
-    private convert(pinnedVintage: PinnedVintage): PinnedVintage {
-        const copy: PinnedVintage = Object.assign({}, pinnedVintage);
+    private convert(pinnedWine: PinnedWine): PinnedWine {
+        const copy: PinnedWine = Object.assign({}, pinnedWine);
         return copy;
     }
 }
