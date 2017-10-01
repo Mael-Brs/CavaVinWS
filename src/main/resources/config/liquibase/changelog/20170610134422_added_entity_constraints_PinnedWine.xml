@@ -4,21 +4,21 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     <!--
-        Added the constraints for entity PinnedVintage.
+        Added the constraints for entity PinnedWine.
     -->
     <changeSet id="20170610134422-2" author="jhipster">
 
         <addForeignKeyConstraint baseColumnNames="user_id"
-                                 baseTableName="pinned_vintage"
-                                 constraintName="fk_pinned_vintage_user_id"
+                                 baseTableName="pinned_wine"
+                                 constraintName="fk_pinned_wine_user_id"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
 
-        <addForeignKeyConstraint baseColumnNames="vintage_id"
-                                 baseTableName="pinned_vintage"
-                                 constraintName="fk_pinned_vintage_vintage_id"
+        <addForeignKeyConstraint baseColumnNames="wine_id"
+                                 baseTableName="pinned_wine"
+                                 constraintName="fk_pinned_wine_wine_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="vintage"/>
+                                 referencedTableName="wine"/>
 
     </changeSet>
 </databaseChangeLog>
