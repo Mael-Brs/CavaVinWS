@@ -1,17 +1,17 @@
 import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { PinnedVintage } from './pinned-vintage.model';
-import { PinnedVintageService } from './pinned-vintage.service';
+import { PinnedWine } from './pinned-wine.model';
+import { PinnedWineService } from './pinned-wine.service';
 
 @Injectable()
-export class PinnedVintagePopupService {
+export class PinnedWinePopupService {
     private ngbModalRef: NgbModalRef;
 
     constructor(
         private modalService: NgbModal,
         private router: Router,
-        private pinnedVintageService: PinnedVintageService
+        private pinnedWineService: PinnedWineService
 
     ) {
         this.ngbModalRef = null;
@@ -25,23 +25,23 @@ export class PinnedVintagePopupService {
             }
 
             if (id) {
-                this.pinnedVintageService.find(id).subscribe((pinnedVintage) => {
-                    this.ngbModalRef = this.pinnedVintageModalRef(component, pinnedVintage);
+                this.pinnedWineService.find(id).subscribe((pinnedWine) => {
+                    this.ngbModalRef = this.pinnedWineModalRef(component, pinnedWine);
                     resolve(this.ngbModalRef);
                 });
             } else {
                 // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
                 setTimeout(() => {
-                    this.ngbModalRef = this.pinnedVintageModalRef(component, new PinnedVintage());
+                    this.ngbModalRef = this.pinnedWineModalRef(component, new PinnedWine());
                     resolve(this.ngbModalRef);
                 }, 0);
             }
         });
     }
 
-    pinnedVintageModalRef(component: Component, pinnedVintage: PinnedVintage): NgbModalRef {
+    pinnedWineModalRef(component: Component, pinnedWine: PinnedWine): NgbModalRef {
         const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
-        modalRef.componentInstance.pinnedVintage = pinnedVintage;
+        modalRef.componentInstance.pinnedWine = pinnedWine;
         modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true });
             this.ngbModalRef = null;
