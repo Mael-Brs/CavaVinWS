@@ -1,10 +1,10 @@
 <div>
     <h2>
-        <span jhiTranslate="cavavinApp.pinnedVintage.home.title">Pinned Vintages</span>
-        <button class="btn btn-primary float-right jh-create-entity create-pinned-vintage" [routerLink]="['/', { outlets: { popup: ['pinned-vintage-new'] } }]">
+        <span jhiTranslate="cavavinApp.pinnedWine.home.title">Pinned Wines</span>
+        <button class="btn btn-primary float-right jh-create-entity create-pinned-wine" [routerLink]="['/', { outlets: { popup: ['pinned-wine-new'] } }]">
             <span class="fa fa-plus"></span>
-            <span class="hidden-sm-down"  jhiTranslate="cavavinApp.pinnedVintage.home.createLabel">
-            Create new Pinned Vintage
+            <span class="hidden-sm-down"  jhiTranslate="cavavinApp.pinnedWine.home.createLabel">
+            Create new Pinned Wine
             </span>
         </button>
     </h2>
@@ -13,7 +13,7 @@
         <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
                 <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'cavavinApp.pinnedVintage.home.search' | translate }}">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'cavavinApp.pinnedWine.home.search' | translate }}">
                     <button class="input-group-addon btn btn-info" (click)="search(currentSearch)">
                         <span class="fa fa-search"></span>
                     </button>
@@ -25,42 +25,42 @@
         </div>
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="pinnedVintages">
+    <div class="table-responsive" *ngIf="pinnedWines">
         <table class="table table-striped">
             <thead>
             <tr>
             <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="cavavinApp.pinnedVintage.userId">User Id</span></th>
-            <th><span jhiTranslate="cavavinApp.pinnedVintage.vintage">Vintage</span></th>
+            <th><span jhiTranslate="cavavinApp.pinnedWine.userId">User Id</span></th>
+            <th><span jhiTranslate="cavavinApp.pinnedWine.wine">Wine</span></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let pinnedVintage of pinnedVintages ;trackBy: trackId">
-                <td><a [routerLink]="['../pinned-vintage', pinnedVintage.id ]">{{pinnedVintage.id}}</a></td>
-                <td>{{pinnedVintage.userId}}</td>
+            <tr *ngFor="let pinnedWine of pinnedWines ;trackBy: trackId">
+                <td><a [routerLink]="['../pinned-wine', pinnedWine.id ]">{{pinnedWine.id}}</a></td>
+                <td>{{pinnedWine.userId}}</td>
                 <td>
-                    <div *ngIf="pinnedVintage.vintage">
-                        <a [routerLink]="['../vintage', pinnedVintage.vintage?.id ]" >{{pinnedVintage.vintage?.id}}</a>
+                    <div *ngIf="pinnedWine.wine">
+                        <a [routerLink]="['../wine', pinnedWine.wine?.id ]" >{{pinnedWine.wine?.id}}</a>
                     </div>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['../pinned-vintage', pinnedVintage.id ]"
+                                [routerLink]="['../pinned-wine', pinnedWine.id ]"
                                 class="btn btn-info btn-sm">
                             <span class="fa fa-eye"></span>
                             <span class="hidden-md-down" jhiTranslate="entity.action.view">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'pinned-vintage/'+ pinnedVintage.id + '/edit'} }]"
+                                [routerLink]="['/', { outlets: { popup: 'pinned-wine/'+ pinnedWine.id + '/edit'} }]"
                                 replaceUrl="true"
                                 class="btn btn-primary btn-sm">
                             <span class="fa fa-pencil"></span>
                             <span class="hidden-md-down" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'pinned-vintage/'+ pinnedVintage.id + '/delete'} }]"
+                                [routerLink]="['/', { outlets: { popup: 'pinned-wine/'+ pinnedWine.id + '/delete'} }]"
                                 replaceUrl="true"
                                 class="btn btn-danger btn-sm">
                             <span class="fa fa-remove"></span>
