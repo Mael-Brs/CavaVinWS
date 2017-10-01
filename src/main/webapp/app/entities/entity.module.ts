@@ -2,7 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { CavavinCellarModule } from './cellar/cellar.module';
 import { CavavinColorModule } from './color/color.module';
-import { CavavinPinnedVintageModule } from './pinned-vintage/pinned-vintage.module';
+import { CavavinPinnedWineModule } from './pinned-wine/pinned-wine.module';
 import { CavavinRegionModule } from './region/region.module';
 import { CavavinVintageModule } from './vintage/vintage.module';
 import { CavavinWineModule } from './wine/wine.module';
@@ -14,7 +14,7 @@ import { CavavinWineInCellarModule } from './wine-in-cellar/wine-in-cellar.modul
     imports: [
         CavavinCellarModule,
         CavavinColorModule,
-        CavavinPinnedVintageModule,
+        CavavinPinnedWineModule,
         CavavinRegionModule,
         CavavinVintageModule,
         CavavinWineModule,

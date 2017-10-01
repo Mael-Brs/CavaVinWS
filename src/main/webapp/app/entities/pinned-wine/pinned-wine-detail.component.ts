@@ -3,22 +3,22 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
 import { JhiEventManager  } from 'ng-jhipster';
 
-import { PinnedVintage } from './pinned-vintage.model';
-import { PinnedVintageService } from './pinned-vintage.service';
+import { PinnedWine } from './pinned-wine.model';
+import { PinnedWineService } from './pinned-wine.service';
 
 @Component({
-    selector: 'jhi-pinned-vintage-detail',
-    templateUrl: './pinned-vintage-detail.component.html'
+    selector: 'jhi-pinned-wine-detail',
+    templateUrl: './pinned-wine-detail.component.html'
 })
-export class PinnedVintageDetailComponent implements OnInit, OnDestroy {
+export class PinnedWineDetailComponent implements OnInit, OnDestroy {
 
-    pinnedVintage: PinnedVintage;
+    pinnedWine: PinnedWine;
     private subscription: Subscription;
     private eventSubscriber: Subscription;
 
     constructor(
         private eventManager: JhiEventManager,
-        private pinnedVintageService: PinnedVintageService,
+        private pinnedWineService: PinnedWineService,
         private route: ActivatedRoute
     ) {
     }
@@ -27,12 +27,12 @@ export class PinnedVintageDetailComponent implements OnInit, OnDestroy {
         this.subscription = this.route.params.subscribe((params) => {
             this.load(params['id']);
         });
-        this.registerChangeInPinnedVintages();
+        this.registerChangeInPinnedWines();
     }
 
     load(id) {
-        this.pinnedVintageService.find(id).subscribe((pinnedVintage) => {
-            this.pinnedVintage = pinnedVintage;
+        this.pinnedWineService.find(id).subscribe((pinnedWine) => {
+            this.pinnedWine = pinnedWine;
         });
     }
     previousState() {
@@ -44,10 +44,10 @@ export class PinnedVintageDetailComponent implements OnInit, OnDestroy {
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    registerChangeInPinnedVintages() {
+    registerChangeInPinnedWines() {
         this.eventSubscriber = this.eventManager.subscribe(
-            'pinnedVintageListModification',
-            (response) => this.load(this.pinnedVintage.id)
+            'pinnedWineListModification',
+            (response) => this.load(this.pinnedWine.id)
         );
     }
 }
