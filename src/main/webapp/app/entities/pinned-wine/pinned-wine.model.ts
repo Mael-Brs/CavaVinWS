@@ -1,10 +1,10 @@
 import { BaseEntity } from './../../shared';
 
-export class PinnedVintage implements BaseEntity {
+export class PinnedWine implements BaseEntity {
     constructor(
         public id?: number,
         public userId?: number,
-        public vintage?: BaseEntity,
+        public wine?: BaseEntity,
     ) {
     }
 }
