@@ -4,8 +4,8 @@
         {
             "relationshipType": "many-to-one",
             "relationshipValidateRules": "required",
-            "relationshipName": "vintage",
-            "otherEntityName": "vintage",
+            "relationshipName": "wine",
+            "otherEntityName": "wine",
             "otherEntityField": "id"
         }
     ],
@@ -19,7 +19,7 @@
         }
     ],
     "changelogDate": "20170610134422",
-    "entityTableName": "pinned_vintage",
+    "entityTableName": "pinned_wine",
     "dto": "no",
     "pagination": "no",
     "service": "no"
