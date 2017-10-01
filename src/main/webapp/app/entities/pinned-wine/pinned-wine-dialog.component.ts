@@ -6,36 +6,36 @@ import { Observable } from 'rxjs/Rx';
 import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
-import { PinnedVintage } from './pinned-vintage.model';
-import { PinnedVintagePopupService } from './pinned-vintage-popup.service';
-import { PinnedVintageService } from './pinned-vintage.service';
-import { Vintage, VintageService } from '../vintage';
+import { PinnedWine } from './pinned-wine.model';
+import { PinnedWinePopupService } from './pinned-wine-popup.service';
+import { PinnedWineService } from './pinned-wine.service';
+import { Wine, WineService } from '../wine';
 import { ResponseWrapper } from '../../shared';
 
 @Component({
-    selector: 'jhi-pinned-vintage-dialog',
-    templateUrl: './pinned-vintage-dialog.component.html'
+    selector: 'jhi-pinned-wine-dialog',
+    templateUrl: './pinned-wine-dialog.component.html'
 })
-export class PinnedVintageDialogComponent implements OnInit {
+export class PinnedWineDialogComponent implements OnInit {
 
-    pinnedVintage: PinnedVintage;
+    pinnedWine: PinnedWine;
     isSaving: boolean;
 
-    vintages: Vintage[];
+    wines: Wine[];
 
     constructor(
         public activeModal: NgbActiveModal,
         private alertService: JhiAlertService,
-        private pinnedVintageService: PinnedVintageService,
-        private vintageService: VintageService,
+        private pinnedWineService: PinnedWineService,
+        private wineService: WineService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.vintageService.query()
-            .subscribe((res: ResponseWrapper) => { this.vintages = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.wineService.query()
+            .subscribe((res: ResponseWrapper) => { this.wines = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
     clear() {
@@ -44,22 +44,22 @@ export class PinnedVintageDialogComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        if (this.pinnedVintage.id !== undefined) {
+        if (this.pinnedWine.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.pinnedVintageService.update(this.pinnedVintage));
+                this.pinnedWineService.update(this.pinnedWine));
         } else {
             this.subscribeToSaveResponse(
-                this.pinnedVintageService.create(this.pinnedVintage));
+                this.pinnedWineService.create(this.pinnedWine));
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<PinnedVintage>) {
-        result.subscribe((res: PinnedVintage) =>
+    private subscribeToSaveResponse(result: Observable<PinnedWine>) {
+        result.subscribe((res: PinnedWine) =>
             this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
     }
 
-    private onSaveSuccess(result: PinnedVintage) {
-        this.eventManager.broadcast({ name: 'pinnedVintageListModification', content: 'OK'});
+    private onSaveSuccess(result: PinnedWine) {
+        this.eventManager.broadcast({ name: 'pinnedWineListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -78,32 +78,32 @@ export class PinnedVintageDialogComponent implements OnInit {
         this.alertService.error(error.message, null, null);
     }
 
-    trackVintageById(index: number, item: Vintage) {
+    trackWineById(index: number, item: Wine) {
         return item.id;
     }
 }
 
 @Component({
-    selector: 'jhi-pinned-vintage-popup',
+    selector: 'jhi-pinned-wine-popup',
     template: ''
 })
-export class PinnedVintagePopupComponent implements OnInit, OnDestroy {
+export class PinnedWinePopupComponent implements OnInit, OnDestroy {
 
     routeSub: any;
 
     constructor(
         private route: ActivatedRoute,
-        private pinnedVintagePopupService: PinnedVintagePopupService
+        private pinnedWinePopupService: PinnedWinePopupService
     ) {}
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.pinnedVintagePopupService
-                    .open(PinnedVintageDialogComponent as Component, params['id']);
+                this.pinnedWinePopupService
+                    .open(PinnedWineDialogComponent as Component, params['id']);
             } else {
-                this.pinnedVintagePopupService
-                    .open(PinnedVintageDialogComponent as Component);
+                this.pinnedWinePopupService
+                    .open(PinnedWineDialogComponent as Component);
             }
         });
     }
