@@ -1,6 +1,6 @@
 import { browser, element, by, $ } from 'protractor';
 
-describe('PinnedVintage e2e test', () => {
+describe('PinnedWine e2e test', () => {
 
     const username = element(by.id('username'));
     const password = element(by.id('password'));
@@ -21,19 +21,19 @@ describe('PinnedVintage e2e test', () => {
         browser.waitForAngular();
     });
 
-    it('should load PinnedVintages', () => {
+    it('should load PinnedWines', () => {
         entityMenu.click();
-        element.all(by.css('[routerLink="pinned-vintage"]')).first().click().then(() => {
-            const expectVal = /cavavinApp.pinnedVintage.home.title/;
+        element.all(by.css('[routerLink="pinned-wine"]')).first().click().then(() => {
+            const expectVal = /cavavinApp.pinnedWine.home.title/;
             element.all(by.css('h2 span')).first().getAttribute('jhiTranslate').then((value) => {
                 expect(value).toMatch(expectVal);
             });
         });
     });
 
-    it('should load create PinnedVintage dialog', () => {
-        element(by.css('button.create-pinned-vintage')).click().then(() => {
-            const expectVal = /cavavinApp.pinnedVintage.home.createOrEditLabel/;
+    it('should load create PinnedWine dialog', () => {
+        element(by.css('button.create-pinned-wine')).click().then(() => {
+            const expectVal = /cavavinApp.pinnedWine.home.createOrEditLabel/;
             element.all(by.css('h4.modal-title')).first().getAttribute('jhiTranslate').then((value) => {
                 expect(value).toMatch(expectVal);
             });

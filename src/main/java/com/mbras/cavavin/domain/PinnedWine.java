@@ -10,13 +10,13 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A PinnedVintage.
+ * A PinnedWine.
  */
 @Entity
-@Table(name = "pinned_vintage")
+@Table(name = "pinned_wine")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "pinnedvintage")
-public class PinnedVintage implements Serializable {
+@Document(indexName = "pinnedwine")
+public class PinnedWine implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,7 +31,7 @@ public class PinnedVintage implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    private Vintage vintage;
+    private Wine wine;
 
     public Long getId() {
         return id;
@@ -45,7 +45,7 @@ public class PinnedVintage implements Serializable {
         return userId;
     }
 
-    public PinnedVintage userId(Long userId) {
+    public PinnedWine userId(Long userId) {
         this.userId = userId;
         return this;
     }
@@ -54,17 +54,17 @@ public class PinnedVintage implements Serializable {
         this.userId = userId;
     }
 
-    public Vintage getVintage() {
-        return vintage;
+    public Wine getWine() {
+        return wine;
     }
 
-    public PinnedVintage vintage(Vintage vintage) {
-        this.vintage = vintage;
+    public PinnedWine wine(Wine wine) {
+        this.wine = wine;
         return this;
     }
 
-    public void setVintage(Vintage vintage) {
-        this.vintage = vintage;
+    public void setWine(Wine wine) {
+        this.wine = wine;
     }
 
     @Override
@@ -75,11 +75,11 @@ public class PinnedVintage implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        PinnedVintage pinnedVintage = (PinnedVintage) o;
-        if (pinnedVintage.getId() == null || getId() == null) {
+        PinnedWine pinnedWine = (PinnedWine) o;
+        if (pinnedWine.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), pinnedVintage.getId());
+        return Objects.equals(getId(), pinnedWine.getId());
     }
 
     @Override
@@ -89,7 +89,7 @@ public class PinnedVintage implements Serializable {
 
     @Override
     public String toString() {
-        return "PinnedVintage{" +
+        return "PinnedWine{" +
             "id=" + getId() +
             ", userId='" + getUserId() + "'" +
             "}";

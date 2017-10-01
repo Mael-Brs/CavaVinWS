@@ -1,21 +1,21 @@
 <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
 
     <div class="modal-header">
-        <h4 class="modal-title" id="myPinnedVintageLabel" jhiTranslate="cavavinApp.pinnedVintage.home.createOrEditLabel">Create or edit a Pinned Vintage</h4>
+        <h4 class="modal-title" id="myPinnedWineLabel" jhiTranslate="cavavinApp.pinnedWine.home.createOrEditLabel">Create or edit a Pinned Wine</h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 (click)="clear()">&times;</button>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" [hidden]="!pinnedVintage.id">
+        <div class="form-group" [hidden]="!pinnedWine.id">
             <label for="id" jhiTranslate="global.field.id">ID</label>
             <input type="text" class="form-control" id="id" name="id"
-                   [(ngModel)]="pinnedVintage.id" readonly />
+                   [(ngModel)]="pinnedWine.id" readonly />
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="cavavinApp.pinnedVintage.userId" for="field_userId">User Id</label>
+            <label class="form-control-label" jhiTranslate="cavavinApp.pinnedWine.userId" for="field_userId">User Id</label>
             <input type="number" class="form-control" name="userId" id="field_userId"
-                [(ngModel)]="pinnedVintage.userId" required />
+                [(ngModel)]="pinnedWine.userId" required />
             <div [hidden]="!(editForm.controls.userId?.dirty && editForm.controls.userId?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.userId?.errors?.required" jhiTranslate="entity.validation.required">
@@ -29,14 +29,14 @@
         </div>
 
         <div class="form-group">
-            <label jhiTranslate="cavavinApp.pinnedVintage.vintage" for="field_vintage">Vintage</label>
-            <select class="form-control" id="field_vintage" name="vintage" [(ngModel)]="pinnedVintage.vintage"  required>
-                <option [ngValue]="vintageOption.id === pinnedVintage.vintage?.id ? pinnedVintage.vintage : vintageOption" *ngFor="let vintageOption of vintages; trackBy: trackVintageById">{{vintageOption.id}}</option>
+            <label jhiTranslate="cavavinApp.pinnedWine.wine" for="field_wine">Wine</label>
+            <select class="form-control" id="field_wine" name="wine" [(ngModel)]="pinnedWine.wine"  required>
+                <option [ngValue]="wineOption.id === pinnedWine.wine?.id ? pinnedWine.wine : wineOption" *ngFor="let wineOption of wines; trackBy: trackWineById">{{wineOption.name}}</option>
             </select>
         </div>
-        <div [hidden]="!(editForm.controls.vintage?.dirty && editForm.controls.vintage?.invalid)">
+        <div [hidden]="!(editForm.controls.wine?.dirty && editForm.controls.wine?.invalid)">
             <small class="form-text text-danger"
-                [hidden]="!editForm.controls.vintage?.errors?.required" jhiTranslate="entity.validation.required">
+                [hidden]="!editForm.controls.wine?.errors?.required" jhiTranslate="entity.validation.required">
                 This field is required.
             </small>
         </div>
