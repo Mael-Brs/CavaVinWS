@@ -10,7 +10,7 @@ import { PinnedWine } from './pinned-wine.model';
 import { PinnedWinePopupService } from './pinned-wine-popup.service';
 import { PinnedWineService } from './pinned-wine.service';
 import { Wine, WineService } from '../wine';
-import { ResponseWrapper } from '../../shared';
+import { ResponseWrapper, Principal } from '../../shared';
 
 @Component({
     selector: 'jhi-pinned-wine-dialog',
@@ -20,6 +20,7 @@ export class PinnedWineDialogComponent implements OnInit {
 
     pinnedWine: PinnedWine;
     isSaving: boolean;
+    currentAccount: any;
 
     wines: Wine[];
 
@@ -28,7 +29,8 @@ export class PinnedWineDialogComponent implements OnInit {
         private alertService: JhiAlertService,
         private pinnedWineService: PinnedWineService,
         private wineService: WineService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private principal: Principal
     ) {
     }
 
@@ -36,6 +38,9 @@ export class PinnedWineDialogComponent implements OnInit {
         this.isSaving = false;
         this.wineService.query()
             .subscribe((res: ResponseWrapper) => { this.wines = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.principal.identity().then((account) => {
+            this.currentAccount = account;
+        });
     }
 
     clear() {
@@ -44,6 +49,7 @@ export class PinnedWineDialogComponent implements OnInit {
 
     save() {
         this.isSaving = true;
+        this.pinnedWine.userId = this.currentAccount.id;
         if (this.pinnedWine.id !== undefined) {
             this.subscribeToSaveResponse(
                 this.pinnedWineService.update(this.pinnedWine));
