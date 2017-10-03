@@ -9,6 +9,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { Cellar } from './cellar.model';
 import { CellarPopupService } from './cellar-popup.service';
 import { CellarService } from './cellar.service';
+import { Principal } from '../../shared';
 
 @Component({
     selector: 'jhi-cellar-dialog',
@@ -18,17 +19,22 @@ export class CellarDialogComponent implements OnInit {
 
     cellar: Cellar;
     isSaving: boolean;
+    currentAccount: any;
 
     constructor(
         public activeModal: NgbActiveModal,
         private alertService: JhiAlertService,
         private cellarService: CellarService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private principal: Principal
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
+        this.principal.identity().then((account) => {
+            this.currentAccount = account;
+        });
     }
 
     clear() {
@@ -37,6 +43,7 @@ export class CellarDialogComponent implements OnInit {
 
     save() {
         this.isSaving = true;
+        this.cellar.userId = this.currentAccount.id;
         if (this.cellar.id !== undefined) {
             this.subscribeToSaveResponse(
                 this.cellarService.update(this.cellar));
