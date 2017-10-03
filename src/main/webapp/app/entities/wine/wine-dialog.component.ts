@@ -11,7 +11,7 @@ import { WinePopupService } from './wine-popup.service';
 import { WineService } from './wine.service';
 import { Region, RegionService } from '../region';
 import { Color, ColorService } from '../color';
-import { ResponseWrapper } from '../../shared';
+import { ResponseWrapper, Principal } from '../../shared';
 
 @Component({
     selector: 'jhi-wine-dialog',
@@ -21,6 +21,7 @@ export class WineDialogComponent implements OnInit {
 
     wine: Wine;
     isSaving: boolean;
+    currentAccount: any;
 
     regions: Region[];
 
@@ -32,7 +33,8 @@ export class WineDialogComponent implements OnInit {
         private wineService: WineService,
         private regionService: RegionService,
         private colorService: ColorService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private principal: Principal
     ) {
     }
 
@@ -42,6 +44,9 @@ export class WineDialogComponent implements OnInit {
             .subscribe((res: ResponseWrapper) => { this.regions = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.colorService.query()
             .subscribe((res: ResponseWrapper) => { this.colors = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.principal.identity().then((account) => {
+            this.currentAccount = account;
+        });
     }
 
     clear() {
@@ -50,6 +55,7 @@ export class WineDialogComponent implements OnInit {
 
     save() {
         this.isSaving = true;
+        this.wine.creatorId = this.currentAccount.id;
         if (this.wine.id !== undefined) {
             this.subscribeToSaveResponse(
                 this.wineService.update(this.wine));
