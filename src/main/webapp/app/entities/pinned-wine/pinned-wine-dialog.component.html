@@ -12,21 +12,6 @@
             <input type="text" class="form-control" id="id" name="id"
                    [(ngModel)]="pinnedWine.id" readonly />
         </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="cavavinApp.pinnedWine.userId" for="field_userId">User Id</label>
-            <input type="number" class="form-control" name="userId" id="field_userId"
-                [(ngModel)]="pinnedWine.userId" required />
-            <div [hidden]="!(editForm.controls.userId?.dirty && editForm.controls.userId?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.userId?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-                <small class="form-text text-danger"
-                    [hidden]="!editForm.controls.userId?.errors?.number" jhiTranslate="entity.validation.number">
-                    This field should be a number.
-                </small>
-            </div>
-        </div>
 
         <div class="form-group">
             <label jhiTranslate="cavavinApp.pinnedWine.wine" for="field_wine">Wine</label>
