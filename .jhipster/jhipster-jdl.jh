@@ -49,7 +49,7 @@ relationship ManyToOne {
     WineInCellar{vintage required} to Vintage,
     WineAgingData{color(colorName) required} to Color,
     WineAgingData{region(regionName) required} to Region,
-    PinnedWine{vintage required} to Vintage
+    PinnedWine{wine required} to Wine
 }
 
 service Cellar, WineInCellar with serviceClass
