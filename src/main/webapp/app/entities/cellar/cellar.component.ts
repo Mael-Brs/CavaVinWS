@@ -16,48 +16,22 @@ export class CellarComponent implements OnInit, OnDestroy {
 cellars: Cellar[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
         private cellarService: CellarService,
         private alertService: JhiAlertService,
         private eventManager: JhiEventManager,
-        private activatedRoute: ActivatedRoute,
         private principal: Principal
     ) {
-        this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.cellarService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: ResponseWrapper) => this.cellars = res.json,
-                    (res: ResponseWrapper) => this.onError(res.json)
-                );
-            return;
-       }
         this.cellarService.query().subscribe(
             (res: ResponseWrapper) => {
                 this.cellars = res.json;
-                this.currentSearch = '';
             },
             (res: ResponseWrapper) => this.onError(res.json)
         );
-    }
-
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
-    clear() {
-        this.currentSearch = '';
-        this.loadAll();
     }
     ngOnInit() {
         this.loadAll();

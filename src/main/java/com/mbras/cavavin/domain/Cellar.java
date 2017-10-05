@@ -4,10 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -18,7 +17,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "cellar")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "cellar")
 public class Cellar implements Serializable {
 
     private static final long serialVersionUID = 1L;

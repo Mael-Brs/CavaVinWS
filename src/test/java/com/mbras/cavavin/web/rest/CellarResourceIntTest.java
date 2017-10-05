@@ -1,11 +1,13 @@
 package com.mbras.cavavin.web.rest;
 
 import com.mbras.cavavin.CavavinApp;
+
 import com.mbras.cavavin.domain.Cellar;
 import com.mbras.cavavin.repository.CellarRepository;
 import com.mbras.cavavin.service.CellarService;
 import com.mbras.cavavin.service.WineInCellarService;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
