@@ -4,7 +4,6 @@ import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.WineAgingData;
 
 import com.mbras.cavavin.repository.WineAgingDataRepository;
-import com.mbras.cavavin.repository.search.WineAgingDataSearchRepository;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -36,11 +35,8 @@ public class WineAgingDataResource {
 
     private final WineAgingDataRepository wineAgingDataRepository;
 
-    private final WineAgingDataSearchRepository wineAgingDataSearchRepository;
-
-    public WineAgingDataResource(WineAgingDataRepository wineAgingDataRepository, WineAgingDataSearchRepository wineAgingDataSearchRepository) {
+    public WineAgingDataResource(WineAgingDataRepository wineAgingDataRepository) {
         this.wineAgingDataRepository = wineAgingDataRepository;
-        this.wineAgingDataSearchRepository = wineAgingDataSearchRepository;
     }
 
     /**
@@ -58,7 +54,6 @@ public class WineAgingDataResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new wineAgingData cannot already have an ID")).body(null);
         }
         WineAgingData result = wineAgingDataRepository.save(wineAgingData);
-        wineAgingDataSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/wine-aging-data/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -81,7 +76,6 @@ public class WineAgingDataResource {
             return createWineAgingData(wineAgingData);
         }
         WineAgingData result = wineAgingDataRepository.save(wineAgingData);
-        wineAgingDataSearchRepository.save(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, wineAgingData.getId().toString()))
             .body(result);
@@ -124,24 +118,7 @@ public class WineAgingDataResource {
     public ResponseEntity<Void> deleteWineAgingData(@PathVariable Long id) {
         log.debug("REST request to delete WineAgingData : {}", id);
         wineAgingDataRepository.delete(id);
-        wineAgingDataSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
-
-    /**
-     * SEARCH  /_search/wine-aging-data?query=:query : search for the wineAgingData corresponding
-     * to the query.
-     *
-     * @param query the query of the wineAgingData search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/wine-aging-data")
-    @Timed
-    public List<WineAgingData> searchWineAgingData(@RequestParam String query) {
-        log.debug("REST request to search WineAgingData for query {}", query);
-        return StreamSupport
-            .stream(wineAgingDataSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 
 }

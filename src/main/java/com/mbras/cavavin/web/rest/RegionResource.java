@@ -4,7 +4,6 @@ import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.Region;
 
 import com.mbras.cavavin.repository.RegionRepository;
-import com.mbras.cavavin.repository.search.RegionSearchRepository;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -36,11 +35,8 @@ public class RegionResource {
 
     private final RegionRepository regionRepository;
 
-    private final RegionSearchRepository regionSearchRepository;
-
-    public RegionResource(RegionRepository regionRepository, RegionSearchRepository regionSearchRepository) {
+    public RegionResource(RegionRepository regionRepository) {
         this.regionRepository = regionRepository;
-        this.regionSearchRepository = regionSearchRepository;
     }
 
     /**
@@ -58,7 +54,6 @@ public class RegionResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new region cannot already have an ID")).body(null);
         }
         Region result = regionRepository.save(region);
-        regionSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/regions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -81,7 +76,6 @@ public class RegionResource {
             return createRegion(region);
         }
         Region result = regionRepository.save(region);
-        regionSearchRepository.save(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, region.getId().toString()))
             .body(result);
@@ -124,24 +118,7 @@ public class RegionResource {
     public ResponseEntity<Void> deleteRegion(@PathVariable Long id) {
         log.debug("REST request to delete Region : {}", id);
         regionRepository.delete(id);
-        regionSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
-
-    /**
-     * SEARCH  /_search/regions?query=:query : search for the region corresponding
-     * to the query.
-     *
-     * @param query the query of the region search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/regions")
-    @Timed
-    public List<Region> searchRegions(@RequestParam String query) {
-        log.debug("REST request to search Regions for query {}", query);
-        return StreamSupport
-            .stream(regionSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 
 }

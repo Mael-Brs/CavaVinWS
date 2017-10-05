@@ -146,18 +146,4 @@ public class CellarResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    /**
-     * SEARCH  /_search/cellars?query=:query : search for the cellar corresponding
-     * to the query.
-     *
-     * @param query the query of the cellar search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/cellars")
-    @Timed
-    public List<Cellar> searchCellars(@RequestParam String query) {
-        log.debug("REST request to search Cellars for query {}", query);
-        return cellarService.search(query);
-    }
-
 }
