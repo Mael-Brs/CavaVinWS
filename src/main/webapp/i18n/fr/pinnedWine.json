@@ -4,8 +4,7 @@
             "home": {
                 "title": "PinnedWines",
                 "createLabel": "Créer un nouveau Pinned Wine",
-                "createOrEditLabel": "Créer ou éditer un Pinned Wine",
-                "search": "Recherche pour Pinned Wine"
+                "createOrEditLabel": "Créer ou éditer un Pinned Wine"
             },
             "created": "Un nouveau Pinned Wine a été créé avec l'identifiant {{ param }}",
             "updated": "Le Pinned Wine avec l'identifiant {{ param }} a été mis à jour",

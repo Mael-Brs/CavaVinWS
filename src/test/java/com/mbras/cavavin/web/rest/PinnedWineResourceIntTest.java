@@ -1,10 +1,12 @@
 package com.mbras.cavavin.web.rest;
 
 import com.mbras.cavavin.CavavinApp;
+
 import com.mbras.cavavin.domain.PinnedWine;
 import com.mbras.cavavin.domain.Wine;
 import com.mbras.cavavin.repository.PinnedWineRepository;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
