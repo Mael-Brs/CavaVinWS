@@ -4,8 +4,7 @@
             "home": {
                 "title": "Vintages",
                 "createLabel": "Create a new Vintage",
-                "createOrEditLabel": "Create or edit a Vintage",
-                "search": "Search for Vintage"
+                "createOrEditLabel": "Create or edit a Vintage"
             },
             "created": "A new Vintage is created with identifier {{ param }}",
             "updated": "A Vintage is updated with identifier {{ param }}",
@@ -16,8 +15,8 @@
             "detail": {
                 "title": "Vintage"
             },
-            "bareCode": "Bare Code",
             "year": "Year",
+            "bareCode": "Bare Code",
             "wine": "Wine"
         }
     }
