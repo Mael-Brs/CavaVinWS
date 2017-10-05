@@ -2,7 +2,6 @@ package com.mbras.cavavin.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -15,7 +14,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "vintage")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "vintage")
 public class Vintage implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,12 +23,12 @@ public class Vintage implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "bare_code")
-    private Integer bareCode;
-
     @NotNull
     @Column(name = "jhi_year", nullable = false)
     private Integer year;
+
+    @Column(name = "bare_code")
+    private Integer bareCode;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @NotNull
@@ -44,19 +42,6 @@ public class Vintage implements Serializable {
         this.id = id;
     }
 
-    public Integer getBareCode() {
-        return bareCode;
-    }
-
-    public Vintage bareCode(Integer bareCode) {
-        this.bareCode = bareCode;
-        return this;
-    }
-
-    public void setBareCode(Integer bareCode) {
-        this.bareCode = bareCode;
-    }
-
     public Integer getYear() {
         return year;
     }
@@ -68,6 +53,19 @@ public class Vintage implements Serializable {
 
     public void setYear(Integer year) {
         this.year = year;
+    }
+
+    public Integer getBareCode() {
+        return bareCode;
+    }
+
+    public Vintage bareCode(Integer bareCode) {
+        this.bareCode = bareCode;
+        return this;
+    }
+
+    public void setBareCode(Integer bareCode) {
+        this.bareCode = bareCode;
     }
 
     public Wine getWine() {
@@ -107,8 +105,8 @@ public class Vintage implements Serializable {
     public String toString() {
         return "Vintage{" +
             "id=" + getId() +
-            ", bareCode='" + getBareCode() + "'" +
             ", year='" + getYear() + "'" +
+            ", bareCode='" + getBareCode() + "'" +
             "}";
     }
 }

@@ -13,11 +13,6 @@
                    [(ngModel)]="vintage.id" readonly />
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="cavavinApp.vintage.bareCode" for="field_bareCode">Bare Code</label>
-            <input type="number" class="form-control" name="bareCode" id="field_bareCode"
-                [(ngModel)]="vintage.bareCode"  />
-        </div>
-        <div class="form-group">
             <label class="form-control-label" jhiTranslate="cavavinApp.vintage.year" for="field_year">Year</label>
             <input type="number" class="form-control" name="year" id="field_year"
                 [(ngModel)]="vintage.year" required />
@@ -31,6 +26,11 @@
                     This field should be a number.
                 </small>
             </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.vintage.bareCode" for="field_bareCode">Bare Code</label>
+            <input type="number" class="form-control" name="bareCode" id="field_bareCode"
+                [(ngModel)]="vintage.bareCode"  />
         </div>
 
         <div class="form-group">
