@@ -4,8 +4,7 @@
             "home": {
                 "title": "Colors",
                 "createLabel": "Create a new Color",
-                "createOrEditLabel": "Create or edit a Color",
-                "search": "Search for Color"
+                "createOrEditLabel": "Create or edit a Color"
             },
             "created": "A new Color is created with identifier {{ param }}",
             "updated": "A Color is updated with identifier {{ param }}",
