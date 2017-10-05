@@ -3,7 +3,6 @@ package com.mbras.cavavin.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.PinnedWine;
 import com.mbras.cavavin.repository.PinnedWineRepository;
-import com.mbras.cavavin.repository.search.PinnedWineSearchRepository;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -34,11 +33,9 @@ public class PinnedWineResource {
 
     private final PinnedWineRepository pinnedWineRepository;
 
-    private final PinnedWineSearchRepository pinnedWineSearchRepository;
 
-    public PinnedWineResource(PinnedWineRepository pinnedWineRepository, PinnedWineSearchRepository pinnedWineSearchRepository) {
+    public PinnedWineResource(PinnedWineRepository pinnedWineRepository) {
         this.pinnedWineRepository = pinnedWineRepository;
-        this.pinnedWineSearchRepository = pinnedWineSearchRepository;
     }
 
     /**
@@ -56,7 +53,6 @@ public class PinnedWineResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new pinnedWine cannot already have an ID")).body(null);
         }
         PinnedWine result = pinnedWineRepository.save(pinnedWine);
-        pinnedWineSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/pinned-wines/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -79,7 +75,6 @@ public class PinnedWineResource {
             return createPinnedWine(pinnedWine);
         }
         PinnedWine result = pinnedWineRepository.save(pinnedWine);
-        pinnedWineSearchRepository.save(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, pinnedWine.getId().toString()))
             .body(result);
@@ -134,24 +129,7 @@ public class PinnedWineResource {
     public ResponseEntity<Void> deletePinnedWine(@PathVariable Long id) {
         log.debug("REST request to delete PinnedWine : {}", id);
         pinnedWineRepository.delete(id);
-        pinnedWineSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
-
-    /**
-     * SEARCH  /_search/pinned-wines?query=:query : search for the pinnedWine corresponding
-     * to the query.
-     *
-     * @param query the query of the pinnedWine search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/pinned-wines")
-    @Timed
-    public List<PinnedWine> searchPinnedWines(@RequestParam String query) {
-        log.debug("REST request to search PinnedWines for query {}", query);
-        return StreamSupport
-            .stream(pinnedWineSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 
 }
