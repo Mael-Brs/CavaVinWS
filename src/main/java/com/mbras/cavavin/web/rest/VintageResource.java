@@ -4,7 +4,6 @@ import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.Vintage;
 
 import com.mbras.cavavin.repository.VintageRepository;
-import com.mbras.cavavin.repository.search.VintageSearchRepository;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -18,10 +17,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Vintage.
@@ -36,11 +31,8 @@ public class VintageResource {
 
     private final VintageRepository vintageRepository;
 
-    private final VintageSearchRepository vintageSearchRepository;
-
-    public VintageResource(VintageRepository vintageRepository, VintageSearchRepository vintageSearchRepository) {
+    public VintageResource(VintageRepository vintageRepository) {
         this.vintageRepository = vintageRepository;
-        this.vintageSearchRepository = vintageSearchRepository;
     }
 
     /**
@@ -58,7 +50,6 @@ public class VintageResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new vintage cannot already have an ID")).body(null);
         }
         Vintage result = vintageRepository.save(vintage);
-        vintageSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/vintages/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -81,7 +72,6 @@ public class VintageResource {
             return createVintage(vintage);
         }
         Vintage result = vintageRepository.save(vintage);
-        vintageSearchRepository.save(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, vintage.getId().toString()))
             .body(result);
@@ -138,24 +128,6 @@ public class VintageResource {
     public ResponseEntity<Void> deleteVintage(@PathVariable Long id) {
         log.debug("REST request to delete Vintage : {}", id);
         vintageRepository.delete(id);
-        vintageSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/vintages?query=:query : search for the vintage corresponding
-     * to the query.
-     *
-     * @param query the query of the vintage search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/vintages")
-    @Timed
-    public List<Vintage> searchVintages(@RequestParam String query) {
-        log.debug("REST request to search Vintages for query {}", query);
-        return StreamSupport
-            .stream(vintageSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
-    }
-
 }
