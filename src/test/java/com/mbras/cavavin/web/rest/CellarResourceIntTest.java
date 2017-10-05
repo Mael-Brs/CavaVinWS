@@ -3,7 +3,6 @@ package com.mbras.cavavin.web.rest;
 import com.mbras.cavavin.CavavinApp;
 import com.mbras.cavavin.domain.Cellar;
 import com.mbras.cavavin.repository.CellarRepository;
-import com.mbras.cavavin.repository.search.CellarSearchRepository;
 import com.mbras.cavavin.service.CellarService;
 import com.mbras.cavavin.service.WineInCellarService;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
@@ -53,9 +52,6 @@ public class CellarResourceIntTest {
     private CellarService cellarService;
 
     @Autowired
-    private CellarSearchRepository cellarSearchRepository;
-
-    @Autowired
     private WineInCellarService wineInCellarService;
 
     @Autowired
@@ -99,7 +95,6 @@ public class CellarResourceIntTest {
 
     @Before
     public void initTest() {
-        cellarSearchRepository.deleteAll();
         cellar = createEntity(em);
     }
 
@@ -120,10 +115,6 @@ public class CellarResourceIntTest {
         Cellar testCellar = cellarList.get(cellarList.size() - 1);
         assertThat(testCellar.getCapacity()).isEqualTo(DEFAULT_CAPACITY);
         assertThat(testCellar.getUserId()).isEqualTo(DEFAULT_USER_ID);
-
-        // Validate the Cellar in Elasticsearch
-        Cellar cellarEs = cellarSearchRepository.findOne(testCellar.getId());
-        assertThat(cellarEs).isEqualToComparingFieldByField(testCellar);
     }
 
     @Test
@@ -231,10 +222,6 @@ public class CellarResourceIntTest {
         Cellar testCellar = cellarList.get(cellarList.size() - 1);
         assertThat(testCellar.getCapacity()).isEqualTo(UPDATED_CAPACITY);
         assertThat(testCellar.getUserId()).isEqualTo(UPDATED_USER_ID);
-
-        // Validate the Cellar in Elasticsearch
-        Cellar cellarEs = cellarSearchRepository.findOne(testCellar.getId());
-        assertThat(cellarEs).isEqualToComparingFieldByField(testCellar);
     }
 
     @Test
@@ -268,28 +255,9 @@ public class CellarResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean cellarExistsInEs = cellarSearchRepository.exists(cellar.getId());
-        assertThat(cellarExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Cellar> cellarList = cellarRepository.findAll();
         assertThat(cellarList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchCellar() throws Exception {
-        // Initialize the database
-        cellarService.save(cellar);
-
-        // Search the cellar
-        restCellarMockMvc.perform(get("/api/_search/cellars?query=id:" + cellar.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(cellar.getId().intValue())))
-            .andExpect(jsonPath("$.[*].capacity").value(hasItem(DEFAULT_CAPACITY)))
-            .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID.intValue())));
     }
 
     @Test

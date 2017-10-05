@@ -11,17 +11,18 @@
     ],
     "fields": [
         {
-            "fieldName": "bareCode",
-            "fieldType": "Integer"
-        },
-        {
             "fieldName": "year",
             "fieldType": "Integer",
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "bareCode",
+            "fieldType": "Integer"
         }
     ],
+    "changelogDate": "20171005151651",
     "entityTableName": "vintage",
     "dto": "no",
     "pagination": "no",
