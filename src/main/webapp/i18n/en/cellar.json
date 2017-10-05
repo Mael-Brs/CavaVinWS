@@ -4,8 +4,7 @@
             "home": {
                 "title": "Cellars",
                 "createLabel": "Create a new Cellar",
-                "createOrEditLabel": "Create or edit a Cellar",
-                "search": "Search for Cellar"
+                "createOrEditLabel": "Create or edit a Cellar"
             },
             "created": "A new Cellar is created with identifier {{ param }}",
             "updated": "A Cellar is updated with identifier {{ param }}",
