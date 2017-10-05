@@ -4,7 +4,6 @@ import com.mbras.cavavin.CavavinApp;
 import com.mbras.cavavin.domain.PinnedWine;
 import com.mbras.cavavin.domain.Wine;
 import com.mbras.cavavin.repository.PinnedWineRepository;
-import com.mbras.cavavin.repository.search.PinnedWineSearchRepository;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,9 +44,6 @@ public class PinnedWineResourceIntTest {
     private PinnedWineRepository pinnedWineRepository;
 
     @Autowired
-    private PinnedWineSearchRepository pinnedWineSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -66,7 +62,7 @@ public class PinnedWineResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        PinnedWineResource pinnedWineResource = new PinnedWineResource(pinnedWineRepository, pinnedWineSearchRepository);
+        PinnedWineResource pinnedWineResource = new PinnedWineResource(pinnedWineRepository);
         this.restPinnedWineMockMvc = MockMvcBuilders.standaloneSetup(pinnedWineResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -92,7 +88,6 @@ public class PinnedWineResourceIntTest {
 
     @Before
     public void initTest() {
-        pinnedWineSearchRepository.deleteAll();
         pinnedWine = createEntity(em);
     }
 
@@ -112,10 +107,6 @@ public class PinnedWineResourceIntTest {
         assertThat(pinnedWineList).hasSize(databaseSizeBeforeCreate + 1);
         PinnedWine testPinnedWine = pinnedWineList.get(pinnedWineList.size() - 1);
         assertThat(testPinnedWine.getUserId()).isEqualTo(DEFAULT_USER_ID);
-
-        // Validate the PinnedWine in Elasticsearch
-        PinnedWine pinnedWineEs = pinnedWineSearchRepository.findOne(testPinnedWine.getId());
-        assertThat(pinnedWineEs).isEqualToComparingFieldByField(testPinnedWine);
     }
 
     @Test
@@ -197,7 +188,6 @@ public class PinnedWineResourceIntTest {
     public void updatePinnedWine() throws Exception {
         // Initialize the database
         pinnedWineRepository.saveAndFlush(pinnedWine);
-        pinnedWineSearchRepository.save(pinnedWine);
         int databaseSizeBeforeUpdate = pinnedWineRepository.findAll().size();
 
         // Update the pinnedWine
@@ -215,10 +205,6 @@ public class PinnedWineResourceIntTest {
         assertThat(pinnedWineList).hasSize(databaseSizeBeforeUpdate);
         PinnedWine testPinnedWine = pinnedWineList.get(pinnedWineList.size() - 1);
         assertThat(testPinnedWine.getUserId()).isEqualTo(UPDATED_USER_ID);
-
-        // Validate the PinnedWine in Elasticsearch
-        PinnedWine pinnedWineEs = pinnedWineSearchRepository.findOne(testPinnedWine.getId());
-        assertThat(pinnedWineEs).isEqualToComparingFieldByField(testPinnedWine);
     }
 
     @Test
@@ -244,7 +230,6 @@ public class PinnedWineResourceIntTest {
     public void deletePinnedWine() throws Exception {
         // Initialize the database
         pinnedWineRepository.saveAndFlush(pinnedWine);
-        pinnedWineSearchRepository.save(pinnedWine);
         int databaseSizeBeforeDelete = pinnedWineRepository.findAll().size();
 
         // Get the pinnedWine
@@ -252,28 +237,9 @@ public class PinnedWineResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean pinnedWineExistsInEs = pinnedWineSearchRepository.exists(pinnedWine.getId());
-        assertThat(pinnedWineExistsInEs).isFalse();
-
         // Validate the database is empty
         List<PinnedWine> pinnedWineList = pinnedWineRepository.findAll();
         assertThat(pinnedWineList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchPinnedWine() throws Exception {
-        // Initialize the database
-        pinnedWineRepository.saveAndFlush(pinnedWine);
-        pinnedWineSearchRepository.save(pinnedWine);
-
-        // Search the pinnedWine
-        restPinnedWineMockMvc.perform(get("/api/_search/pinned-wines?query=id:" + pinnedWine.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(pinnedWine.getId().intValue())))
-            .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID.intValue())));
     }
 
     @Test

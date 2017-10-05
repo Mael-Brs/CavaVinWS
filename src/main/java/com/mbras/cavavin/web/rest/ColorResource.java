@@ -4,7 +4,6 @@ import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.Color;
 
 import com.mbras.cavavin.repository.ColorRepository;
-import com.mbras.cavavin.repository.search.ColorSearchRepository;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -36,11 +35,8 @@ public class ColorResource {
 
     private final ColorRepository colorRepository;
 
-    private final ColorSearchRepository colorSearchRepository;
-
-    public ColorResource(ColorRepository colorRepository, ColorSearchRepository colorSearchRepository) {
+    public ColorResource(ColorRepository colorRepository) {
         this.colorRepository = colorRepository;
-        this.colorSearchRepository = colorSearchRepository;
     }
 
     /**
@@ -58,7 +54,6 @@ public class ColorResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new color cannot already have an ID")).body(null);
         }
         Color result = colorRepository.save(color);
-        colorSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/colors/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -81,7 +76,6 @@ public class ColorResource {
             return createColor(color);
         }
         Color result = colorRepository.save(color);
-        colorSearchRepository.save(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, color.getId().toString()))
             .body(result);
@@ -124,24 +118,7 @@ public class ColorResource {
     public ResponseEntity<Void> deleteColor(@PathVariable Long id) {
         log.debug("REST request to delete Color : {}", id);
         colorRepository.delete(id);
-        colorSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
-
-    /**
-     * SEARCH  /_search/colors?query=:query : search for the color corresponding
-     * to the query.
-     *
-     * @param query the query of the color search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/colors")
-    @Timed
-    public List<Color> searchColors(@RequestParam String query) {
-        log.debug("REST request to search Colors for query {}", query);
-        return StreamSupport
-            .stream(colorSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 
 }

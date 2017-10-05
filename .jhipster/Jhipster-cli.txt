@@ -1,1 +1,1 @@
-jhipster import-jdl d:\Profiles\mbras\Documents\GitHub\CavaVinWS\.jhipster\jhipster-jdl.jh
+jhipster import-jdl d:\Profiles\mbras\Documents\GitHub\CavaVinWS\.jhipster\jhipster-jdl.jh --json-only
