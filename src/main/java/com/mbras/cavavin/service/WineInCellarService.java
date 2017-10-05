@@ -5,7 +5,6 @@ import com.mbras.cavavin.repository.VintageRepository;
 import com.mbras.cavavin.repository.WineAgingDataRepository;
 import com.mbras.cavavin.repository.WineInCellarRepository;
 import com.mbras.cavavin.repository.WineRepository;
-import com.mbras.cavavin.repository.search.VintageSearchRepository;
 import com.mbras.cavavin.repository.search.WineInCellarSearchRepository;
 import com.mbras.cavavin.repository.search.WineSearchRepository;
 import org.slf4j.Logger;
@@ -37,18 +36,15 @@ public class WineInCellarService {
 
     private final WineSearchRepository wineSearchRepository;
 
-    private final VintageSearchRepository vintageSearchRepository;
-
     private final VintageRepository vintageRepository;
 
     private final WineAgingDataRepository wineAgingDataRepository;
 
-    public WineInCellarService(WineInCellarRepository wineInCellarRepository, WineInCellarSearchRepository wineInCellarSearchRepository, WineRepository wineRepository, WineSearchRepository wineSearchRepository, VintageSearchRepository vintageSearchRepository, VintageRepository vintageRepository, WineAgingDataRepository wineAgingDataRepository) {
+    public WineInCellarService(WineInCellarRepository wineInCellarRepository, WineInCellarSearchRepository wineInCellarSearchRepository, WineRepository wineRepository, WineSearchRepository wineSearchRepository, VintageRepository vintageRepository, WineAgingDataRepository wineAgingDataRepository) {
         this.wineInCellarRepository = wineInCellarRepository;
         this.wineInCellarSearchRepository = wineInCellarSearchRepository;
         this.wineRepository = wineRepository;
         this.wineSearchRepository = wineSearchRepository;
-        this.vintageSearchRepository = vintageSearchRepository;
         this.vintageRepository = vintageRepository;
         this.wineAgingDataRepository = wineAgingDataRepository;
     }
@@ -85,7 +81,6 @@ public class WineInCellarService {
         newVintage.setWine(newWine);
 
         newVintage = vintageRepository.save(newVintage);
-        vintageSearchRepository.save(newVintage);
         wineInCellar.setVintage(newVintage);
 
         if(wineInCellar.getMaxKeep() == null || wineInCellar.getMinKeep() == null) {
