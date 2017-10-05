@@ -4,7 +4,6 @@ import com.mbras.cavavin.CavavinApp;
 
 import com.mbras.cavavin.domain.Region;
 import com.mbras.cavavin.repository.RegionRepository;
-import com.mbras.cavavin.repository.search.RegionSearchRepository;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -45,9 +44,6 @@ public class RegionResourceIntTest {
     private RegionRepository regionRepository;
 
     @Autowired
-    private RegionSearchRepository regionSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -66,7 +62,7 @@ public class RegionResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        RegionResource regionResource = new RegionResource(regionRepository, regionSearchRepository);
+        RegionResource regionResource = new RegionResource(regionRepository);
         this.restRegionMockMvc = MockMvcBuilders.standaloneSetup(regionResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -87,7 +83,6 @@ public class RegionResourceIntTest {
 
     @Before
     public void initTest() {
-        regionSearchRepository.deleteAll();
         region = createEntity(em);
     }
 
@@ -107,10 +102,6 @@ public class RegionResourceIntTest {
         assertThat(regionList).hasSize(databaseSizeBeforeCreate + 1);
         Region testRegion = regionList.get(regionList.size() - 1);
         assertThat(testRegion.getRegionName()).isEqualTo(DEFAULT_REGION_NAME);
-
-        // Validate the Region in Elasticsearch
-        Region regionEs = regionSearchRepository.findOne(testRegion.getId());
-        assertThat(regionEs).isEqualToComparingFieldByField(testRegion);
     }
 
     @Test
@@ -191,7 +182,6 @@ public class RegionResourceIntTest {
     public void updateRegion() throws Exception {
         // Initialize the database
         regionRepository.saveAndFlush(region);
-        regionSearchRepository.save(region);
         int databaseSizeBeforeUpdate = regionRepository.findAll().size();
 
         // Update the region
@@ -209,10 +199,6 @@ public class RegionResourceIntTest {
         assertThat(regionList).hasSize(databaseSizeBeforeUpdate);
         Region testRegion = regionList.get(regionList.size() - 1);
         assertThat(testRegion.getRegionName()).isEqualTo(UPDATED_REGION_NAME);
-
-        // Validate the Region in Elasticsearch
-        Region regionEs = regionSearchRepository.findOne(testRegion.getId());
-        assertThat(regionEs).isEqualToComparingFieldByField(testRegion);
     }
 
     @Test
@@ -238,7 +224,6 @@ public class RegionResourceIntTest {
     public void deleteRegion() throws Exception {
         // Initialize the database
         regionRepository.saveAndFlush(region);
-        regionSearchRepository.save(region);
         int databaseSizeBeforeDelete = regionRepository.findAll().size();
 
         // Get the region
@@ -246,28 +231,9 @@ public class RegionResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean regionExistsInEs = regionSearchRepository.exists(region.getId());
-        assertThat(regionExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Region> regionList = regionRepository.findAll();
         assertThat(regionList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchRegion() throws Exception {
-        // Initialize the database
-        regionRepository.saveAndFlush(region);
-        regionSearchRepository.save(region);
-
-        // Search the region
-        restRegionMockMvc.perform(get("/api/_search/regions?query=id:" + region.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(region.getId().intValue())))
-            .andExpect(jsonPath("$.[*].regionName").value(hasItem(DEFAULT_REGION_NAME.toString())));
     }
 
     @Test

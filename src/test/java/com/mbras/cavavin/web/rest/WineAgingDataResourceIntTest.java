@@ -6,7 +6,6 @@ import com.mbras.cavavin.domain.WineAgingData;
 import com.mbras.cavavin.domain.Color;
 import com.mbras.cavavin.domain.Region;
 import com.mbras.cavavin.repository.WineAgingDataRepository;
-import com.mbras.cavavin.repository.search.WineAgingDataSearchRepository;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -50,9 +49,6 @@ public class WineAgingDataResourceIntTest {
     private WineAgingDataRepository wineAgingDataRepository;
 
     @Autowired
-    private WineAgingDataSearchRepository wineAgingDataSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -71,7 +67,7 @@ public class WineAgingDataResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        WineAgingDataResource wineAgingDataResource = new WineAgingDataResource(wineAgingDataRepository, wineAgingDataSearchRepository);
+        WineAgingDataResource wineAgingDataResource = new WineAgingDataResource(wineAgingDataRepository);
         this.restWineAgingDataMockMvc = MockMvcBuilders.standaloneSetup(wineAgingDataResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -103,7 +99,6 @@ public class WineAgingDataResourceIntTest {
 
     @Before
     public void initTest() {
-        wineAgingDataSearchRepository.deleteAll();
         wineAgingData = createEntity(em);
     }
 
@@ -124,10 +119,6 @@ public class WineAgingDataResourceIntTest {
         WineAgingData testWineAgingData = wineAgingDataList.get(wineAgingDataList.size() - 1);
         assertThat(testWineAgingData.getMinKeep()).isEqualTo(DEFAULT_MIN_KEEP);
         assertThat(testWineAgingData.getMaxKeep()).isEqualTo(DEFAULT_MAX_KEEP);
-
-        // Validate the WineAgingData in Elasticsearch
-        WineAgingData wineAgingDataEs = wineAgingDataSearchRepository.findOne(testWineAgingData.getId());
-        assertThat(wineAgingDataEs).isEqualToComparingFieldByField(testWineAgingData);
     }
 
     @Test
@@ -192,7 +183,6 @@ public class WineAgingDataResourceIntTest {
     public void updateWineAgingData() throws Exception {
         // Initialize the database
         wineAgingDataRepository.saveAndFlush(wineAgingData);
-        wineAgingDataSearchRepository.save(wineAgingData);
         int databaseSizeBeforeUpdate = wineAgingDataRepository.findAll().size();
 
         // Update the wineAgingData
@@ -212,10 +202,6 @@ public class WineAgingDataResourceIntTest {
         WineAgingData testWineAgingData = wineAgingDataList.get(wineAgingDataList.size() - 1);
         assertThat(testWineAgingData.getMinKeep()).isEqualTo(UPDATED_MIN_KEEP);
         assertThat(testWineAgingData.getMaxKeep()).isEqualTo(UPDATED_MAX_KEEP);
-
-        // Validate the WineAgingData in Elasticsearch
-        WineAgingData wineAgingDataEs = wineAgingDataSearchRepository.findOne(testWineAgingData.getId());
-        assertThat(wineAgingDataEs).isEqualToComparingFieldByField(testWineAgingData);
     }
 
     @Test
@@ -241,7 +227,6 @@ public class WineAgingDataResourceIntTest {
     public void deleteWineAgingData() throws Exception {
         // Initialize the database
         wineAgingDataRepository.saveAndFlush(wineAgingData);
-        wineAgingDataSearchRepository.save(wineAgingData);
         int databaseSizeBeforeDelete = wineAgingDataRepository.findAll().size();
 
         // Get the wineAgingData
@@ -249,29 +234,9 @@ public class WineAgingDataResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean wineAgingDataExistsInEs = wineAgingDataSearchRepository.exists(wineAgingData.getId());
-        assertThat(wineAgingDataExistsInEs).isFalse();
-
         // Validate the database is empty
         List<WineAgingData> wineAgingDataList = wineAgingDataRepository.findAll();
         assertThat(wineAgingDataList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchWineAgingData() throws Exception {
-        // Initialize the database
-        wineAgingDataRepository.saveAndFlush(wineAgingData);
-        wineAgingDataSearchRepository.save(wineAgingData);
-
-        // Search the wineAgingData
-        restWineAgingDataMockMvc.perform(get("/api/_search/wine-aging-data?query=id:" + wineAgingData.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(wineAgingData.getId().intValue())))
-            .andExpect(jsonPath("$.[*].minKeep").value(hasItem(DEFAULT_MIN_KEEP)))
-            .andExpect(jsonPath("$.[*].maxKeep").value(hasItem(DEFAULT_MAX_KEEP)));
     }
 
     @Test
