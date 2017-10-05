@@ -2,6 +2,7 @@ package com.mbras.cavavin.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.PinnedWine;
+
 import com.mbras.cavavin.repository.PinnedWineRepository;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -13,12 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing PinnedWine.
@@ -32,7 +30,6 @@ public class PinnedWineResource {
     private static final String ENTITY_NAME = "pinnedWine";
 
     private final PinnedWineRepository pinnedWineRepository;
-
 
     public PinnedWineResource(PinnedWineRepository pinnedWineRepository) {
         this.pinnedWineRepository = pinnedWineRepository;
@@ -131,5 +128,4 @@ public class PinnedWineResource {
         pinnedWineRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
 }
