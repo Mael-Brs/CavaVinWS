@@ -4,8 +4,8 @@
         {
             "relationshipType": "many-to-one",
             "relationshipValidateRules": "required",
-            "relationshipName": "vintage",
-            "otherEntityName": "vintage",
+            "relationshipName": "wine",
+            "otherEntityName": "wine",
             "otherEntityField": "id"
         }
     ],
