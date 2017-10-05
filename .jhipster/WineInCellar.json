@@ -45,8 +45,10 @@
             ]
         }
     ],
+    "changelogDate": "20171005151652",
     "entityTableName": "wine_in_cellar",
     "dto": "no",
     "pagination": "no",
-    "service": "serviceClass"
+    "service": "serviceClass",
+    "searchEngine": "elasticsearch"
 }
