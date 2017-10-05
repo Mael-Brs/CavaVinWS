@@ -8,10 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing Cellar.
@@ -36,8 +32,7 @@ public class CellarService {
      */
     public Cellar save(Cellar cellar) {
         log.debug("Request to save Cellar : {}", cellar);
-        Cellar result = cellarRepository.save(cellar);
-        return result;
+        return cellarRepository.save(cellar);
     }
 
     /**
