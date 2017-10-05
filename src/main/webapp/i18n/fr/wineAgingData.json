@@ -4,8 +4,7 @@
             "home": {
                 "title": "WineAgingData",
                 "createLabel": "Créer un nouveau Wine Aging Data",
-                "createOrEditLabel": "Créer ou éditer un Wine Aging Data",
-                "search": "Recherche pour Wine Aging Data"
+                "createOrEditLabel": "Créer ou éditer un Wine Aging Data"
             },
             "created": "Un nouveau Wine Aging Data a été créé avec l'identifiant {{ param }}",
             "updated": "Le Wine Aging Data avec l'identifiant {{ param }} a été mis à jour",
