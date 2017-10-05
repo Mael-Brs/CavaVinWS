@@ -4,7 +4,6 @@ import com.mbras.cavavin.CavavinApp;
 
 import com.mbras.cavavin.domain.Color;
 import com.mbras.cavavin.repository.ColorRepository;
-import com.mbras.cavavin.repository.search.ColorSearchRepository;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -45,9 +44,6 @@ public class ColorResourceIntTest {
     private ColorRepository colorRepository;
 
     @Autowired
-    private ColorSearchRepository colorSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -66,7 +62,7 @@ public class ColorResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ColorResource colorResource = new ColorResource(colorRepository, colorSearchRepository);
+        ColorResource colorResource = new ColorResource(colorRepository);
         this.restColorMockMvc = MockMvcBuilders.standaloneSetup(colorResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -87,7 +83,6 @@ public class ColorResourceIntTest {
 
     @Before
     public void initTest() {
-        colorSearchRepository.deleteAll();
         color = createEntity(em);
     }
 
@@ -107,10 +102,6 @@ public class ColorResourceIntTest {
         assertThat(colorList).hasSize(databaseSizeBeforeCreate + 1);
         Color testColor = colorList.get(colorList.size() - 1);
         assertThat(testColor.getColorName()).isEqualTo(DEFAULT_COLOR_NAME);
-
-        // Validate the Color in Elasticsearch
-        Color colorEs = colorSearchRepository.findOne(testColor.getId());
-        assertThat(colorEs).isEqualToComparingFieldByField(testColor);
     }
 
     @Test
@@ -191,7 +182,6 @@ public class ColorResourceIntTest {
     public void updateColor() throws Exception {
         // Initialize the database
         colorRepository.saveAndFlush(color);
-        colorSearchRepository.save(color);
         int databaseSizeBeforeUpdate = colorRepository.findAll().size();
 
         // Update the color
@@ -209,10 +199,6 @@ public class ColorResourceIntTest {
         assertThat(colorList).hasSize(databaseSizeBeforeUpdate);
         Color testColor = colorList.get(colorList.size() - 1);
         assertThat(testColor.getColorName()).isEqualTo(UPDATED_COLOR_NAME);
-
-        // Validate the Color in Elasticsearch
-        Color colorEs = colorSearchRepository.findOne(testColor.getId());
-        assertThat(colorEs).isEqualToComparingFieldByField(testColor);
     }
 
     @Test
@@ -238,7 +224,6 @@ public class ColorResourceIntTest {
     public void deleteColor() throws Exception {
         // Initialize the database
         colorRepository.saveAndFlush(color);
-        colorSearchRepository.save(color);
         int databaseSizeBeforeDelete = colorRepository.findAll().size();
 
         // Get the color
@@ -246,28 +231,9 @@ public class ColorResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean colorExistsInEs = colorSearchRepository.exists(color.getId());
-        assertThat(colorExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Color> colorList = colorRepository.findAll();
         assertThat(colorList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchColor() throws Exception {
-        // Initialize the database
-        colorRepository.saveAndFlush(color);
-        colorSearchRepository.save(color);
-
-        // Search the color
-        restColorMockMvc.perform(get("/api/_search/colors?query=id:" + color.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(color.getId().intValue())))
-            .andExpect(jsonPath("$.[*].colorName").value(hasItem(DEFAULT_COLOR_NAME.toString())));
     }
 
     @Test
