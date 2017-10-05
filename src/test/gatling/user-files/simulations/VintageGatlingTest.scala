@@ -68,7 +68,7 @@ class VintageGatlingTest extends Simulation {
             .exec(http("Create new vintage")
             .post("/api/vintages")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "bareCode":"0", "year":"0"}""")).asJSON
+            .body(StringBody("""{"id":null, "year":"0", "bareCode":"0"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_vintage_url"))).exitHereIfFailed
             .pause(10)
