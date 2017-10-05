@@ -16,48 +16,22 @@ export class VintageComponent implements OnInit, OnDestroy {
 vintages: Vintage[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
         private vintageService: VintageService,
         private alertService: JhiAlertService,
         private eventManager: JhiEventManager,
-        private activatedRoute: ActivatedRoute,
         private principal: Principal
     ) {
-        this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.vintageService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: ResponseWrapper) => this.vintages = res.json,
-                    (res: ResponseWrapper) => this.onError(res.json)
-                );
-            return;
-       }
         this.vintageService.query().subscribe(
             (res: ResponseWrapper) => {
                 this.vintages = res.json;
-                this.currentSearch = '';
             },
             (res: ResponseWrapper) => this.onError(res.json)
         );
-    }
-
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
-    clear() {
-        this.currentSearch = '';
-        this.loadAll();
     }
     ngOnInit() {
         this.loadAll();

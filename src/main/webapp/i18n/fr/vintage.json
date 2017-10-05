@@ -4,8 +4,7 @@
             "home": {
                 "title": "Vintages",
                 "createLabel": "Créer un nouveau Vintage",
-                "createOrEditLabel": "Créer ou éditer un Vintage",
-                "search": "Recherche pour Vintage"
+                "createOrEditLabel": "Créer ou éditer un Vintage"
             },
             "created": "Un nouveau Vintage a été créé avec l'identifiant {{ param }}",
             "updated": "Le Vintage avec l'identifiant {{ param }} a été mis à jour",
@@ -16,8 +15,8 @@
             "detail": {
                 "title": "Vintage"
             },
-            "bareCode": "Bare Code",
             "year": "Year",
+            "bareCode": "Bare Code",
             "wine": "Wine"
         }
     }
