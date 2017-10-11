@@ -75,7 +75,7 @@ public class CellarResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        CellarResource cellarResource = new CellarResource(cellarService,wineInCellarService);
+        final CellarResource cellarResource = new CellarResource(cellarService, wineInCellarService);
         this.restCellarMockMvc = MockMvcBuilders.standaloneSetup(cellarResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -133,7 +133,7 @@ public class CellarResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(cellar)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Cellar in the database
         List<Cellar> cellarList = cellarRepository.findAll();
         assertThat(cellarList).hasSize(databaseSizeBeforeCreate);
     }
