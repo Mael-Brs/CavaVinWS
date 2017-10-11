@@ -62,7 +62,7 @@ public class ColorResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ColorResource colorResource = new ColorResource(colorRepository);
+        final ColorResource colorResource = new ColorResource(colorRepository);
         this.restColorMockMvc = MockMvcBuilders.standaloneSetup(colorResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -118,7 +118,7 @@ public class ColorResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(color)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Color in the database
         List<Color> colorList = colorRepository.findAll();
         assertThat(colorList).hasSize(databaseSizeBeforeCreate);
     }
