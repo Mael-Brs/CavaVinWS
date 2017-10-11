@@ -1,6 +1,6 @@
 {
   "generator-jhipster": {
-    "jhipsterVersion": "4.6.2",
+    "jhipsterVersion": "4.9.0",
     "baseName": "cavavin",
     "packageName": "com.mbras.cavavin",
     "packageFolder": "com/mbras/cavavin",
@@ -31,6 +31,7 @@
     "languages": [
       "fr",
       "en"
-    ]
+    ],
+    "searchEngine": "elasticsearch"
   }
 }
