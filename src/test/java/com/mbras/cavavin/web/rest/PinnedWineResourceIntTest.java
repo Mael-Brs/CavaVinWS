@@ -64,7 +64,7 @@ public class PinnedWineResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        PinnedWineResource pinnedWineResource = new PinnedWineResource(pinnedWineRepository);
+        final PinnedWineResource pinnedWineResource = new PinnedWineResource(pinnedWineRepository);
         this.restPinnedWineMockMvc = MockMvcBuilders.standaloneSetup(pinnedWineResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -125,7 +125,7 @@ public class PinnedWineResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(pinnedWine)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the PinnedWine in the database
         List<PinnedWine> pinnedWineList = pinnedWineRepository.findAll();
         assertThat(pinnedWineList).hasSize(databaseSizeBeforeCreate);
     }
