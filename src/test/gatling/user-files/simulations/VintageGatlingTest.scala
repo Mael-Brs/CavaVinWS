@@ -59,6 +59,11 @@ class VintageGatlingTest extends Simulation {
         .headers(headers_http_authenticated)
         .check(status.is(200)))
         .pause(10)
+        .exec(http("Get all wines")
+        .get("/api/wines")
+        .headers(headers_http_authenticated)
+        .check(status.is(200), jsonPath("$..id").saveAs("wine_id"))).exitHereIfFailed
+        .pause(10)
         .repeat(2) {
             exec(http("Get all vintages")
             .get("/api/vintages")
@@ -68,7 +73,7 @@ class VintageGatlingTest extends Simulation {
             .exec(http("Create new vintage")
             .post("/api/vintages")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "year":"0", "bareCode":"0"}""")).asJSON
+            .body(StringBody("""{"id":null, "year":"0", "bareCode":"0", "wine":{"id": ${wine_id}}}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_vintage_url"))).exitHereIfFailed
             .pause(10)
