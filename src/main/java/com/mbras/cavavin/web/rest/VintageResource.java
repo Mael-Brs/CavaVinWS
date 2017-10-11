@@ -87,7 +87,7 @@ public class VintageResource {
     public List<Vintage> getAllVintages() {
         log.debug("REST request to get all Vintages");
         return vintageRepository.findAll();
-    }
+        }
 
     /**
      * GET  /vintages/:id : get the "id" vintage.
