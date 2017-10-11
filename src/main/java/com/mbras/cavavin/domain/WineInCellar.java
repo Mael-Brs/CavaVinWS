@@ -45,7 +45,7 @@ public class WineInCellar implements Serializable {
     @Column(name = "cellar_id", nullable = false)
     private Long cellarId;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @NotNull
     private Vintage vintage;
 

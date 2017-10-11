@@ -58,7 +58,17 @@ class WineInCellarGatlingTest extends Simulation {
         .get("/api/account")
         .headers(headers_http_authenticated)
         .check(status.is(200)))
-        .pause(10)
+        .pause(5)
+        .exec(http("Get all cellars")
+        .get("/api/cellars")
+        .headers(headers_http_authenticated)
+        .check(status.is(200), jsonPath("$..id").saveAs("cellar_id")))
+        .pause(5)
+        .exec(http("Get all vintages")
+        .get("/api/vintages")
+        .headers(headers_http_authenticated)
+        .check(status.is(200), jsonPath("$..id").saveAs("vintage_id")))
+        .pause(5)
         .repeat(2) {
             exec(http("Get all wineInCellars")
             .get("/api/wine-in-cellars")
@@ -68,7 +78,7 @@ class WineInCellarGatlingTest extends Simulation {
             .exec(http("Create new wineInCellar")
             .post("/api/wine-in-cellars")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "minKeep":"0", "maxKeep":"0", "price":null, "quantity":"0", "comments":"SAMPLE_TEXT", "location":"SAMPLE_TEXT", "cellarId":null}""")).asJSON
+            .body(StringBody("""{"id":null, "minKeep":"0", "maxKeep":"0", "price":null, "quantity":"0", "comments":"SAMPLE_TEXT", "location":"SAMPLE_TEXT", "cellarId":${cellar_id}, "vintage": {"id": ${vintage_id}}}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_wineInCellar_url"))).exitHereIfFailed
             .pause(10)
