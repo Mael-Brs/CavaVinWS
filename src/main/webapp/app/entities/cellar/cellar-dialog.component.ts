@@ -19,6 +19,7 @@ export class CellarDialogComponent implements OnInit {
 
     cellar: Cellar;
     isSaving: boolean;
+    currentAccount: any;
 
     constructor(
         public activeModal: NgbActiveModal,

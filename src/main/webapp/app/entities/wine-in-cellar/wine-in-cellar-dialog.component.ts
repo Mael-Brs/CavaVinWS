@@ -25,7 +25,7 @@ export class WineInCellarDialogComponent implements OnInit {
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: JhiAlertService,
+        private jhiAlertService: JhiAlertService,
         private wineInCellarService: WineInCellarService,
         private vintageService: VintageService,
         private eventManager: JhiEventManager
@@ -55,7 +55,7 @@ export class WineInCellarDialogComponent implements OnInit {
 
     private subscribeToSaveResponse(result: Observable<WineInCellar>) {
         result.subscribe((res: WineInCellar) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
     }
 
     private onSaveSuccess(result: WineInCellar) {
@@ -64,18 +64,12 @@ export class WineInCellarDialogComponent implements OnInit {
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError(error) {
-        try {
-            error.json();
-        } catch (exception) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError(error);
     }
 
-    private onError(error) {
-        this.alertService.error(error.message, null, null);
+    private onError(error: any) {
+        this.jhiAlertService.error(error.message, null, null);
     }
 
     trackVintageById(index: number, item: Vintage) {
