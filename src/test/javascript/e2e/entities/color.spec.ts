@@ -1,49 +1,91 @@
 import { browser, element, by, $ } from 'protractor';
+import { NavBarPage } from './../page-objects/jhi-page-objects';
+const path = require('path');
 
 describe('Color e2e test', () => {
 
-    const username = element(by.id('username'));
-    const password = element(by.id('password'));
-    const entityMenu = element(by.id('entity-menu'));
-    const accountMenu = element(by.id('account-menu'));
-    const login = element(by.id('login'));
-    const logout = element(by.id('logout'));
+    let navBarPage: NavBarPage;
+    let colorDialogPage: ColorDialogPage;
+    let colorComponentsPage: ColorComponentsPage;
+    const fileToUpload = '../../../../main/webapp/content/images/logo-jhipster.png';
+    const absolutePath = path.resolve(__dirname, fileToUpload);
+    
 
     beforeAll(() => {
         browser.get('/');
-
-        accountMenu.click();
-        login.click();
-
-        username.sendKeys('admin');
-        password.sendKeys('admin');
-        element(by.css('button[type=submit]')).click();
+        browser.waitForAngular();
+        navBarPage = new NavBarPage();
+        navBarPage.getSignInPage().autoSignInUsing('admin', 'admin');
         browser.waitForAngular();
     });
 
     it('should load Colors', () => {
-        entityMenu.click();
-        element.all(by.css('[routerLink="color"]')).first().click().then(() => {
-            const expectVal = /cavavinApp.color.home.title/;
-            element.all(by.css('h2 span')).first().getAttribute('jhiTranslate').then((value) => {
-                expect(value).toMatch(expectVal);
-            });
-        });
+        navBarPage.goToEntity('color');
+        colorComponentsPage = new ColorComponentsPage();
+        expect(colorComponentsPage.getTitle()).toMatch(/cavavinApp.color.home.title/);
+
     });
 
     it('should load create Color dialog', () => {
-        element(by.css('button.create-color')).click().then(() => {
-            const expectVal = /cavavinApp.color.home.createOrEditLabel/;
-            element.all(by.css('h4.modal-title')).first().getAttribute('jhiTranslate').then((value) => {
-                expect(value).toMatch(expectVal);
-            });
-
-            element(by.css('button.close')).click();
-        });
+        colorComponentsPage.clickOnCreateButton();
+        colorDialogPage = new ColorDialogPage();
+        expect(colorDialogPage.getModalTitle()).toMatch(/cavavinApp.color.home.createOrEditLabel/);
+        colorDialogPage.close();
     });
+
+    it('should create and save Colors', () => {
+        colorComponentsPage.clickOnCreateButton();
+        colorDialogPage.setColorNameInput('colorName');
+        expect(colorDialogPage.getColorNameInput()).toMatch('colorName');
+        colorDialogPage.save();
+        expect(colorDialogPage.getSaveButton().isPresent()).toBeFalsy();
+    }); 
 
     afterAll(() => {
-        accountMenu.click();
-        logout.click();
+        navBarPage.autoSignOut();
     });
 });
+
+export class ColorComponentsPage {
+    createButton = element(by.css('.jh-create-entity'));
+    title = element.all(by.css('jhi-color div h2 span')).first();
+
+    clickOnCreateButton() {
+        return this.createButton.click();
+    }
+
+    getTitle() {
+        return this.title.getAttribute('jhiTranslate');
+    }
+}
+
+export class ColorDialogPage {
+    modalTitle = element(by.css('h4#myColorLabel'));
+    saveButton = element(by.css('.modal-footer .btn.btn-primary'));
+    closeButton = element(by.css('button.close'));
+    colorNameInput = element(by.css('input#field_colorName'));
+
+    getModalTitle() {
+        return this.modalTitle.getAttribute('jhiTranslate');
+    }
+
+    setColorNameInput = function (colorName) {
+        this.colorNameInput.sendKeys(colorName);
+    }
+
+    getColorNameInput = function () {
+        return this.colorNameInput.getAttribute('value');
+    }
+
+    save() {
+        this.saveButton.click();
+    }
+
+    close() {
+        this.closeButton.click();
+    }
+
+    getSaveButton() {
+        return this.saveButton;
+    }
+}
