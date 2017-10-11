@@ -132,7 +132,7 @@ public class WineInCellarResource {
     public List<WineInCellar> getAllWineInCellars() {
         log.debug("REST request to get all WineInCellars");
         return wineInCellarService.findAll();
-    }
+        }
 
     /**
      * GET  /wine-in-cellars/:id : get the "id" wineInCellar.
