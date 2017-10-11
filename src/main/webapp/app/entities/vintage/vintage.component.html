@@ -39,7 +39,7 @@
                                 [routerLink]="['../vintage', vintage.id ]"
                                 class="btn btn-info btn-sm">
                             <span class="fa fa-eye"></span>
-                            <span class="hidden-md-down" jhiTranslate="entity.action.view">View</span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
                         <button type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'vintage/'+ vintage.id + '/edit'} }]"
@@ -47,7 +47,7 @@
                                 class="btn btn-primary btn-sm"
                                 *jhiHasAnyAuthority="'ROLE_ADMIN'">
                             <span class="fa fa-pencil"></span>
-                            <span class="hidden-md-down" jhiTranslate="entity.action.edit">Edit</span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'vintage/'+ vintage.id + '/delete'} }]"
@@ -55,7 +55,7 @@
                                 class="btn btn-danger btn-sm"
                                 *jhiHasAnyAuthority="'ROLE_ADMIN'">
                             <span class="fa fa-remove"></span>
-                            <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                         </button>
                     </div>
                 </td>
