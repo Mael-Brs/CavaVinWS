@@ -21,6 +21,7 @@ export class WineDialogComponent implements OnInit {
 
     wine: Wine;
     isSaving: boolean;
+    currentAccount: any;
 
     regions: Region[];
 
