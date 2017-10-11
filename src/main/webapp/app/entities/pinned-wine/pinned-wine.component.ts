@@ -19,7 +19,7 @@ pinnedWines: PinnedWine[];
 
     constructor(
         private pinnedWineService: PinnedWineService,
-        private alertService: JhiAlertService,
+        private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private principal: Principal
     ) {
@@ -53,6 +53,6 @@ pinnedWines: PinnedWine[];
     }
 
     private onError(error) {
-        this.alertService.error(error.message, null, null);
+        this.jhiAlertService.error(error.message, null, null);
     }
 }

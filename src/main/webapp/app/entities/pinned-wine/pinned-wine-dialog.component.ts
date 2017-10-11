@@ -26,7 +26,7 @@ export class PinnedWineDialogComponent implements OnInit {
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: JhiAlertService,
+        private jhiAlertService: JhiAlertService,
         private pinnedWineService: PinnedWineService,
         private wineService: WineService,
         private eventManager: JhiEventManager,
@@ -61,7 +61,7 @@ export class PinnedWineDialogComponent implements OnInit {
 
     private subscribeToSaveResponse(result: Observable<PinnedWine>) {
         result.subscribe((res: PinnedWine) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
     }
 
     private onSaveSuccess(result: PinnedWine) {
@@ -70,18 +70,12 @@ export class PinnedWineDialogComponent implements OnInit {
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError(error) {
-        try {
-            error.json();
-        } catch (exception) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError(error);
     }
 
-    private onError(error) {
-        this.alertService.error(error.message, null, null);
+    private onError(error: any) {
+        this.jhiAlertService.error(error.message, null, null);
     }
 
     trackWineById(index: number, item: Wine) {
