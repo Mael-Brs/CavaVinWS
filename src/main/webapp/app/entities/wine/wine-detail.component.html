@@ -1,0 +1,49 @@
+
+<div *ngIf="wine">
+    <h2><span jhiTranslate="cavavinApp.wine.detail.title">Wine</span> {{wine.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="cavavinApp.wine.name">Name</span></dt>
+        <dd>
+            <span>{{wine.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="cavavinApp.wine.appellation">Appellation</span></dt>
+        <dd>
+            <span>{{wine.appellation}}</span>
+        </dd>
+        <dt><span jhiTranslate="cavavinApp.wine.producer">Producer</span></dt>
+        <dd>
+            <span>{{wine.producer}}</span>
+        </dd>
+        <dt><span jhiTranslate="cavavinApp.wine.creatorId">Creator Id</span></dt>
+        <dd>
+            <span>{{wine.creatorId}}</span>
+        </dd>
+        <dt><span jhiTranslate="cavavinApp.wine.region">Region</span></dt>
+        <dd>
+            <div *ngIf="wine.region">
+                <a [routerLink]="['/region', wine.region?.id]">{{wine.region?.regionName}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="cavavinApp.wine.color">Color</span></dt>
+        <dd>
+            <div *ngIf="wine.color">
+                <a [routerLink]="['/color', wine.color?.id]">{{wine.color?.colorName}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'wine/'+ wine.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,35 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "color",
+            "otherEntityName": "color",
+            "otherEntityField": "colorName"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "region",
+            "otherEntityName": "region",
+            "otherEntityField": "regionName"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "minKeep",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "maxKeep",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20170423143923",
+    "entityTableName": "wine_aging_data",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "searchEngine": "no"
+}

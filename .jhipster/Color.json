@@ -1,0 +1,19 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "colorName",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170303215710",
+    "entityTableName": "color",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "searchEngine": "no"
+}
