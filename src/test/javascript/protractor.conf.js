@@ -1,4 +1,4 @@
-const HtmlScreenshotReporter = require("protractor-jasmine2-screenshot-reporter");
+const HtmlScreenshotReporter = require('protractor-jasmine2-screenshot-reporter');
 const JasmineReporters = require('jasmine-reporters');
 
 exports.config = {
@@ -13,8 +13,9 @@ exports.config = {
 
     capabilities: {
         'browserName': 'chrome',
-        'phantomjs.binary.path': require('phantomjs-prebuilt').path,
-        'phantomjs.ghostdriver.cli.args': ['--loglevel=DEBUG']
+        chromeOptions: {
+            args: [ "--headless", "--disable-gpu", "--window-size=800,600" ]
+        }
     },
 
     directConnect: true,
@@ -25,7 +26,7 @@ exports.config = {
 
     jasmineNodeOpts: {
         showColors: true,
-        defaultTimeoutInterval: 60000
+        defaultTimeoutInterval: 720000
     },
 
     beforeLaunch: function() {
