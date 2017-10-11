@@ -87,7 +87,7 @@ public class ColorResource {
     public List<Color> getAllColors() {
         log.debug("REST request to get all Colors");
         return colorRepository.findAll();
-    }
+        }
 
     /**
      * GET  /colors/:id : get the "id" color.
