@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.*;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface WineRepository extends JpaRepository<Wine,Long> {
-    
+public interface WineRepository extends JpaRepository<Wine, Long> {
+
 }

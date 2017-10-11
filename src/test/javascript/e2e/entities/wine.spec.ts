@@ -1,49 +1,160 @@
 import { browser, element, by, $ } from 'protractor';
+import { NavBarPage } from './../page-objects/jhi-page-objects';
+const path = require('path');
 
 describe('Wine e2e test', () => {
 
-    const username = element(by.id('username'));
-    const password = element(by.id('password'));
-    const entityMenu = element(by.id('entity-menu'));
-    const accountMenu = element(by.id('account-menu'));
-    const login = element(by.id('login'));
-    const logout = element(by.id('logout'));
+    let navBarPage: NavBarPage;
+    let wineDialogPage: WineDialogPage;
+    let wineComponentsPage: WineComponentsPage;
+    const fileToUpload = '../../../../main/webapp/content/images/logo-jhipster.png';
+    const absolutePath = path.resolve(__dirname, fileToUpload);
+    
 
     beforeAll(() => {
         browser.get('/');
-
-        accountMenu.click();
-        login.click();
-
-        username.sendKeys('admin');
-        password.sendKeys('admin');
-        element(by.css('button[type=submit]')).click();
+        browser.waitForAngular();
+        navBarPage = new NavBarPage();
+        navBarPage.getSignInPage().autoSignInUsing('admin', 'admin');
         browser.waitForAngular();
     });
 
     it('should load Wines', () => {
-        entityMenu.click();
-        element.all(by.css('[routerLink="wine"]')).first().click().then(() => {
-            const expectVal = /cavavinApp.wine.home.title/;
-            element.all(by.css('h2 span')).first().getAttribute('jhiTranslate').then((value) => {
-                expect(value).toMatch(expectVal);
-            });
-        });
+        navBarPage.goToEntity('wine');
+        wineComponentsPage = new WineComponentsPage();
+        expect(wineComponentsPage.getTitle()).toMatch(/cavavinApp.wine.home.title/);
+
     });
 
     it('should load create Wine dialog', () => {
-        element(by.css('button.create-wine')).click().then(() => {
-            const expectVal = /cavavinApp.wine.home.createOrEditLabel/;
-            element.all(by.css('h4.modal-title')).first().getAttribute('jhiTranslate').then((value) => {
-                expect(value).toMatch(expectVal);
-            });
-
-            element(by.css('button.close')).click();
-        });
+        wineComponentsPage.clickOnCreateButton();
+        wineDialogPage = new WineDialogPage();
+        expect(wineDialogPage.getModalTitle()).toMatch(/cavavinApp.wine.home.createOrEditLabel/);
+        wineDialogPage.close();
     });
+
+   /* it('should create and save Wines', () => {
+        wineComponentsPage.clickOnCreateButton();
+        wineDialogPage.setNameInput('name');
+        expect(wineDialogPage.getNameInput()).toMatch('name');
+        wineDialogPage.setAppellationInput('appellation');
+        expect(wineDialogPage.getAppellationInput()).toMatch('appellation');
+        wineDialogPage.setProducerInput('producer');
+        expect(wineDialogPage.getProducerInput()).toMatch('producer');
+        wineDialogPage.setCreatorIdInput('5');
+        expect(wineDialogPage.getCreatorIdInput()).toMatch('5');
+        wineDialogPage.regionSelectLastOption();
+        wineDialogPage.colorSelectLastOption();
+        wineDialogPage.save();
+        expect(wineDialogPage.getSaveButton().isPresent()).toBeFalsy();
+    }); */
 
     afterAll(() => {
-        accountMenu.click();
-        logout.click();
+        navBarPage.autoSignOut();
     });
 });
+
+export class WineComponentsPage {
+    createButton = element(by.css('.jh-create-entity'));
+    title = element.all(by.css('jhi-wine div h2 span')).first();
+
+    clickOnCreateButton() {
+        return this.createButton.click();
+    }
+
+    getTitle() {
+        return this.title.getAttribute('jhiTranslate');
+    }
+}
+
+export class WineDialogPage {
+    modalTitle = element(by.css('h4#myWineLabel'));
+    saveButton = element(by.css('.modal-footer .btn.btn-primary'));
+    closeButton = element(by.css('button.close'));
+    nameInput = element(by.css('input#field_name'));
+    appellationInput = element(by.css('input#field_appellation'));
+    producerInput = element(by.css('input#field_producer'));
+    creatorIdInput = element(by.css('input#field_creatorId'));
+    regionSelect = element(by.css('select#field_region'));
+    colorSelect = element(by.css('select#field_color'));
+
+    getModalTitle() {
+        return this.modalTitle.getAttribute('jhiTranslate');
+    }
+
+    setNameInput = function (name) {
+        this.nameInput.sendKeys(name);
+    }
+
+    getNameInput = function () {
+        return this.nameInput.getAttribute('value');
+    }
+
+    setAppellationInput = function (appellation) {
+        this.appellationInput.sendKeys(appellation);
+    }
+
+    getAppellationInput = function () {
+        return this.appellationInput.getAttribute('value');
+    }
+
+    setProducerInput = function (producer) {
+        this.producerInput.sendKeys(producer);
+    }
+
+    getProducerInput = function () {
+        return this.producerInput.getAttribute('value');
+    }
+
+    setCreatorIdInput = function (creatorId) {
+        this.creatorIdInput.sendKeys(creatorId);
+    }
+
+    getCreatorIdInput = function () {
+        return this.creatorIdInput.getAttribute('value');
+    }
+
+    regionSelectLastOption = function () {
+        this.regionSelect.all(by.tagName('option')).last().click();
+    }
+
+    regionSelectOption = function (option) {
+        this.regionSelect.sendKeys(option);
+    }
+
+    getRegionSelect = function () {
+        return this.regionSelect;
+    }
+
+    getRegionSelectedOption = function () {
+        return this.regionSelect.element(by.css('option:checked')).getText();
+    }
+
+    colorSelectLastOption = function () {
+        this.colorSelect.all(by.tagName('option')).last().click();
+    }
+
+    colorSelectOption = function (option) {
+        this.colorSelect.sendKeys(option);
+    }
+
+    getColorSelect = function () {
+        return this.colorSelect;
+    }
+
+    getColorSelectedOption = function () {
+        return this.colorSelect.element(by.css('option:checked')).getText();
+    }
+
+    save() {
+        this.saveButton.click();
+    }
+
+    close() {
+        this.closeButton.click();
+    }
+
+    getSaveButton() {
+        return this.saveButton;
+    }
+}
