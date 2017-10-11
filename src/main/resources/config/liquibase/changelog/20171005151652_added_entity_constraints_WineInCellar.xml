@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity WineInCellar.
+    -->
+    <changeSet id="20171005151652-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="vintage_id"
+                                 baseTableName="wine_in_cellar"
+                                 constraintName="fk_wine_in_cellar_vintage_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="vintage"/>
+
+    </changeSet>
+</databaseChangeLog>

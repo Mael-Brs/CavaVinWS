@@ -1,0 +1,55 @@
+
+<div *ngIf="wineInCellar">
+    <h2><span jhiTranslate="cavavinApp.wineInCellar.detail.title">Wine In Cellar</span> {{wineInCellar.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="cavavinApp.wineInCellar.minKeep">Min Keep</span></dt>
+        <dd>
+            <span>{{wineInCellar.minKeep}}</span>
+        </dd>
+        <dt><span jhiTranslate="cavavinApp.wineInCellar.maxKeep">Max Keep</span></dt>
+        <dd>
+            <span>{{wineInCellar.maxKeep}}</span>
+        </dd>
+        <dt><span jhiTranslate="cavavinApp.wineInCellar.price">Price</span></dt>
+        <dd>
+            <span>{{wineInCellar.price}}</span>
+        </dd>
+        <dt><span jhiTranslate="cavavinApp.wineInCellar.quantity">Quantity</span></dt>
+        <dd>
+            <span>{{wineInCellar.quantity}}</span>
+        </dd>
+        <dt><span jhiTranslate="cavavinApp.wineInCellar.comments">Comments</span></dt>
+        <dd>
+            <span>{{wineInCellar.comments}}</span>
+        </dd>
+        <dt><span jhiTranslate="cavavinApp.wineInCellar.location">Location</span></dt>
+        <dd>
+            <span>{{wineInCellar.location}}</span>
+        </dd>
+        <dt><span jhiTranslate="cavavinApp.wineInCellar.cellarId">Cellar Id</span></dt>
+        <dd>
+            <span>{{wineInCellar.cellarId}}</span>
+        </dd>
+        <dt><span jhiTranslate="cavavinApp.wineInCellar.vintage">Vintage</span></dt>
+        <dd>
+            <div *ngIf="wineInCellar.vintage">
+                <a [routerLink]="['/vintage', wineInCellar.vintage?.id]">{{wineInCellar.vintage?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'wine-in-cellar/'+ wineInCellar.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>
