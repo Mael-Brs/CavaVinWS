@@ -87,7 +87,7 @@ public class WineAgingDataResource {
     public List<WineAgingData> getAllWineAgingData() {
         log.debug("REST request to get all WineAgingData");
         return wineAgingDataRepository.findAll();
-    }
+        }
 
     /**
      * GET  /wine-aging-data/:id : get the "id" wineAgingData.
