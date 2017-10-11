@@ -39,10 +39,10 @@
                 </small>
             </div>
         </div>
-
         <div class="form-group">
-            <label jhiTranslate="cavavinApp.wine.region" for="field_region">Region</label>
+            <label class="form-control-label" jhiTranslate="cavavinApp.wine.region" for="field_region">Region</label>
             <select class="form-control" id="field_region" name="region" [(ngModel)]="wine.region"  required>
+                <option *ngIf="!editForm.value.region" [ngValue]="null" selected></option>
                 <option [ngValue]="regionOption.id === wine.region?.id ? wine.region : regionOption" *ngFor="let regionOption of regions; trackBy: trackRegionById">{{regionOption.regionName}}</option>
             </select>
         </div>
@@ -53,8 +53,9 @@
             </small>
         </div>
         <div class="form-group">
-            <label jhiTranslate="cavavinApp.wine.color" for="field_color">Color</label>
+            <label class="form-control-label" jhiTranslate="cavavinApp.wine.color" for="field_color">Color</label>
             <select class="form-control" id="field_color" name="color" [(ngModel)]="wine.color"  required>
+                <option *ngIf="!editForm.value.color" [ngValue]="null" selected></option>
                 <option [ngValue]="colorOption.id === wine.color?.id ? wine.color : colorOption" *ngFor="let colorOption of colors; trackBy: trackColorById">{{colorOption.colorName}}</option>
             </select>
         </div>
@@ -66,7 +67,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
             <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
         <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">

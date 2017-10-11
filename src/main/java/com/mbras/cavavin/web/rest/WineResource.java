@@ -97,7 +97,7 @@ public class WineResource {
     public List<Wine> getAllWines() {
         log.debug("REST request to get all Wines");
         return wineRepository.findAll();
-    }
+        }
 
     /**
      * GET  /wines/:id : get the "id" wine.

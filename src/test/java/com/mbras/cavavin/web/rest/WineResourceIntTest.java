@@ -77,7 +77,7 @@ public class WineResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        WineResource wineResource = new WineResource(wineRepository, wineSearchRepository);
+        final WineResource wineResource = new WineResource(wineRepository, wineSearchRepository);
         this.restWineMockMvc = MockMvcBuilders.standaloneSetup(wineResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -154,7 +154,7 @@ public class WineResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(wine)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Wine in the database
         List<Wine> wineList = wineRepository.findAll();
         assertThat(wineList).hasSize(databaseSizeBeforeCreate);
     }

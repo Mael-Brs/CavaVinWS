@@ -21,7 +21,6 @@ export class WineDialogComponent implements OnInit {
 
     wine: Wine;
     isSaving: boolean;
-    currentAccount: any;
 
     regions: Region[];
 
@@ -29,7 +28,7 @@ export class WineDialogComponent implements OnInit {
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: JhiAlertService,
+        private jhiAlertService: JhiAlertService,
         private wineService: WineService,
         private regionService: RegionService,
         private colorService: ColorService,
@@ -67,7 +66,7 @@ export class WineDialogComponent implements OnInit {
 
     private subscribeToSaveResponse(result: Observable<Wine>) {
         result.subscribe((res: Wine) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
     }
 
     private onSaveSuccess(result: Wine) {
@@ -76,18 +75,12 @@ export class WineDialogComponent implements OnInit {
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError(error) {
-        try {
-            error.json();
-        } catch (exception) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError(error);
     }
 
-    private onError(error) {
-        this.alertService.error(error.message, null, null);
+    private onError(error: any) {
+        this.jhiAlertService.error(error.message, null, null);
     }
 
     trackRegionById(index: number, item: Region) {
