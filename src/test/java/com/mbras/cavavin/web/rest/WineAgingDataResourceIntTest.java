@@ -67,7 +67,7 @@ public class WineAgingDataResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        WineAgingDataResource wineAgingDataResource = new WineAgingDataResource(wineAgingDataRepository);
+        final WineAgingDataResource wineAgingDataResource = new WineAgingDataResource(wineAgingDataRepository);
         this.restWineAgingDataMockMvc = MockMvcBuilders.standaloneSetup(wineAgingDataResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -135,7 +135,7 @@ public class WineAgingDataResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(wineAgingData)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the WineAgingData in the database
         List<WineAgingData> wineAgingDataList = wineAgingDataRepository.findAll();
         assertThat(wineAgingDataList).hasSize(databaseSizeBeforeCreate);
     }
