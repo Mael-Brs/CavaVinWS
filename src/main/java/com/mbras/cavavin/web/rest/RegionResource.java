@@ -87,7 +87,7 @@ public class RegionResource {
     public List<Region> getAllRegions() {
         log.debug("REST request to get all Regions");
         return regionRepository.findAll();
-    }
+        }
 
     /**
      * GET  /regions/:id : get the "id" region.

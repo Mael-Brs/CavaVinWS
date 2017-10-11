@@ -1,49 +1,91 @@
 import { browser, element, by, $ } from 'protractor';
+import { NavBarPage } from './../page-objects/jhi-page-objects';
+const path = require('path');
 
 describe('Region e2e test', () => {
 
-    const username = element(by.id('username'));
-    const password = element(by.id('password'));
-    const entityMenu = element(by.id('entity-menu'));
-    const accountMenu = element(by.id('account-menu'));
-    const login = element(by.id('login'));
-    const logout = element(by.id('logout'));
+    let navBarPage: NavBarPage;
+    let regionDialogPage: RegionDialogPage;
+    let regionComponentsPage: RegionComponentsPage;
+    const fileToUpload = '../../../../main/webapp/content/images/logo-jhipster.png';
+    const absolutePath = path.resolve(__dirname, fileToUpload);
+    
 
     beforeAll(() => {
         browser.get('/');
-
-        accountMenu.click();
-        login.click();
-
-        username.sendKeys('admin');
-        password.sendKeys('admin');
-        element(by.css('button[type=submit]')).click();
+        browser.waitForAngular();
+        navBarPage = new NavBarPage();
+        navBarPage.getSignInPage().autoSignInUsing('admin', 'admin');
         browser.waitForAngular();
     });
 
     it('should load Regions', () => {
-        entityMenu.click();
-        element.all(by.css('[routerLink="region"]')).first().click().then(() => {
-            const expectVal = /cavavinApp.region.home.title/;
-            element.all(by.css('h2 span')).first().getAttribute('jhiTranslate').then((value) => {
-                expect(value).toMatch(expectVal);
-            });
-        });
+        navBarPage.goToEntity('region');
+        regionComponentsPage = new RegionComponentsPage();
+        expect(regionComponentsPage.getTitle()).toMatch(/cavavinApp.region.home.title/);
+
     });
 
     it('should load create Region dialog', () => {
-        element(by.css('button.create-region')).click().then(() => {
-            const expectVal = /cavavinApp.region.home.createOrEditLabel/;
-            element.all(by.css('h4.modal-title')).first().getAttribute('jhiTranslate').then((value) => {
-                expect(value).toMatch(expectVal);
-            });
-
-            element(by.css('button.close')).click();
-        });
+        regionComponentsPage.clickOnCreateButton();
+        regionDialogPage = new RegionDialogPage();
+        expect(regionDialogPage.getModalTitle()).toMatch(/cavavinApp.region.home.createOrEditLabel/);
+        regionDialogPage.close();
     });
+
+    it('should create and save Regions', () => {
+        regionComponentsPage.clickOnCreateButton();
+        regionDialogPage.setRegionNameInput('regionName');
+        expect(regionDialogPage.getRegionNameInput()).toMatch('regionName');
+        regionDialogPage.save();
+        expect(regionDialogPage.getSaveButton().isPresent()).toBeFalsy();
+    }); 
 
     afterAll(() => {
-        accountMenu.click();
-        logout.click();
+        navBarPage.autoSignOut();
     });
 });
+
+export class RegionComponentsPage {
+    createButton = element(by.css('.jh-create-entity'));
+    title = element.all(by.css('jhi-region div h2 span')).first();
+
+    clickOnCreateButton() {
+        return this.createButton.click();
+    }
+
+    getTitle() {
+        return this.title.getAttribute('jhiTranslate');
+    }
+}
+
+export class RegionDialogPage {
+    modalTitle = element(by.css('h4#myRegionLabel'));
+    saveButton = element(by.css('.modal-footer .btn.btn-primary'));
+    closeButton = element(by.css('button.close'));
+    regionNameInput = element(by.css('input#field_regionName'));
+
+    getModalTitle() {
+        return this.modalTitle.getAttribute('jhiTranslate');
+    }
+
+    setRegionNameInput = function (regionName) {
+        this.regionNameInput.sendKeys(regionName);
+    }
+
+    getRegionNameInput = function () {
+        return this.regionNameInput.getAttribute('value');
+    }
+
+    save() {
+        this.saveButton.click();
+    }
+
+    close() {
+        this.closeButton.click();
+    }
+
+    getSaveButton() {
+        return this.saveButton;
+    }
+}
