@@ -57,7 +57,12 @@ class PinnedWineGatlingTest extends Simulation {
         .exec(http("Authenticated request")
         .get("/api/account")
         .headers(headers_http_authenticated)
-        .check(status.is(200)))
+        .check(status.is(200), jsonPath("$.id").saveAs("user_id")))
+        .pause(10)
+        .exec(http("Get all wines")
+        .get("/api/wines")
+        .headers(headers_http_authenticated)
+        .check(status.is(200), jsonPath("$..id").saveAs("wine_id"))).exitHereIfFailed
         .pause(10)
         .repeat(2) {
             exec(http("Get all pinnedWines")
@@ -68,7 +73,7 @@ class PinnedWineGatlingTest extends Simulation {
             .exec(http("Create new pinnedWine")
             .post("/api/pinned-wines")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "userId":null}""")).asJSON
+            .body(StringBody("""{"id":null, "userId":${user_id}, "wine":{"id": ${wine_id}}}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_pinnedWine_url"))).exitHereIfFailed
             .pause(10)
