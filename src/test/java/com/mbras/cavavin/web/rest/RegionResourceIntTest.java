@@ -62,7 +62,7 @@ public class RegionResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        RegionResource regionResource = new RegionResource(regionRepository);
+        final RegionResource regionResource = new RegionResource(regionRepository);
         this.restRegionMockMvc = MockMvcBuilders.standaloneSetup(regionResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -118,7 +118,7 @@ public class RegionResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(region)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Region in the database
         List<Region> regionList = regionRepository.findAll();
         assertThat(regionList).hasSize(databaseSizeBeforeCreate);
     }
