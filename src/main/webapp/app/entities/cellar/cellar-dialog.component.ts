@@ -19,11 +19,10 @@ export class CellarDialogComponent implements OnInit {
 
     cellar: Cellar;
     isSaving: boolean;
-    currentAccount: any;
 
     constructor(
         public activeModal: NgbActiveModal,
-        private alertService: JhiAlertService,
+        private jhiAlertService: JhiAlertService,
         private cellarService: CellarService,
         private eventManager: JhiEventManager,
         private principal: Principal
@@ -55,7 +54,7 @@ export class CellarDialogComponent implements OnInit {
 
     private subscribeToSaveResponse(result: Observable<Cellar>) {
         result.subscribe((res: Cellar) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError(res));
+            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
     }
 
     private onSaveSuccess(result: Cellar) {
@@ -64,18 +63,12 @@ export class CellarDialogComponent implements OnInit {
         this.activeModal.dismiss(result);
     }
 
-    private onSaveError(error) {
-        try {
-            error.json();
-        } catch (exception) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError(error);
     }
 
-    private onError(error) {
-        this.alertService.error(error.message, null, null);
+    private onError(error: any) {
+        this.jhiAlertService.error(error.message, null, null);
     }
 }
 

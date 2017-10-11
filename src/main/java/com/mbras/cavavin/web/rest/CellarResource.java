@@ -90,7 +90,7 @@ public class CellarResource {
     public List<Cellar> getAllCellars() {
         log.debug("REST request to get all Cellars");
         return cellarService.findAll();
-    }
+        }
 
     /**
      * GET  /cellars/:id : get the "id" cellar.
