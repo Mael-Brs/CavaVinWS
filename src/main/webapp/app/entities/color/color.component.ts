@@ -19,7 +19,7 @@ colors: Color[];
 
     constructor(
         private colorService: ColorService,
-        private alertService: JhiAlertService,
+        private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private principal: Principal
     ) {
@@ -53,6 +53,6 @@ colors: Color[];
     }
 
     private onError(error) {
-        this.alertService.error(error.message, null, null);
+        this.jhiAlertService.error(error.message, null, null);
     }
 }
