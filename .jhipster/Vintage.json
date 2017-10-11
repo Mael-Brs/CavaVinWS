@@ -22,7 +22,7 @@
             "fieldType": "Integer"
         }
     ],
-    "changelogDate": "20170815162854",
+    "changelogDate": "20170805153503",
     "entityTableName": "vintage",
     "dto": "no",
     "pagination": "no",
