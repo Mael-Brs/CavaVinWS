@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.*;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ColorRepository extends JpaRepository<Color,Long> {
-    
+public interface ColorRepository extends JpaRepository<Color, Long> {
+
 }
