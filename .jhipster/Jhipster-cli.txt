@@ -1,0 +1,4 @@
+<--Générer jsute json-->
+jhipster import-jdl d:\Profiles\mbras\Documents\GitHub\CavaVinWS\.jhipster\jhipster-jdl.jh --json-only
+<--Forcer la génération-->
+jhipster import-jdl d:\Profiles\mbras\Documents\GitHub\CavaVinWS\.jhipster\jhipster-jdl.jh --force

@@ -1,0 +1,22 @@
+{
+    "cavavinApp": {
+        "pinnedWine" : {
+            "home": {
+                "title": "Pinned Wines",
+                "createLabel": "Create a new Pinned Wine",
+                "createOrEditLabel": "Create or edit a Pinned Wine"
+            },
+            "created": "A new Pinned Wine is created with identifier {{ param }}",
+            "updated": "A Pinned Wine is updated with identifier {{ param }}",
+            "deleted": "A Pinned Wine is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Pinned Wine {{ id }}?"
+            },
+            "detail": {
+                "title": "Pinned Wine"
+            },
+            "userId": "User Id",
+            "wine": "Wine"
+        }
+    }
+}
