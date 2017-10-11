@@ -58,6 +58,20 @@ class WineGatlingTest extends Simulation {
         .get("/api/account")
         .headers(headers_http_authenticated)
         .check(status.is(200)))
+        .pause(5)
+        .exec(http("Create new color")
+            .post("/api/colors")
+            .headers(headers_http_authenticated)
+            .body(StringBody("""{"id":null, "colorName":"SAMPLE_TEXT"}""")).asJSON
+            .check(status.is(201), jsonPath("$.id").saveAs("color_id"))
+        )
+        .pause(5)
+        .exec(http("Create new region")
+            .post("/api/regions")
+            .headers(headers_http_authenticated)
+            .body(StringBody("""{"id":null, "regionName":"SAMPLE_TEXT"}""")).asJSON
+            .check(status.is(201), jsonPath("$.id").saveAs("region_id"))
+        )
         .pause(10)
         .repeat(2) {
             exec(http("Get all wines")
@@ -68,7 +82,7 @@ class WineGatlingTest extends Simulation {
             .exec(http("Create new wine")
             .post("/api/wines")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "name":"SAMPLE_TEXT", "appellation":"SAMPLE_TEXT", "producer":"SAMPLE_TEXT", "creatorId":null}""")).asJSON
+            .body(StringBody("""{"id":null, "name":"SAMPLE_TEXT", "appellation":"SAMPLE_TEXT", "producer":"SAMPLE_TEXT", "creatorId":null, "color": {"id": ${color_id}}, "region": {"id": ${region_id}}}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_wine_url"))).exitHereIfFailed
             .pause(10)

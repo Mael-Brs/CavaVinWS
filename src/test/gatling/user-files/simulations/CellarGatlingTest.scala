@@ -10,6 +10,7 @@ import scala.concurrent.duration._
  * Performance test for the Cellar entity.
  */
 class CellarGatlingTest extends Simulation {
+    def isJsonResponse(response: Response): Boolean = response.header(HttpHeaderNames.ContentType).exists(_.contains(HttpHeaderValues.ApplicationJson))
 
     val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
     // Log all HTTP requests
@@ -55,38 +56,58 @@ class CellarGatlingTest extends Simulation {
         .check(header.get("Authorization").saveAs("access_token"))).exitHereIfFailed
         .pause(1)
         .exec(http("Authenticated request")
-        .get("/api/account")
-        .headers(headers_http_authenticated)
-        .check(status.is(200)))
+            .get("/api/account")
+            .headers(headers_http_authenticated)
+            .check(status.is(200), jsonPath("$.id").saveAs("user_id"))
+        )
         .pause(10)
         .repeat(2) {
             exec(http("Get all cellars")
-            .get("/api/cellars")
-            .headers(headers_http_authenticated)
-            .check(status.is(200)))
+                .get("/api/cellars")
+                .headers(headers_http_authenticated)
+                .check(status.is(200), jsonPath("$..id").saveAs("cellar_id"))
+            )
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new cellar")
-            .post("/api/cellars")
-            .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "capacity":"0", "userId":null}""")).asJSON
-            .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_cellar_url"))).exitHereIfFailed
-            .pause(10)
-            .repeat(5) {
-                exec(http("Get created cellar")
-                .get("${new_cellar_url}")
-                .headers(headers_http_authenticated))
-                .pause(10)
-            }
-            .exec(http("Delete created cellar")
-            .delete("${new_cellar_url}")
+        }
+        .repeat(5) {
+            exec(http("Get created cellar")
+            .get("/api/cellars/${cellar_id}")
             .headers(headers_http_authenticated))
             .pause(10)
         }
 
+    val preScn = scenario("Create required data for Cellar entity")
+        .exec(http("Authentication")
+            .post("/api/authenticate")
+            .headers(headers_http_authentication)
+            .body(StringBody("""{"username":"admin", "password":"admin"}""")).asJSON
+            .check(header.get("Authorization").saveAs("access_token"))).exitHereIfFailed
+        .pause(1)
+        .exec(http("Authenticated request")
+            .get("/api/account")
+            .headers(headers_http_authenticated)
+            .check(status.is(200), jsonPath("$.id").saveAs("user_id"))
+        )
+        .pause(10)
+        .exec(http("Get cellar for user")
+            .get("/api/users/${user_id}/cellars")
+            .headers(headers_http_authenticated)
+            .check(status.saveAs("last_status"))
+        )
+        .doIfEquals("${last_status}", 200){
+            exec(http("Create new cellar")
+                .post("/api/cellars")
+                .headers(headers_http_authenticated)
+                .body(StringBody("""{"id":null, "capacity":"0", "userId":${user_id}}""")).asJSON
+                .check(status.is(201))
+            ).exitHereIfFailed
+        }
+
+
     val users = scenario("Users").exec(scn)
 
     setUp(
+        preScn.inject(atOnceUsers(1)),
         users.inject(rampUsers(Integer.getInteger("users", 100)) over (Integer.getInteger("ramp", 1) minutes))
     ).protocols(httpConf)
 }
