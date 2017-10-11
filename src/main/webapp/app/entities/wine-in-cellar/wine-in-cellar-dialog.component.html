@@ -69,8 +69,9 @@
         </div>
 
         <div class="form-group">
-            <label jhiTranslate="cavavinApp.wineInCellar.vintage" for="field_vintage">Vintage</label>
+            <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.vintage" for="field_vintage">Vintage</label>
             <select class="form-control" id="field_vintage" name="vintage" [(ngModel)]="wineInCellar.vintage"  required>
+                <option *ngIf="!editForm.value.vintage" [ngValue]="null" selected></option>
                 <option [ngValue]="vintageOption.id === wineInCellar.vintage?.id ? wineInCellar.vintage : vintageOption" *ngFor="let vintageOption of vintages; trackBy: trackVintageById">{{vintageOption.id}}</option>
             </select>
         </div>
@@ -82,7 +83,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
             <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
         <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
