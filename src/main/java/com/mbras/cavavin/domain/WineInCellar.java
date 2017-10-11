@@ -41,6 +41,9 @@ public class WineInCellar implements Serializable {
     @Column(name = "comments")
     private String comments;
 
+    @Column(name = "location")
+    private String location;
+
     @NotNull
     @Column(name = "cellar_id", nullable = false)
     private Long cellarId;
@@ -52,9 +55,7 @@ public class WineInCellar implements Serializable {
     @Transient
     private Integer apogee;
 
-    @Column(name = "location")
-    private String location;
-
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -134,6 +135,19 @@ public class WineInCellar implements Serializable {
         this.comments = comments;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public WineInCellar location(String location) {
+        this.location = location;
+        return this;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public Long getCellarId() {
         return cellarId;
     }
@@ -165,6 +179,7 @@ public class WineInCellar implements Serializable {
             this.apogee = vintage.getYear() + this.maxKeep;
         }
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     public Integer getApogee() {
         return apogee;
@@ -175,14 +190,6 @@ public class WineInCellar implements Serializable {
         if(this.maxKeep != null && this.vintage != null && this.vintage.getYear() != null){
             this.apogee = this.vintage.getYear() + this.maxKeep;
         }
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
 
     @Override
@@ -214,6 +221,7 @@ public class WineInCellar implements Serializable {
             ", price='" + getPrice() + "'" +
             ", quantity='" + getQuantity() + "'" +
             ", comments='" + getComments() + "'" +
+            ", location='" + getLocation() + "'" +
             ", cellarId='" + getCellarId() + "'" +
             "}";
     }
