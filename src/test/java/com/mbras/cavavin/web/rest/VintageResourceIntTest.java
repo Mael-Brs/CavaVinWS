@@ -66,7 +66,7 @@ public class VintageResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        VintageResource vintageResource = new VintageResource(vintageRepository);
+        final VintageResource vintageResource = new VintageResource(vintageRepository);
         this.restVintageMockMvc = MockMvcBuilders.standaloneSetup(vintageResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -129,7 +129,7 @@ public class VintageResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(vintage)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Vintage in the database
         List<Vintage> vintageList = vintageRepository.findAll();
         assertThat(vintageList).hasSize(databaseSizeBeforeCreate);
     }
