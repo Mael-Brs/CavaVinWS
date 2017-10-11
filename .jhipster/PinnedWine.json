@@ -22,5 +22,6 @@
     "entityTableName": "pinned_wine",
     "dto": "no",
     "pagination": "no",
-    "service": "no"
+    "service": "no",
+    "searchEngine": "no"
 }
