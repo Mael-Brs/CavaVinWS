@@ -1,0 +1,23 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "capacity",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "userId",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170303215710",
+    "entityTableName": "cellar",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceClass",
+    "searchEngine": "no"
+}

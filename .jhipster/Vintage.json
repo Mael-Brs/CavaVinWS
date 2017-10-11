@@ -1,0 +1,31 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "wine",
+            "otherEntityName": "wine",
+            "otherEntityField": "name"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "year",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "bareCode",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20171005151651",
+    "entityTableName": "vintage",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "searchEngine": "no"
+}
