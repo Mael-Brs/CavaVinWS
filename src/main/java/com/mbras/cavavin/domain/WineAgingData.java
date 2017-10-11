@@ -37,6 +37,7 @@ public class WineAgingData implements Serializable {
     @NotNull
     private Region region;
 
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -96,6 +97,7 @@ public class WineAgingData implements Serializable {
     public void setRegion(Region region) {
         this.region = region;
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
