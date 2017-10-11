@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { JhiEventManager  } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { PinnedWine } from './pinned-wine.model';
 import { PinnedWineService } from './pinned-wine.service';
