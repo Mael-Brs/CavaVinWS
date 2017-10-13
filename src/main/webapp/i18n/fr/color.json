@@ -1,21 +1,21 @@
 {
     "cavavinApp": {
-        "color" : {
+        "Couleur" : {
             "home": {
-                "title": "Colors",
-                "createLabel": "Créer un nouveau Color",
-                "createOrEditLabel": "Créer ou éditer un Color"
+                "title": "Couleurs",
+                "createLabel": "Créer une nouvelle Couleur",
+                "createOrEditLabel": "Créer ou éditer une Couleur"
             },
-            "created": "Un nouveau Color a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Color avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Color avec l'identifiant {{ param }} a été supprimé",
+            "created": "Une nouvelle Couleur a été créée avec l'identifiant {{ param }}",
+            "updated": "La Couleur avec l'identifiant {{ param }} a été mise à jour",
+            "deleted": "La Couleur avec l'identifiant {{ param }} a été supprimée",
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Color {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer la Couleur {{ id }} ?"
             },
             "detail": {
-                "title": "Color"
+                "title": "Couleur"
             },
-            "colorName": "Color Name"
+            "CouleurName": "Nom Couleur"
         }
     }
 }
