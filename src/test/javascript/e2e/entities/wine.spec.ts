@@ -9,7 +9,6 @@ describe('Wine e2e test', () => {
     let wineComponentsPage: WineComponentsPage;
     const fileToUpload = '../../../../main/webapp/content/images/logo-jhipster.png';
     const absolutePath = path.resolve(__dirname, fileToUpload);
-    
 
     beforeAll(() => {
         browser.get('/');
@@ -41,8 +40,7 @@ describe('Wine e2e test', () => {
         expect(wineDialogPage.getAppellationInput()).toMatch('appellation');
         wineDialogPage.setProducerInput('producer');
         expect(wineDialogPage.getProducerInput()).toMatch('producer');
-        wineDialogPage.setCreatorIdInput('5');
-        expect(wineDialogPage.getCreatorIdInput()).toMatch('5');
+
         wineDialogPage.regionSelectLastOption();
         wineDialogPage.colorSelectLastOption();
         wineDialogPage.save();
@@ -74,7 +72,6 @@ export class WineDialogPage {
     nameInput = element(by.css('input#field_name'));
     appellationInput = element(by.css('input#field_appellation'));
     producerInput = element(by.css('input#field_producer'));
-    creatorIdInput = element(by.css('input#field_creatorId'));
     regionSelect = element(by.css('select#field_region'));
     colorSelect = element(by.css('select#field_color'));
 
@@ -104,14 +101,6 @@ export class WineDialogPage {
 
     getProducerInput = function () {
         return this.producerInput.getAttribute('value');
-    }
-
-    setCreatorIdInput = function (creatorId) {
-        this.creatorIdInput.sendKeys(creatorId);
-    }
-
-    getCreatorIdInput = function () {
-        return this.creatorIdInput.getAttribute('value');
     }
 
     regionSelectLastOption = function () {
