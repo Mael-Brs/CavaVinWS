@@ -2,28 +2,28 @@
     "cavavinApp": {
         "wineInCellar" : {
             "home": {
-                "title": "WineInCellars",
-                "createLabel": "Créer un nouveau Wine In Cellar",
-                "createOrEditLabel": "Créer ou éditer un Wine In Cellar",
-                "search": "Recherche pour Wine In Cellar"
+                "title": "Vins en Cave",
+                "createLabel": "Créer un nouveau Vin en Cave",
+                "createOrEditLabel": "Créer ou éditer un Vin en Cave",
+                "search": "Recherche pour Vin en Cave"
             },
-            "created": "Un nouveau Wine In Cellar a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Wine In Cellar avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Wine In Cellar avec l'identifiant {{ param }} a été supprimé",
+            "created": "Un nouveau Vin en Cave a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Vin en Cave avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Vin en Cave avec l'identifiant {{ param }} a été supprimé",
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Wine In Cellar {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer le Vin en Cave {{ id }} ?"
             },
             "detail": {
-                "title": "Wine In Cellar"
+                "title": "Vin en Cave"
             },
-            "minKeep": "Min Keep",
-            "maxKeep": "Max Keep",
-            "price": "Price",
-            "quantity": "Quantity",
-            "comments": "Comments",
-            "location": "Location",
-            "cellarId": "Cellar Id",
-            "vintage": "Vintage"
+            "minKeep": "Garde Min",
+            "maxKeep": "Garde Max",
+            "price": "Prix",
+            "quantity": "Quantité",
+            "comments": "Commentaires",
+            "location": "Emplacement",
+            "cellarId": "Id Cave",
+            "vintage": "Millésime"
         }
     }
 }

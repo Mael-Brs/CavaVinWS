@@ -1,23 +1,23 @@
 {
     "cavavinApp": {
-        "vintage" : {
+        "Millésime" : {
             "home": {
-                "title": "Vintages",
-                "createLabel": "Créer un nouveau Vintage",
-                "createOrEditLabel": "Créer ou éditer un Vintage"
+                "title": "Millésimes",
+                "createLabel": "Créer un nouveau Millésime",
+                "createOrEditLabel": "Créer ou éditer un Millésime"
             },
-            "created": "Un nouveau Vintage a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Vintage avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Vintage avec l'identifiant {{ param }} a été supprimé",
+            "created": "Un nouveau Millésime a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Millésime avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Millésime avec l'identifiant {{ param }} a été supprimé",
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Vintage {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer le Millésime {{ id }} ?"
             },
             "detail": {
-                "title": "Vintage"
+                "title": "Millésime"
             },
-            "year": "Year",
-            "bareCode": "Bare Code",
-            "wine": "Wine"
+            "year": "Année",
+            "bareCode": "Code Bare",
+            "wine": "Vin"
         }
     }
 }

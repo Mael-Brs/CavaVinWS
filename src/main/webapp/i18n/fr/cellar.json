@@ -1,22 +1,22 @@
 {
     "cavavinApp": {
-        "cellar" : {
+        "Cave" : {
             "home": {
-                "title": "Cellars",
-                "createLabel": "Créer un nouveau Cellar",
-                "createOrEditLabel": "Créer ou éditer un Cellar"
+                "title": "Caves",
+                "createLabel": "Créer une nouvelle Cave",
+                "createOrEditLabel": "Créer ou éditer une Cave"
             },
-            "created": "Un nouveau Cellar a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Cellar avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Cellar avec l'identifiant {{ param }} a été supprimé",
+            "created": "Une nouvelle Cave a été créée avec l'identifiant {{ param }}",
+            "updated": "La Cave avec l'identifiant {{ param }} a été mise à jour",
+            "deleted": "La Cave avec l'identifiant {{ param }} a été supprimée",
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Cellar {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer la Cave {{ id }} ?"
             },
             "detail": {
-                "title": "Cellar"
+                "title": "Cave"
             },
-            "capacity": "Capacity",
-            "userId": "User Id"
+            "capacity": "Capacité",
+            "userId": "Id Utilisateur"
         }
     }
 }
