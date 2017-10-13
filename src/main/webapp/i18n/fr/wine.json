@@ -1,27 +1,27 @@
 {
     "cavavinApp": {
-        "wine" : {
+        "Vin" : {
             "home": {
-                "title": "Wines",
-                "createLabel": "Créer un nouveau Wine",
-                "createOrEditLabel": "Créer ou éditer un Wine",
-                "search": "Recherche pour Wine"
+                "title": "Vins",
+                "createLabel": "Créer un nouveau Vin",
+                "createOrEditLabel": "Créer ou éditer un Vin",
+                "search": "Recherche pour Vin"
             },
-            "created": "Un nouveau Wine a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Wine avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Wine avec l'identifiant {{ param }} a été supprimé",
+            "created": "Un nouveau Vin a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Vin avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Vin avec l'identifiant {{ param }} a été supprimé",
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Wine {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer le Vin {{ id }} ?"
             },
             "detail": {
-                "title": "Wine"
+                "title": "Vin"
             },
-            "name": "Name",
+            "name": "Nom",
             "appellation": "Appellation",
-            "producer": "Producer",
-            "creatorId": "Creator Id",
-            "region": "Region",
-            "color": "Color"
+            "producer": "Producteur",
+            "creatorId": "Id Créateur",
+            "region": "Région",
+            "color": "Couleur"
         }
     }
 }
