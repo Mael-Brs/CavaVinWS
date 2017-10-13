@@ -9,7 +9,7 @@ describe('Cellar e2e test', () => {
     let cellarComponentsPage: CellarComponentsPage;
     const fileToUpload = '../../../../main/webapp/content/images/logo-jhipster.png';
     const absolutePath = path.resolve(__dirname, fileToUpload);
-    
+
 
     beforeAll(() => {
         browser.get('/');
@@ -37,11 +37,9 @@ describe('Cellar e2e test', () => {
         cellarComponentsPage.clickOnCreateButton();
         cellarDialogPage.setCapacityInput('5');
         expect(cellarDialogPage.getCapacityInput()).toMatch('5');
-        cellarDialogPage.setUserIdInput('5');
-        expect(cellarDialogPage.getUserIdInput()).toMatch('5');
         cellarDialogPage.save();
         expect(cellarDialogPage.getSaveButton().isPresent()).toBeFalsy();
-    }); 
+    });
 
     afterAll(() => {
         navBarPage.autoSignOut();
@@ -66,7 +64,6 @@ export class CellarDialogPage {
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
     capacityInput = element(by.css('input#field_capacity'));
-    userIdInput = element(by.css('input#field_userId'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -78,14 +75,6 @@ export class CellarDialogPage {
 
     getCapacityInput = function () {
         return this.capacityInput.getAttribute('value');
-    }
-
-    setUserIdInput = function (userId) {
-        this.userIdInput.sendKeys(userId);
-    }
-
-    getUserIdInput = function () {
-        return this.userIdInput.getAttribute('value');
     }
 
     save() {

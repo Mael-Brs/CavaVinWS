@@ -9,7 +9,7 @@ describe('PinnedWine e2e test', () => {
     let pinnedWineComponentsPage: PinnedWineComponentsPage;
     const fileToUpload = '../../../../main/webapp/content/images/logo-jhipster.png';
     const absolutePath = path.resolve(__dirname, fileToUpload);
-    
+
 
     beforeAll(() => {
         browser.get('/');
@@ -23,7 +23,6 @@ describe('PinnedWine e2e test', () => {
         navBarPage.goToEntity('pinned-wine');
         pinnedWineComponentsPage = new PinnedWineComponentsPage();
         expect(pinnedWineComponentsPage.getTitle()).toMatch(/cavavinApp.pinnedWine.home.title/);
-
     });
 
     it('should load create PinnedWine dialog', () => {
@@ -35,8 +34,6 @@ describe('PinnedWine e2e test', () => {
 
    /* it('should create and save PinnedWines', () => {
         pinnedWineComponentsPage.clickOnCreateButton();
-        pinnedWineDialogPage.setUserIdInput('5');
-        expect(pinnedWineDialogPage.getUserIdInput()).toMatch('5');
         pinnedWineDialogPage.wineSelectLastOption();
         pinnedWineDialogPage.save();
         expect(pinnedWineDialogPage.getSaveButton().isPresent()).toBeFalsy();
@@ -64,19 +61,10 @@ export class PinnedWineDialogPage {
     modalTitle = element(by.css('h4#myPinnedWineLabel'));
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
-    userIdInput = element(by.css('input#field_userId'));
     wineSelect = element(by.css('select#field_wine'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
-    }
-
-    setUserIdInput = function (userId) {
-        this.userIdInput.sendKeys(userId);
-    }
-
-    getUserIdInput = function () {
-        return this.userIdInput.getAttribute('value');
     }
 
     wineSelectLastOption = function () {
