@@ -2,21 +2,21 @@
     "cavavinApp": {
         "pinnedWine" : {
             "home": {
-                "title": "PinnedWines",
-                "createLabel": "Créer un nouveau Pinned Wine",
-                "createOrEditLabel": "Créer ou éditer un Pinned Wine"
+                "title": "Vins épinglés",
+                "createLabel": "Epingler un vin",
+                "createOrEditLabel": "Epingler ou éditer un Vin épinglé"
             },
-            "created": "Un nouveau Pinned Wine a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Pinned Wine avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Pinned Wine avec l'identifiant {{ param }} a été supprimé",
+            "created": "Un nouveau Vin a été épinglé avec l'identifiant {{ param }}",
+            "updated": "Le Vin épinglé avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Vin épinglé avec l'identifiant {{ param }} a été supprimé",
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Pinned Wine {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer le Vin épinglé {{ id }} ?"
             },
             "detail": {
-                "title": "Pinned Wine"
+                "title": "Vin épinglé"
             },
-            "userId": "User Id",
-            "wine": "Wine"
+            "userId": "Id Utilisateur",
+            "wine": "Vin"
         }
     }
 }
