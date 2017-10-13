@@ -1,21 +1,21 @@
 {
     "cavavinApp": {
-        "region" : {
+        "Région" : {
             "home": {
-                "title": "Regions",
-                "createLabel": "Créer un nouveau Region",
-                "createOrEditLabel": "Créer ou éditer un Region"
+                "title": "Régions",
+                "createLabel": "Créer une nouvelle Région",
+                "createOrEditLabel": "Créer ou éditer une Région"
             },
-            "created": "Un nouveau Region a été créé avec l'identifiant {{ param }}",
-            "updated": "Le Region avec l'identifiant {{ param }} a été mis à jour",
-            "deleted": "Le Region avec l'identifiant {{ param }} a été supprimé",
+            "created": "Une nouvelle Région a été créée avec l'identifiant {{ param }}",
+            "updated": "La Région avec l'identifiant {{ param }} a été mise à jour",
+            "deleted": "La Région avec l'identifiant {{ param }} a été supprimée",
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Region {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer la Région {{ id }} ?"
             },
             "detail": {
-                "title": "Region"
+                "title": "Région"
             },
-            "regionName": "Region Name"
+            "RégionName": "Nom Région"
         }
     }
 }
