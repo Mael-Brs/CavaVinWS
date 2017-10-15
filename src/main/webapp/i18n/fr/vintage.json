@@ -1,6 +1,6 @@
 {
     "cavavinApp": {
-        "Millésime" : {
+        "vintage" : {
             "home": {
                 "title": "Millésimes",
                 "createLabel": "Créer un nouveau Millésime",
@@ -16,7 +16,7 @@
                 "title": "Millésime"
             },
             "year": "Année",
-            "bareCode": "Code Bare",
+            "bareCode": "Code Barre",
             "wine": "Vin"
         }
     }
