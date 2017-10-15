@@ -89,8 +89,15 @@ public class CellarResource {
     @Timed
     public List<Cellar> getAllCellars() {
         log.debug("REST request to get all Cellars");
-        return cellarService.findAll();
+        List<Cellar> cellars = cellarService.findAll();
+        for(Cellar cellar : cellars){
+            cellar.setSumOfWine(wineInCellarService.getWineSum(cellar.getId()));
+            cellar.setWineByRegion(wineInCellarService.getWineByRegion(cellar.getId()));
+            cellar.setWineByColor(wineInCellarService.getWineByColor(cellar.getId()));
+            cellar.setWineByYear(wineInCellarService.getWineByYear(cellar.getId()));
         }
+        return cellars;
+    }
 
     /**
      * GET  /cellars/:id : get the "id" cellar.
@@ -104,27 +111,6 @@ public class CellarResource {
         log.debug("REST request to get Cellar : {}", id);
         Cellar cellar = cellarService.findOne(id);
         if (cellar != null){
-            cellar.setSumOfWine(wineInCellarService.getWineSum(id));
-            cellar.setWineByRegion(wineInCellarService.getWineByRegion(id));
-            cellar.setWineByColor(wineInCellarService.getWineByColor(id));
-            cellar.setWineByYear(wineInCellarService.getWineByYear(id));
-        }
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(cellar));
-    }
-
-    /**
-     * GET  /users/:id/cellars : get cellars for this user.
-     *
-     * @param userId the login of the user to find
-     * @return the ResponseEntity with status 200 (OK) and with body the "login" user, or with status 404 (Not Found)
-     */
-    @GetMapping("/users/{userId}/cellars")
-    @Timed
-    public ResponseEntity<Cellar> getCellarForUser(@PathVariable Long userId) {
-        log.debug("REST request to get cellars for User : {}", userId);
-        Cellar cellar = cellarService.findByUser(userId);
-        if(cellar != null){
-            Long id =  cellar.getId();
             cellar.setSumOfWine(wineInCellarService.getWineSum(id));
             cellar.setWineByRegion(wineInCellarService.getWineByRegion(id));
             cellar.setWineByColor(wineInCellarService.getWineByColor(id));
