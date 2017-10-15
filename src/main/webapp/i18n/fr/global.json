@@ -7,14 +7,14 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entités",
-                "cellar": "Cellar",
-                "color": "Color",
-                "pinnedWine": "Pinned Wine",
-                "region": "Region",
-                "vintage": "Vintage",
-                "wine": "Wine",
-                "wineAgingData": "Wine Aging Data",
-                "wineInCellar": "Wine In Cellar",
+                "cellar": "Caves",
+                "color": "Couleurs",
+                "pinnedWine": "Vins épinglés",
+                "region": "Régions",
+                "vintage": "Millésimes",
+                "wine": "Vins",
+                "wineAgingData": "Données de vieillissement",
+                "wineInCellar": "Vins en cave",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
