@@ -1,6 +1,6 @@
 {
     "cavavinApp": {
-        "Couleur" : {
+        "color" : {
             "home": {
                 "title": "Couleurs",
                 "createLabel": "Créer une nouvelle Couleur",
@@ -15,7 +15,7 @@
             "detail": {
                 "title": "Couleur"
             },
-            "CouleurName": "Nom Couleur"
+            "colorName": "Nom Couleur"
         }
     }
 }
