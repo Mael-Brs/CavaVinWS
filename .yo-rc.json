@@ -32,6 +32,7 @@
       "fr",
       "en"
     ],
-    "searchEngine": "elasticsearch"
+    "searchEngine": "elasticsearch",
+    "herokuAppName": "cellar-manager"
   }
 }
