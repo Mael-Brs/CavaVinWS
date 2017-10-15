@@ -59,18 +59,6 @@ public class CellarService {
     }
 
     /**
-     *  Get all cellars for given user login
-     *
-     *  @param id the login of the User for cellar to retrieve
-     *  @return the entity
-     */
-    @Transactional(readOnly = true)
-    public Cellar findByUser(Long id) {
-        log.debug("Request to get Cellar : {}", id);
-        return cellarRepository.findByUserId(id);
-    }
-
-    /**
      *  Delete the  cellar by id.
      *
      *  @param id the id of the entity
