@@ -1,6 +1,6 @@
 {
     "cavavinApp": {
-        "Région" : {
+        "region" : {
             "home": {
                 "title": "Régions",
                 "createLabel": "Créer une nouvelle Région",
@@ -15,7 +15,7 @@
             "detail": {
                 "title": "Région"
             },
-            "RégionName": "Nom Région"
+            "regionName": "Nom Région"
         }
     }
 }
