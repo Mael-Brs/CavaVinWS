@@ -141,3 +141,4 @@ Desktop.ini
 ######################
 .eslintcache
 *.yml
+.mvn/jvm.config
