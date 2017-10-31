@@ -24,7 +24,7 @@
     <!--
         Insert data for dev and test
     -->
-    <changeSet id="20170815162854-1" author="jhipster" context="dev">
+    <changeSet id="20170815162854-2" author="jhipster" context="dev">
         <sqlFile encoding="utf8"
                  endDelimiter="\nGO"
                  path="/config/liquibase/script_insert_dev.sql"
