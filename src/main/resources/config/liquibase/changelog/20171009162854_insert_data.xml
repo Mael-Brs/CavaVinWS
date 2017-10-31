@@ -13,17 +13,24 @@
     <property name="floatType" value="float4" dbms="postgresql, h2"/>
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
+    <changeSet id="20170815162854-1" author="jhipster">
+        <sqlFile encoding="utf8"
+                 endDelimiter="\nGO"
+                 path="/config/liquibase/script_insert_prod.sql"
+                 relativeToChangelogFile="false"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
     <!--
         Insert data for dev and test
     -->
     <changeSet id="20170815162854-1" author="jhipster" context="dev">
-
         <sqlFile encoding="utf8"
                  endDelimiter="\nGO"
                  path="/config/liquibase/script_insert_dev.sql"
                  relativeToChangelogFile="false"
                  splitStatements="true"
                  stripComments="true"/>
-
     </changeSet>
+
 </databaseChangeLog>

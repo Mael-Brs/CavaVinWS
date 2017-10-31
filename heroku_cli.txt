@@ -3,6 +3,8 @@ heroku logs --tail
 heroku ps
 jhipster heroku
 heroku deploy:jar --jar target/cavavin-0.0.1-SNAPSHOT.war
+heroku war:deploy target/cavavin-0.0.1-SNAPSHOT.war
 ** test prod local **
 docker-compose -f src/main/docker/postgresql.yml up
-java -Xmx256m -jar cavavin-0.0.1-SNAPSHOT.war --spring.profiles.active=prod
+java -jar cavavin-0.0.1-SNAPSHOT.war --spring.profiles.active=prod
+java -jar bfg.jar --delete-files application-prod.yml
