@@ -6,9 +6,15 @@ import com.mbras.cavavin.domain.Wine;
 import com.mbras.cavavin.repository.WineRepository;
 import com.mbras.cavavin.repository.search.WineSearchRepository;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
+import com.mbras.cavavin.web.rest.util.PaginationUtil;
+import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -90,14 +96,17 @@ public class WineResource {
     /**
      * GET  /wines : get all the wines.
      *
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of wines in body
      */
     @GetMapping("/wines")
     @Timed
-    public List<Wine> getAllWines() {
-        log.debug("REST request to get all Wines");
-        return wineRepository.findAll();
-        }
+    public ResponseEntity<List<Wine>> getAllWines(@ApiParam Pageable pageable) {
+        log.debug("REST request to get a page of Wines");
+        Page<Wine> page = wineRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/wines");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
     /**
      * GET  /wines/:id : get the "id" wine.
@@ -133,15 +142,16 @@ public class WineResource {
      * to the query.
      *
      * @param query the query of the wine search
+     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/wines")
     @Timed
-    public List<Wine> searchWines(@RequestParam String query) {
-        log.debug("REST request to search Wines for query {}", query);
-        return StreamSupport
-            .stream(wineSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public ResponseEntity<List<Wine>> searchWines(@RequestParam String query, @ApiParam Pageable pageable) {
+        log.debug("REST request to search for a page of Wines for query {}", query);
+        Page<Wine> page = wineSearchRepository.search(queryStringQuery(query), pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/wines");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }

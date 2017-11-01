@@ -28,18 +28,18 @@
     <div class="table-responsive" *ngIf="wines">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="cavavinApp.wine.name">Name</span></th>
-            <th><span jhiTranslate="cavavinApp.wine.appellation">Appellation</span></th>
-            <th><span jhiTranslate="cavavinApp.wine.producer">Producer</span></th>
-            <th><span jhiTranslate="cavavinApp.wine.creatorId">Creator Id</span></th>
-            <th><span jhiTranslate="cavavinApp.wine.region">Region</span></th>
-            <th><span jhiTranslate="cavavinApp.wine.color">Color</span></th>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="name"><span jhiTranslate="cavavinApp.wine.name">Name</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="appellation"><span jhiTranslate="cavavinApp.wine.appellation">Appellation</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="producer"><span jhiTranslate="cavavinApp.wine.producer">Producer</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="creatorId"><span jhiTranslate="cavavinApp.wine.creatorId">Creator Id</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="region.regionName"><span jhiTranslate="cavavinApp.wine.region">Region</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="color.colorName"><span jhiTranslate="cavavinApp.wine.color">Color</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
             </thead>
-            <tbody>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let wine of wines ;trackBy: trackId">
                 <td><a [routerLink]="['../wine', wine.id ]">{{wine.id}}</a></td>
                 <td>{{wine.name}}</td>
