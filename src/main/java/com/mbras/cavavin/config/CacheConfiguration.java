@@ -49,6 +49,7 @@ public class CacheConfiguration {
             cm.createCache(com.mbras.cavavin.domain.WineInCellar.class.getName(), jcacheConfiguration);
             cm.createCache(com.mbras.cavavin.domain.WineAgingData.class.getName(), jcacheConfiguration);
             cm.createCache(com.mbras.cavavin.domain.PinnedWine.class.getName(), jcacheConfiguration);
+            cm.createCache("AgingDataByColorAndRegion", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }
