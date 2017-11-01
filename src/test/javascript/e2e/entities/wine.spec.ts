@@ -10,6 +10,7 @@ describe('Wine e2e test', () => {
     const fileToUpload = '../../../../main/webapp/content/images/logo-jhipster.png';
     const absolutePath = path.resolve(__dirname, fileToUpload);
 
+
     beforeAll(() => {
         browser.get('/');
         browser.waitForAngular();
