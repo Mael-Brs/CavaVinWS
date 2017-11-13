@@ -2,6 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { CavavinSharedModule } from '../shared';
+import { CavavinElasticsearchReindexModule } from './elasticsearch-reindex/elasticsearch-reindex.module';
 /* jhipster-needle-add-admin-module-import - JHipster will add admin modules imports here */
 
 import {
@@ -34,6 +35,7 @@ import {
     imports: [
         CavavinSharedModule,
         RouterModule.forRoot(adminState, { useHash: true }),
+        CavavinElasticsearchReindexModule,
         /* jhipster-needle-add-admin-module - JHipster will add admin modules here */
     ],
     declarations: [

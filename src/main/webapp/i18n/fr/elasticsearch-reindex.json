@@ -1,0 +1,17 @@
+{
+    "elasticsearch": {
+        "reindex": {
+            "accepted": "Request accepted, performing full Elasticsearch reindexing.",
+            "dialog": {
+                "title": "Confirmer la réindexation Elasticsearch",
+                "question": "Etes-vous sûr de vouloir réindexer Elasticsearch ? Cela peut prendre un moment !",
+                "cancel": "Annuler",
+                "confirm": "Reindexer"
+            },
+            "title": "Reindexer Elasticsearch",
+            "instructions1": "Envoi d'une requête pour réindexer toutes les données dans Elasticsearch. Cela corrigera les données manquantes et les erreurs de mapping, cependant vous perdrez toutes les données qui ont été définies en dehors de l'application. L'opération s'effectuera en arrière plan. Vous verrez \"Elasticsearch: Successfully performed reindexing\" dans les logs une fois terminer.",
+            "instructions2": "Cela peut prendre un long moment et est succeptible de poser des problèmes d'accès concurrents. A executer avec un faible nombre d'utilisateurs connectés",
+            "go": "Reindexer"
+        }
+    }
+}
