@@ -15,7 +15,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="cavavinApp.vintage.year" for="field_year">Year</label>
             <input type="number" class="form-control" name="year" id="field_year"
-                [(ngModel)]="vintage.year" required />
+                [(ngModel)]="vintage.year" pattern="\d{4}" required />
             <div [hidden]="!(editForm.controls.year?.dirty && editForm.controls.year?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.year?.errors?.required" jhiTranslate="entity.validation.required">
