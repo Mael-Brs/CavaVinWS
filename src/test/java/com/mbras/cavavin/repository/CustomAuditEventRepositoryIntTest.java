@@ -170,7 +170,6 @@ public class CustomAuditEventRepositoryIntTest {
         assertThat(persistentAuditEvent.getAuditEventDate()).isEqualTo(event.getTimestamp().toInstant());
     }
 
- 
     @Test
     public void addAuditEventTruncateLargeData() {
         Map<String, Object> data = new HashMap<>();
@@ -193,7 +192,7 @@ public class CustomAuditEventRepositoryIntTest {
         assertThat(persistentAuditEvent.getAuditEventDate()).isEqualTo(event.getTimestamp().toInstant());
     }
 
-   @Test
+    @Test
     public void testAddEventWithWebAuthenticationDetails() {
         HttpSession session = new MockHttpSession(null, "test-session-id");
         MockHttpServletRequest request = new MockHttpServletRequest();
