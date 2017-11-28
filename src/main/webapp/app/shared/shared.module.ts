@@ -11,10 +11,10 @@ import {
     StateStorageService,
     LoginService,
     LoginModalService,
+    JhiLoginModalComponent,
     Principal,
     HasAnyAuthorityDirective,
-    IsWineCreatorDirective,
-    JhiLoginModalComponent
+    IsWineCreatorDirective
 } from './';
 
 @NgModule({
