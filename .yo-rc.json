@@ -1,6 +1,6 @@
 {
   "generator-jhipster": {
-    "jhipsterVersion": "4.9.0",
+    "jhipsterVersion": "4.11.1",
     "baseName": "cavavin",
     "packageName": "com.mbras.cavavin",
     "packageFolder": "com/mbras/cavavin",

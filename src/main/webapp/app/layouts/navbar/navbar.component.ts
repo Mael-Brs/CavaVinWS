@@ -6,7 +6,7 @@ import { JhiLanguageService } from 'ng-jhipster';
 import { ProfileService } from '../profiles/profile.service';
 import { JhiLanguageHelper, Principal, LoginModalService, LoginService } from '../../shared';
 
-import { VERSION, DEBUG_INFO_ENABLED } from '../../app.constants';
+import { VERSION } from '../../app.constants';
 
 @Component({
     selector: 'jhi-navbar',
@@ -44,11 +44,12 @@ export class NavbarComponent implements OnInit {
         this.route.url.subscribe((segments) => {
             this.visible = segments.length === 0 || segments.join('').indexOf(this.activate) === -1;
         });
+
         this.languageHelper.getAll().then((languages) => {
             this.languages = languages;
         });
 
-        this.profileService.getProfileInfo().subscribe((profileInfo) => {
+        this.profileService.getProfileInfo().then((profileInfo) => {
             this.inProduction = profileInfo.inProduction;
             this.swaggerEnabled = profileInfo.swaggerEnabled;
         });
