@@ -34,7 +34,7 @@ import {
 @NgModule({
     imports: [
         CavavinSharedModule,
-        RouterModule.forRoot(adminState, { useHash: true }),
+        RouterModule.forChild(adminState),
         CavavinElasticsearchReindexModule,
         /* jhipster-needle-add-admin-module - JHipster will add admin modules here */
     ],
