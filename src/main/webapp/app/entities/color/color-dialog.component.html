@@ -15,7 +15,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="cavavinApp.color.colorName" for="field_colorName">Color Name</label>
             <input type="text" class="form-control" name="colorName" id="field_colorName"
-                [(ngModel)]="color.colorName" required />
+                [(ngModel)]="color.colorName" required/>
             <div [hidden]="!(editForm.controls.colorName?.dirty && editForm.controls.colorName?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.colorName?.errors?.required" jhiTranslate="entity.validation.required">

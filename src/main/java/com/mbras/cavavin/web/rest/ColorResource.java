@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.Color;
 
 import com.mbras.cavavin.repository.ColorRepository;
+import com.mbras.cavavin.web.rest.errors.BadRequestAlertException;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -47,7 +48,7 @@ public class ColorResource {
     public ResponseEntity<Color> createColor(@Valid @RequestBody Color color) throws URISyntaxException {
         log.debug("REST request to save Color : {}", color);
         if (color.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new color cannot already have an ID")).body(null);
+            throw new BadRequestAlertException("A new color cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Color result = colorRepository.save(color);
         return ResponseEntity.created(new URI("/api/colors/" + result.getId()))
