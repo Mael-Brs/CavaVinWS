@@ -2,8 +2,8 @@ package com.mbras.cavavin.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.WineAgingData;
-
 import com.mbras.cavavin.repository.WineAgingDataRepository;
+import com.mbras.cavavin.web.rest.errors.BadRequestAlertException;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -47,7 +46,7 @@ public class WineAgingDataResource {
     public ResponseEntity<WineAgingData> createWineAgingData(@Valid @RequestBody WineAgingData wineAgingData) throws URISyntaxException {
         log.debug("REST request to save WineAgingData : {}", wineAgingData);
         if (wineAgingData.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new wineAgingData cannot already have an ID")).body(null);
+            throw new BadRequestAlertException("A new wineAgingData cannot already have an ID", ENTITY_NAME, "idexists");
         }
         WineAgingData result = wineAgingDataRepository.save(wineAgingData);
         return ResponseEntity.created(new URI("/api/wine-aging-data/" + result.getId()))
