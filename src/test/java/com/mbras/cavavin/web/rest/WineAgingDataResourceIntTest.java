@@ -1,13 +1,11 @@
 package com.mbras.cavavin.web.rest;
 
 import com.mbras.cavavin.CavavinApp;
-
-import com.mbras.cavavin.domain.WineAgingData;
 import com.mbras.cavavin.domain.Color;
 import com.mbras.cavavin.domain.Region;
+import com.mbras.cavavin.domain.WineAgingData;
 import com.mbras.cavavin.repository.WineAgingDataRepository;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.mbras.cavavin.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -71,6 +70,7 @@ public class WineAgingDataResourceIntTest {
         this.restWineAgingDataMockMvc = MockMvcBuilders.standaloneSetup(wineAgingDataResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -187,6 +187,8 @@ public class WineAgingDataResourceIntTest {
 
         // Update the wineAgingData
         WineAgingData updatedWineAgingData = wineAgingDataRepository.findOne(wineAgingData.getId());
+        // Disconnect from session so that the updates on updatedWineAgingData are not directly saved in db
+        em.detach(updatedWineAgingData);
         updatedWineAgingData
             .minKeep(UPDATED_MIN_KEEP)
             .maxKeep(UPDATED_MAX_KEEP);
