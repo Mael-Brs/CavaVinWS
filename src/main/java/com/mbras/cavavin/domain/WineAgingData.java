@@ -4,9 +4,10 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
+
 
 /**
  * A WineAgingData.
@@ -123,8 +124,8 @@ public class WineAgingData implements Serializable {
     public String toString() {
         return "WineAgingData{" +
             "id=" + getId() +
-            ", minKeep='" + getMinKeep() + "'" +
-            ", maxKeep='" + getMaxKeep() + "'" +
+            ", minKeep=" + getMinKeep() +
+            ", maxKeep=" + getMaxKeep() +
             "}";
     }
 }
