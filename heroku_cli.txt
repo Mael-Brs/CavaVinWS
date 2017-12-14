@@ -8,3 +8,19 @@ heroku war:deploy target/cavavin-0.0.1-SNAPSHOT.war
 docker-compose -f src/main/docker/postgresql.yml up
 java -jar cavavin-0.0.1-SNAPSHOT.war --spring.profiles.active=prod
 java -jar bfg.jar --delete-files jvm.config
+
+** heroku pg backup **
+* create backup
+heroku pg:backups:capture --app cellar-manager
+* create url
+heroku pg:backups:url b001
+
+* download
+heroku pg:backups:download --app cellar-manager
+* status
+heroku pg:backups --app cellar-manager
+
+** posgres client **
+heroku pg:psql
+
+mvn clean heroku:deploy-war -Pprod -DskipTests
