@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.mbras.cavavin.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -68,6 +69,7 @@ public class PinnedWineResourceIntTest {
         this.restPinnedWineMockMvc = MockMvcBuilders.standaloneSetup(pinnedWineResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -194,6 +196,8 @@ public class PinnedWineResourceIntTest {
 
         // Update the pinnedWine
         PinnedWine updatedPinnedWine = pinnedWineRepository.findOne(pinnedWine.getId());
+        // Disconnect from session so that the updates on updatedPinnedWine are not directly saved in db
+        em.detach(updatedPinnedWine);
         updatedPinnedWine
             .userId(UPDATED_USER_ID);
 

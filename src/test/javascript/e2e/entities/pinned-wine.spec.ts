@@ -23,6 +23,7 @@ describe('PinnedWine e2e test', () => {
         navBarPage.goToEntity('pinned-wine');
         pinnedWineComponentsPage = new PinnedWineComponentsPage();
         expect(pinnedWineComponentsPage.getTitle()).toMatch(/cavavinApp.pinnedWine.home.title/);
+
     });
 
     it('should load create PinnedWine dialog', () => {

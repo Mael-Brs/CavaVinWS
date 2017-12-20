@@ -8,6 +8,7 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+
 /**
  * A PinnedWine.
  */
@@ -91,7 +92,7 @@ public class PinnedWine implements Serializable {
     public String toString() {
         return "PinnedWine{" +
             "id=" + getId() +
-            ", userId='" + getUserId() + "'" +
+            ", userId=" + getUserId() +
             "}";
     }
 }

@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.PinnedWine;
 
 import com.mbras.cavavin.repository.PinnedWineRepository;
+import com.mbras.cavavin.web.rest.errors.BadRequestAlertException;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -47,7 +48,7 @@ public class PinnedWineResource {
     public ResponseEntity<PinnedWine> createPinnedWine(@Valid @RequestBody PinnedWine pinnedWine) throws URISyntaxException {
         log.debug("REST request to save PinnedWine : {}", pinnedWine);
         if (pinnedWine.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new pinnedWine cannot already have an ID")).body(null);
+            throw new BadRequestAlertException("A new pinnedWine cannot already have an ID", ENTITY_NAME, "idexists");
         }
         PinnedWine result = pinnedWineRepository.save(pinnedWine);
         return ResponseEntity.created(new URI("/api/pinned-wines/" + result.getId()))
