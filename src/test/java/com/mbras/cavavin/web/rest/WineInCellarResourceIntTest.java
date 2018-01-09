@@ -1,16 +1,14 @@
 package com.mbras.cavavin.web.rest;
 
 import com.mbras.cavavin.CavavinApp;
-
 import com.mbras.cavavin.domain.Cellar;
+import com.mbras.cavavin.domain.Vintage;
 import com.mbras.cavavin.domain.Wine;
 import com.mbras.cavavin.domain.WineInCellar;
-import com.mbras.cavavin.domain.Vintage;
 import com.mbras.cavavin.repository.WineInCellarRepository;
-import com.mbras.cavavin.service.WineInCellarService;
 import com.mbras.cavavin.repository.search.WineInCellarSearchRepository;
+import com.mbras.cavavin.service.WineInCellarService;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -303,6 +301,7 @@ public class WineInCellarResourceIntTest {
 
         // Update the wineInCellar
         WineInCellar updatedWineInCellar = wineInCellarRepository.findOne(wineInCellar.getId());
+        em.clear();
         updatedWineInCellar
             .minKeep(UPDATED_MIN_KEEP)
             .maxKeep(UPDATED_MAX_KEEP)
@@ -327,6 +326,7 @@ public class WineInCellarResourceIntTest {
         assertThat(testWineInCellar.getComments()).isEqualTo(UPDATED_COMMENTS);
         assertThat(testWineInCellar.getLocation()).isEqualTo(UPDATED_LOCATION);
         assertThat(testWineInCellar.getCellarId()).isEqualTo(wineInCellar.getCellarId().intValue());
+        assertThat(testWineInCellar.getApogee()).isNotEqualTo(wineInCellar.getApogee());
 
         // Validate the WineInCellar in Elasticsearch
         WineInCellar wineInCellarEs = wineInCellarSearchRepository.findOne(testWineInCellar.getId());
@@ -437,6 +437,7 @@ public class WineInCellarResourceIntTest {
         // Clear entity association
         em.clear();
         updatedWineInCellar.getVintage().getWine().setName(UPDATED_NAME);
+        updatedWineInCellar.setMaxKeep(UPDATED_MAX_KEEP);
 
         restWineInCellarMockMvc.perform(put("/api/wine-in-cellars/all")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -448,6 +449,7 @@ public class WineInCellarResourceIntTest {
         assertThat(wineInCellarList).hasSize(databaseSizeBeforeUpdate);
         WineInCellar testWineInCellar = wineInCellarList.get(wineInCellarList.size() - 1);
         assertThat(testWineInCellar.getVintage().getWine().getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testWineInCellar.getApogee()).isNotEqualTo(wineInCellar.getApogee());
 
         // Validate the WineInCellar in Elasticsearch
         WineInCellar wineInCellarEs = wineInCellarSearchRepository.findOne(testWineInCellar.getId());

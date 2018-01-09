@@ -13,12 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing WineInCellar.
@@ -94,6 +90,7 @@ public class WineInCellarResource {
         if (wineInCellar.getId() == null) {
             return createWineInCellar(wineInCellar);
         }
+        wineInCellar.setApogee();
         WineInCellar result = wineInCellarService.save(wineInCellar);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, wineInCellar.getId().toString()))
@@ -116,6 +113,7 @@ public class WineInCellarResource {
         if (wineInCellar.getId() == null) {
             return createWineInCellar(wineInCellar);
         }
+        wineInCellar.setApogee();
         WineInCellar result = wineInCellarService.saveFromScratch(wineInCellar);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, wineInCellar.getId().toString()))
