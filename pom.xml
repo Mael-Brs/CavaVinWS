@@ -81,6 +81,7 @@
         <sonar.sources>${project.basedir}/src/main/</sonar.sources>
         <sonar.surefire.reportsPath>${project.testresult.directory}/surefire-reports</sonar.surefire.reportsPath>
         <sonar.tests>${project.basedir}/src/test/</sonar.tests>
+        <heroku-maven-plugin.version>2.0.2</heroku-maven-plugin.version>
 
         <!-- jhipster-needle-maven-property -->
     </properties>
@@ -601,6 +602,11 @@
                     <tag>latest</tag>
                     <contextDirectory>${project.build.directory}</contextDirectory>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.heroku.sdk</groupId>
+                <artifactId>heroku-maven-plugin</artifactId>
+                <version>${heroku-maven-plugin.version}</version>
             </plugin>
             <!-- jhipster-needle-maven-add-plugin -->
         </plugins>
