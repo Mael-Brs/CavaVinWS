@@ -185,7 +185,6 @@ public class WineInCellar implements Serializable {
         return apogee;
     }
 
-    @PostLoad
     public void setApogee(){
         if(this.maxKeep != null && this.vintage != null && this.vintage.getYear() != null){
             this.apogee = this.vintage.getYear() + this.maxKeep;

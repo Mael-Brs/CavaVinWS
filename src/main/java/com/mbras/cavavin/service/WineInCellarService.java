@@ -61,6 +61,7 @@ public class WineInCellarService {
             setWineAgingData(wineInCellar);
         }
         WineInCellar result = wineInCellarRepository.save(wineInCellar);
+        result.setApogee();
         wineInCellarSearchRepository.save(result);
         return result;
     }
@@ -87,7 +88,7 @@ public class WineInCellarService {
             setWineAgingData(wineInCellar);
         }
         WineInCellar result = wineInCellarRepository.save(wineInCellar);
-
+        result.setApogee();
         wineInCellarSearchRepository.save(result);
         return result;
     }
@@ -196,12 +197,18 @@ public class WineInCellarService {
         return wineInCellarRepository.sumWineByYear(id);
     }
 
+    /**
+     * Set maxKeep or minKeep if it is not with default config values
+     * @param wineInCellar the wine to add aging data
+     */
     private void setWineAgingData(WineInCellar wineInCellar) {
         Wine wine = wineInCellar.getVintage().getWine();
         WineAgingData wineAgingData = wineAgingDataRepository.findByColorAndRegion(wine.getColor(), wine.getRegion());
         if(wineAgingData != null) {
-            wineInCellar.setMinKeep(wineAgingData.getMinKeep());
-            wineInCellar.setMaxKeep(wineAgingData.getMaxKeep());
+            Integer minKeep = wineInCellar.getMinKeep() != null ? wineInCellar.getMinKeep() : wineAgingData.getMinKeep();
+            wineInCellar.setMinKeep(minKeep);
+            Integer maxKeep = wineInCellar.getMaxKeep() != null ? wineInCellar.getMaxKeep() : wineAgingData.getMaxKeep();
+            wineInCellar.setMaxKeep(maxKeep);
         }
     }
 }
