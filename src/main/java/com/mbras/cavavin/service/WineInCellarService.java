@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing WineInCellar.
@@ -101,7 +101,11 @@ public class WineInCellarService {
     @Transactional(readOnly = true)
     public List<WineInCellar> findAll() {
         log.debug("Request to get all WineInCellars");
-        return wineInCellarRepository.findByUserIsCurrentUser();
+        List<WineInCellar> wineInCellarList = wineInCellarRepository.findByUserIsCurrentUser();
+        for(WineInCellar wineInCellar : wineInCellarList){
+            wineInCellar.setApogee();
+        }
+        return wineInCellarList;
     }
 
     /**
@@ -113,7 +117,11 @@ public class WineInCellarService {
     @Transactional(readOnly = true)
     public WineInCellar findOne(Long id) {
         log.debug("Request to get WineInCellar : {}", id);
-        return wineInCellarRepository.findOne(id);
+        WineInCellar wineInCellar = wineInCellarRepository.findOne(id);
+        if (wineInCellar != null) {
+            wineInCellar.setApogee();
+        }
+        return wineInCellar;
     }
 
     /**
@@ -125,7 +133,11 @@ public class WineInCellarService {
     @Transactional(readOnly = true)
     public List<WineInCellar> findByCellar(Long id) {
         log.debug("Request to get WineInCellar for cellar : {}", id);
-        return wineInCellarRepository.findByCellarId(id);
+        List<WineInCellar> wineInCellarList = wineInCellarRepository.findByCellarId(id);
+        for(WineInCellar wineInCellar : wineInCellarList){
+            wineInCellar.setApogee();
+        }
+        return wineInCellarList;
     }
 
     /**

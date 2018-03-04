@@ -6,7 +6,6 @@ import com.mbras.cavavin.repository.WineInCellarRepository;
 import com.mbras.cavavin.repository.search.WineInCellarSearchRepository;
 import com.mbras.cavavin.service.WineInCellarService;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
-import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -281,7 +280,7 @@ public class WineInCellarResourceIntTest {
     public void findByCellar() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
-
+        int expectedApogee = DEFAULT_MAX_KEEP + wineInCellar.getVintage().getYear();
         // Get the wineInCellar
         restWineInCellarMockMvc.perform(get("/api/cellars/{id}/wine-in-cellars", wineInCellar.getCellarId()))
             .andExpect(status().isOk())
@@ -292,7 +291,7 @@ public class WineInCellarResourceIntTest {
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE)))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS)))
-            .andExpect(jsonPath("$.[*].apogee").exists())
+            .andExpect(jsonPath("$.[*].apogee").value(expectedApogee))
             .andExpect(jsonPath("$.[*].cellarId").value(hasItem(wineInCellar.getCellarId().intValue())));
     }
 
