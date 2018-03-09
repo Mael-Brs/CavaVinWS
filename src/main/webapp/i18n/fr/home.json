@@ -1,6 +1,6 @@
 {
     "home": {
-        "title": "Bienvenue sur Cellar Manager",
+        "title": "Bienvenue sur Dans ma Cave",
         "subtitle": "L'application pour gérer votre cave à vin",
         "logged": {
             "message": "Vous êtes connecté en tant que \"{{username}}\"."
