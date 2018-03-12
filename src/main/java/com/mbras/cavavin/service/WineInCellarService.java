@@ -215,6 +215,9 @@ public class WineInCellarService {
      */
     private void setWineAgingData(WineInCellar wineInCellar) {
         Wine wine = wineInCellar.getVintage().getWine();
+        if(wine == null){
+            return;
+        }
         WineAgingData wineAgingData = wineAgingDataRepository.findByColorAndRegion(wine.getColor(), wine.getRegion());
         if(wineAgingData != null) {
             Integer minKeep = wineInCellar.getMinKeep() != null ? wineInCellar.getMinKeep() : wineAgingData.getMinKeep();
