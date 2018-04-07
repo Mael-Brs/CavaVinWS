@@ -14,6 +14,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -37,6 +38,11 @@ public class ElasticsearchIndexService {
     private final UserSearchRepository userSearchRepository;
 
     private final ElasticsearchTemplate elasticsearchTemplate;
+
+    @PostConstruct
+    public void init(){
+        reindexAll();
+    }
 
     public ElasticsearchIndexService(
         UserRepository userRepository,
