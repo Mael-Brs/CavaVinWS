@@ -13,7 +13,7 @@ java -jar bfg.jar --delete-files jvm.config
 * create backup
 heroku pg:backups:capture --app cellar-manager
 * create url
-heroku pg:backups:url b001
+heroku pg:backups:url b00x
 
 * download
 heroku pg:backups:download --app cellar-manager
@@ -24,3 +24,7 @@ heroku pg:backups --app cellar-manager
 heroku pg:psql
 
 mvn clean heroku:deploy-war -Pprod -DskipTests
+
+
+** add heroku remote
+heroku git:remote -a cellar-manager

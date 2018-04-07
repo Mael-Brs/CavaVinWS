@@ -24,8 +24,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -63,6 +61,12 @@ public class WineResource {
         if (wine.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new wine cannot already have an ID")).body(null);
         }
+        //Find if wine already exist return it
+        List<Wine> wines = wineRepository.findByNameIgnoreCaseAndProducerIgnoreCaseAndColorAndRegion(wine.getName(), wine.getProducer(), wine.getColor(), wine.getRegion());
+        if(wines != null && !wines.isEmpty()){
+            return ResponseEntity.ok(wines.get(0));
+        }
+
         Wine result = wineRepository.save(wine);
         wineSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/wines/" + result.getId()))

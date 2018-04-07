@@ -161,6 +161,29 @@ public class WineResourceIntTest {
 
     @Test
     @Transactional
+    public void createExistingWine() throws Exception {
+        // Initialize the database
+        String name = "EXISTING_NAME";
+        wine.setName(name);
+        wineRepository.saveAndFlush(wine);
+        int databaseSizeBeforeCreate = wineRepository.findAll().size();
+        //reset Id and change name case
+        em.detach(wine);
+        wine.setId(null);
+        wine.setName(name.toLowerCase());
+        // An entity with an existing name, producer, color and region cannot be duplicateed
+        restWineMockMvc.perform(post("/api/wines")
+        .contentType(TestUtil.APPLICATION_JSON_UTF8)
+        .content(TestUtil.convertObjectToJsonBytes(wine)))
+        .andExpect(status().isOk());
+
+        // Validate the Wine in the database
+        List<Wine> wineList = wineRepository.findAll();
+        assertThat(wineList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
     public void checkNameIsRequired() throws Exception {
         int databaseSizeBeforeTest = wineRepository.findAll().size();
         // set the field null
