@@ -15,6 +15,10 @@
             "node_modules/@types"
         ]
     },
+    "files": [
+        "src/main/webapp/app/app.module.ts",
+        "src/main/webapp/app/app.main-aot.ts"
+    ],
     "angularCompilerOptions": {
         "genDir": "target/aot",
         "skipMetadataEmit" : true
