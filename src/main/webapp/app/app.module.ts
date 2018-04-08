@@ -2,7 +2,7 @@ import './vendor.ts';
 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { Ng2Webstorage } from 'ng2-webstorage';
+import { Ng2Webstorage, LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 
 import { CavavinSharedModule, UserRouteAccessService } from './shared';
 import { CavavinAppRoutingModule} from './app-routing.module';
@@ -10,9 +10,9 @@ import { CavavinHomeModule } from './home/home.module';
 import { CavavinAdminModule } from './admin/admin.module';
 import { CavavinAccountModule } from './account/account.module';
 import { CavavinEntityModule } from './entities/entity.module';
-import { customHttpProvider } from './blocks/interceptor/http.provider';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
-
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from "./blocks/interceptor/auth.interceptor";
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 
 import {
@@ -47,9 +47,17 @@ import {
     ],
     providers: [
         ProfileService,
-        customHttpProvider(),
         PaginationConfig,
-        UserRouteAccessService
+        UserRouteAccessService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useFactory: (localStorageService, sessionStorageService) => new AuthInterceptor(localStorageService, sessionStorageService),
+            multi: true,
+            deps: [
+                LocalStorageService,
+                SessionStorageService
+            ]
+        }
     ],
     bootstrap: [ JhiMainComponent ]
 })
