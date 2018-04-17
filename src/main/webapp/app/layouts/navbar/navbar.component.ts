@@ -41,9 +41,6 @@ export class NavbarComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.route.url.subscribe((segments) => {
-            this.visible = segments.length === 0 || segments.join('').indexOf(this.activate) === -1;
-        });
 
         this.languageHelper.getAll().then((languages) => {
             this.languages = languages;
@@ -55,7 +52,7 @@ export class NavbarComponent implements OnInit {
         });
 
         this.router.events.subscribe((_: NavigationEnd) => {
-            this.visible = _.url.indexOf(this.activate) === -1;
+            this.visible = this.router.isActive(this.activate, false) === false;
         })
     }
 
