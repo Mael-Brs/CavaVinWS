@@ -22,7 +22,6 @@
     "clientPackageManager": "yarn",
     "applicationType": "monolith",
     "testFrameworks": [
-      "gatling",
       "protractor"
     ],
     "jhiPrefix": "jhi",
@@ -33,6 +32,6 @@
       "en"
     ],
     "searchEngine": "elasticsearch",
-    "herokuAppName": "cellar-manager"
+    "herokuAppName": "dans-ma-cave"
   }
 }
