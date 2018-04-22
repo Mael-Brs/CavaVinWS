@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiLanguageService } from 'ng-jhipster';
 
@@ -24,7 +24,6 @@ export class NavbarComponent implements OnInit {
     swaggerEnabled: boolean;
     modalRef: NgbModalRef;
     version: string;
-    visible: boolean;
 
     constructor(
         private loginService: LoginService,
@@ -33,17 +32,13 @@ export class NavbarComponent implements OnInit {
         private principal: Principal,
         private loginModalService: LoginModalService,
         private profileService: ProfileService,
-        private router: Router,
-        private route: ActivatedRoute
+        private router: Router
     ) {
         this.version = VERSION ? 'v' + VERSION : '';
         this.isNavbarCollapsed = true;
     }
 
     ngOnInit() {
-        this.route.url.subscribe((segments) => {
-            this.visible = segments.length === 0 || segments.join('').indexOf(this.activate) === -1;
-        });
 
         this.languageHelper.getAll().then((languages) => {
             this.languages = languages;
@@ -54,9 +49,6 @@ export class NavbarComponent implements OnInit {
             this.swaggerEnabled = profileInfo.swaggerEnabled;
         });
 
-        this.router.events.subscribe((_: NavigationEnd) => {
-            this.visible = _.url.indexOf(this.activate) === -1;
-        })
     }
 
     changeLanguage(languageKey: string) {

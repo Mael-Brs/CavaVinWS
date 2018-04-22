@@ -14,7 +14,7 @@ export const wineAgingDataRoute: Routes = [
         path: 'wine-aging-data',
         component: WineAgingDataComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'cavavinApp.wineAgingData.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -22,7 +22,7 @@ export const wineAgingDataRoute: Routes = [
         path: 'wine-aging-data/:id',
         component: WineAgingDataDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+          authorities: ['ROLE_ADMIN'],
             pageTitle: 'cavavinApp.wineAgingData.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -34,7 +34,7 @@ export const wineAgingDataPopupRoute: Routes = [
         path: 'wine-aging-data-new',
         component: WineAgingDataPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'cavavinApp.wineAgingData.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -44,7 +44,7 @@ export const wineAgingDataPopupRoute: Routes = [
         path: 'wine-aging-data/:id/edit',
         component: WineAgingDataPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'cavavinApp.wineAgingData.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -54,7 +54,7 @@ export const wineAgingDataPopupRoute: Routes = [
         path: 'wine-aging-data/:id/delete',
         component: WineAgingDataDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'cavavinApp.wineAgingData.home.title'
         },
         canActivate: [UserRouteAccessService],

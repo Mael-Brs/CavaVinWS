@@ -62,9 +62,10 @@ public class WineResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new wine cannot already have an ID")).body(null);
         }
         //Find if wine already exist return it
-        List<Wine> wines = wineRepository.findByNameIgnoreCaseAndProducerIgnoreCaseAndColorAndRegion(wine.getName(), wine.getProducer(), wine.getColor(), wine.getRegion());
-        if(wines != null && !wines.isEmpty()){
-            return ResponseEntity.ok(wines.get(0));
+        Optional<Wine> existingWine = wineRepository.findOneByNameIgnoreCaseAndProducerIgnoreCaseAndColorAndRegion(wine.getName(), wine.getProducer(), wine.getColor(), wine.getRegion());
+
+        if(existingWine.isPresent()){
+            return ResponseEntity.ok(existingWine.get());
         }
 
         Wine result = wineRepository.save(wine);
