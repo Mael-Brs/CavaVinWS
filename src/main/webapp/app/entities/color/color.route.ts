@@ -14,7 +14,7 @@ export const colorRoute: Routes = [
         path: 'color',
         component: ColorComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'cavavinApp.color.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -22,7 +22,7 @@ export const colorRoute: Routes = [
         path: 'color/:id',
         component: ColorDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'cavavinApp.color.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -34,7 +34,7 @@ export const colorPopupRoute: Routes = [
         path: 'color-new',
         component: ColorPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'cavavinApp.color.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -44,7 +44,7 @@ export const colorPopupRoute: Routes = [
         path: 'color/:id/edit',
         component: ColorPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'cavavinApp.color.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -54,7 +54,7 @@ export const colorPopupRoute: Routes = [
         path: 'color/:id/delete',
         component: ColorDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'cavavinApp.color.home.title'
         },
         canActivate: [UserRouteAccessService],
