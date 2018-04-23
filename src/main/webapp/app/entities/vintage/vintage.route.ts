@@ -14,7 +14,7 @@ export const vintageRoute: Routes = [
         path: 'vintage',
         component: VintageComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'cavavinApp.vintage.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -22,7 +22,7 @@ export const vintageRoute: Routes = [
         path: 'vintage/:id',
         component: VintageDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'cavavinApp.vintage.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -34,7 +34,7 @@ export const vintagePopupRoute: Routes = [
         path: 'vintage-new',
         component: VintagePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'cavavinApp.vintage.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -44,7 +44,7 @@ export const vintagePopupRoute: Routes = [
         path: 'vintage/:id/edit',
         component: VintagePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'cavavinApp.vintage.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -54,7 +54,7 @@ export const vintagePopupRoute: Routes = [
         path: 'vintage/:id/delete',
         component: VintageDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'cavavinApp.vintage.home.title'
         },
         canActivate: [UserRouteAccessService],
