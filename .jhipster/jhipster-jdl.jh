@@ -54,3 +54,5 @@ relationship ManyToOne {
 
 service Cellar, WineInCellar with serviceClass
 search Wine, WineInCellar with elasticsearch
+paginate WineInCellar, Wine with infinite-scroll
+filter WineInCellar, Wine
