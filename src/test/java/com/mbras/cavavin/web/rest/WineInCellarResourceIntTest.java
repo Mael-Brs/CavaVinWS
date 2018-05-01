@@ -665,6 +665,31 @@ public class WineInCellarResourceIntTest {
         defaultWineInCellarShouldNotBeFound("vintageId.equals=" + (vintageId + 1));
     }
 
+    @Test
+    @Transactional
+    public void getAllWineInCellarsByRegionIsEqualToSomething() throws Exception {
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+        String regionName = wineInCellar.getVintage().getWine().getRegion().getRegionName();
+        // Get all the wineInCellarList where vintage equals to vintageId
+        defaultWineInCellarShouldBeFound("region.equals=" + regionName);
+
+        // Get all the wineInCellarList where vintage equals to vintageId + 1
+        defaultWineInCellarShouldNotBeFound("region.equals=" + "fakeName");
+    }
+
+    @Test
+    @Transactional
+    public void getAllWineInCellarsByKeywordsContainsSomething() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+        String wineName = wineInCellar.getVintage().getWine().getName().substring(1);
+        // Get all the wineInCellarList where comments equals to DEFAULT_COMMENTS
+        defaultWineInCellarShouldBeFound("keywords=" + wineName);
+
+        // Get all the wineInCellarList where comments equals to UPDATED_COMMENTS
+        defaultWineInCellarShouldNotBeFound("keywords=fakeName");
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned
      */
