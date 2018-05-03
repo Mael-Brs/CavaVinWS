@@ -21,7 +21,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface WineInCellarRepository extends JpaRepository<WineInCellar,Long>, JpaSpecificationExecutor<WineInCellar> {
-	List<WineInCellar> findByCellarId(Long id);
 
     @Query(value = "select sum(w.quantity) from WineInCellar w where w.cellarId = :id")
     Long sumWine(@Param("id") Long id);
