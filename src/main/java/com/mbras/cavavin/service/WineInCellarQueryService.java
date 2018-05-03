@@ -1,7 +1,9 @@
 package com.mbras.cavavin.service;
 
 
-import com.mbras.cavavin.domain.*;
+import com.mbras.cavavin.domain.Vintage_;
+import com.mbras.cavavin.domain.WineInCellar;
+import com.mbras.cavavin.domain.WineInCellar_;
 import com.mbras.cavavin.repository.WineInCellarRepository;
 import com.mbras.cavavin.service.dto.WineInCellarCriteria;
 import io.github.jhipster.service.QueryService;
@@ -13,10 +15,6 @@ import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.SingularAttribute;
 import java.util.List;
 
 
@@ -97,33 +95,8 @@ public class WineInCellarQueryService extends QueryService<WineInCellar> {
             if (criteria.getVintageId() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getVintageId(), WineInCellar_.vintage, Vintage_.id));
             }
-            if(criteria.getRegion() != null){
-                specification = specification.and((root, criteriaQuery, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.join(WineInCellar_.vintage).join(Vintage_.wine).join(Wine_.region).get(Region_.regionName), criteria.getRegion().getEquals())
-                );
-            }
-            if(criteria.getColor() != null){
-                specification = specification.and((root, criteriaQuery, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.join(WineInCellar_.vintage).join(Vintage_.wine).join(Wine_.color).get(Color_.colorName), criteria.getColor().getEquals())
-                );
-            }
-            if(criteria.getKeywords() != null){
-                String keywords = "%" + criteria.getKeywords().toUpperCase() + "%";
-                specification = specification.and((root, criteriaQuery, criteriaBuilder) ->
-                    criteriaBuilder.or(
-                        buildLikeQuery(keywords, root, criteriaBuilder, Wine_.name),
-                        buildLikeQuery(keywords, root, criteriaBuilder, Wine_.producer),
-                        buildLikeQuery(keywords, root, criteriaBuilder, Wine_.appellation),
-                        criteriaBuilder.like(criteriaBuilder.upper(root.get(WineInCellar_.comments)), keywords)
-                    )
-                );
-            }
         }
         return specification;
-    }
-
-    private Predicate buildLikeQuery(String keywords, Root<WineInCellar> root, CriteriaBuilder criteriaBuilder, SingularAttribute<Wine, String> field) {
-        return criteriaBuilder.like(criteriaBuilder.upper(root.join(WineInCellar_.vintage).join(Vintage_.wine).get(field)), keywords);
     }
 
 }
