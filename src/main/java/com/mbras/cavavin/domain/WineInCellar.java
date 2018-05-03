@@ -5,10 +5,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
-
 
 /**
  * A WineInCellar.
@@ -216,13 +215,13 @@ public class WineInCellar implements Serializable {
     public String toString() {
         return "WineInCellar{" +
             "id=" + getId() +
-            ", minKeep=" + getMinKeep() +
-            ", maxKeep=" + getMaxKeep() +
-            ", price=" + getPrice() +
-            ", quantity=" + getQuantity() +
+            ", minKeep='" + getMinKeep() + "'" +
+            ", maxKeep='" + getMaxKeep() + "'" +
+            ", price='" + getPrice() + "'" +
+            ", quantity='" + getQuantity() + "'" +
             ", comments='" + getComments() + "'" +
             ", location='" + getLocation() + "'" +
-            ", cellarId=" + getCellarId() +
+            ", cellarId='" + getCellarId() + "'" +
             "}";
     }
 }

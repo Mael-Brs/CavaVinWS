@@ -15,22 +15,22 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.minKeep" for="field_minKeep">Min Keep</label>
             <input type="number" class="form-control" name="minKeep" id="field_minKeep"
-                [(ngModel)]="wineInCellar.minKeep" />
+                [(ngModel)]="wineInCellar.minKeep"  />
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.maxKeep" for="field_maxKeep">Max Keep</label>
             <input type="number" class="form-control" name="maxKeep" id="field_maxKeep"
-                [(ngModel)]="wineInCellar.maxKeep" />
+                [(ngModel)]="wineInCellar.maxKeep"  />
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.price" for="field_price">Price</label>
             <input type="number" class="form-control" name="price" id="field_price"
-                [(ngModel)]="wineInCellar.price" />
+                [(ngModel)]="wineInCellar.price"  />
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.quantity" for="field_quantity">Quantity</label>
             <input type="number" class="form-control" name="quantity" id="field_quantity"
-                [(ngModel)]="wineInCellar.quantity" required/>
+                [(ngModel)]="wineInCellar.quantity" required />
             <div [hidden]="!(editForm.controls.quantity?.dirty && editForm.controls.quantity?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.quantity?.errors?.required" jhiTranslate="entity.validation.required">
@@ -45,17 +45,17 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.comments" for="field_comments">Comments</label>
             <input type="text" class="form-control" name="comments" id="field_comments"
-                [(ngModel)]="wineInCellar.comments" />
+                [(ngModel)]="wineInCellar.comments"  />
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.location" for="field_location">Location</label>
             <input type="text" class="form-control" name="location" id="field_location"
-                [(ngModel)]="wineInCellar.location" />
+                [(ngModel)]="wineInCellar.location"  />
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.cellarId" for="field_cellarId">Cellar Id</label>
             <input type="number" class="form-control" name="cellarId" id="field_cellarId"
-                [(ngModel)]="wineInCellar.cellarId" required/>
+                [(ngModel)]="wineInCellar.cellarId" required />
             <div [hidden]="!(editForm.controls.cellarId?.dirty && editForm.controls.cellarId?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.cellarId?.errors?.required" jhiTranslate="entity.validation.required">
