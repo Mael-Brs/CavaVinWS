@@ -1,17 +1,13 @@
 package com.mbras.cavavin.repository;
 
-import com.mbras.cavavin.domain.WineByColor;
 import com.mbras.cavavin.domain.WineByRegion;
+import com.mbras.cavavin.domain.WineByColor;
 import com.mbras.cavavin.domain.WineByYear;
 import com.mbras.cavavin.domain.WineInCellar;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specifications;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -20,7 +16,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface WineInCellarRepository extends JpaRepository<WineInCellar,Long>, JpaSpecificationExecutor<WineInCellar> {
+public interface WineInCellarRepository extends JpaRepository<WineInCellar,Long> {
 	List<WineInCellar> findByCellarId(Long id);
 
     @Query(value = "select sum(w.quantity) from WineInCellar w where w.cellarId = :id")
@@ -35,9 +31,6 @@ public interface WineInCellarRepository extends JpaRepository<WineInCellar,Long>
     @Query(value = "select new com.mbras.cavavin.domain.WineByYear(w.vintage.year, sum(w.quantity)) from WineInCellar w where w.cellarId = :id group by w.vintage.year")
     List<WineByYear> sumWineByYear(@Param("id") Long id);
 
-    @Query("select w from WineInCellar w inner join Cellar c on c.id = w.cellarId inner join User u on u.id = c.userId where u.login = ?#{principal.username}")
-    Page<WineInCellar> findByUserIsCurrentUser(Specifications<WineInCellar> specifications, Pageable pageable);
-
-    @Query("select w from WineInCellar w inner join Cellar c on c.id = w.cellarId inner join User u on u.id = c.userId where u.login = ?#{principal.username}")
-    Page<WineInCellar> findByUserIsCurrentUser(Pageable pageable);
+    @Query("select w from WineInCellar w join Cellar c on c.id = w.cellarId join User u on u.id = c.userId where u.login = ?#{principal.username}")
+    List<WineInCellar> findByUserIsCurrentUser();
 }

@@ -9,13 +9,13 @@ import com.mbras.cavavin.repository.search.WineInCellarSearchRepository;
 import com.mbras.cavavin.repository.search.WineSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
@@ -94,24 +94,25 @@ public class WineInCellarService {
     }
 
     /**
-     * Get all the wineInCellars.
+     *  Get all the wineInCellars.
      *
-     * @param pageable the pagination information
-     * @return the list of entities
+     *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<WineInCellar> findAll(Pageable pageable) {
+    public List<WineInCellar> findAll() {
         log.debug("Request to get all WineInCellars");
-        Page<WineInCellar> wineInCellars = wineInCellarRepository.findByUserIsCurrentUser(pageable);
-        wineInCellars.forEach(WineInCellar::setApogee);
-        return wineInCellars;
+        List<WineInCellar> wineInCellarList = wineInCellarRepository.findByUserIsCurrentUser();
+        for(WineInCellar wineInCellar : wineInCellarList){
+            wineInCellar.setApogee();
+        }
+        return wineInCellarList;
     }
 
     /**
-     * Get one wineInCellar by id.
+     *  Get one wineInCellar by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     *  @param id the id of the entity
+     *  @return the entity
      */
     @Transactional(readOnly = true)
     public WineInCellar findOne(Long id) {
@@ -133,14 +134,16 @@ public class WineInCellarService {
     public List<WineInCellar> findByCellar(Long id) {
         log.debug("Request to get WineInCellar for cellar : {}", id);
         List<WineInCellar> wineInCellarList = wineInCellarRepository.findByCellarId(id);
-        wineInCellarList.forEach(WineInCellar::setApogee);
+        for(WineInCellar wineInCellar : wineInCellarList){
+            wineInCellar.setApogee();
+        }
         return wineInCellarList;
     }
 
     /**
-     * Delete the wineInCellar by id.
+     *  Delete the  wineInCellar by id.
      *
-     * @param id the id of the entity
+     *  @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete WineInCellar : {}", id);
@@ -151,14 +154,15 @@ public class WineInCellarService {
     /**
      * Search for the wineInCellar corresponding to the query.
      *
-     * @param query the query of the search
-     * @param pageable the pagination information
-     * @return the list of entities
+     *  @param query the query of the search
+     *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<WineInCellar> search(String query, Pageable pageable) {
-        log.debug("Request to search for a page of WineInCellars for query {}", query);
-        return wineInCellarSearchRepository.search(queryStringQuery(query), pageable);
+    public List<WineInCellar> search(String query) {
+        log.debug("Request to search WineInCellars for query {}", query);
+        return StreamSupport
+            .stream(wineInCellarSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .collect(Collectors.toList());
     }
 
     /**

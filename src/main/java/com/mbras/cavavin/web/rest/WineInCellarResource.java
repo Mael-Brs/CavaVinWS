@@ -2,19 +2,11 @@ package com.mbras.cavavin.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.WineInCellar;
-import com.mbras.cavavin.service.WineInCellarQueryService;
 import com.mbras.cavavin.service.WineInCellarService;
-import com.mbras.cavavin.service.dto.WineInCellarCriteria;
-import com.mbras.cavavin.web.rest.errors.BadRequestAlertException;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
-import com.mbras.cavavin.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,11 +29,8 @@ public class WineInCellarResource {
 
     private final WineInCellarService wineInCellarService;
 
-    private final WineInCellarQueryService wineInCellarQueryService;
-
-    public WineInCellarResource(WineInCellarService wineInCellarService, WineInCellarQueryService wineInCellarQueryService) {
+    public WineInCellarResource(WineInCellarService wineInCellarService) {
         this.wineInCellarService = wineInCellarService;
-        this.wineInCellarQueryService = wineInCellarQueryService;
     }
 
     /**
@@ -56,7 +45,7 @@ public class WineInCellarResource {
     public ResponseEntity<WineInCellar> createWineInCellar(@Valid @RequestBody WineInCellar wineInCellar) throws URISyntaxException {
         log.debug("REST request to save WineInCellar : {}", wineInCellar);
         if (wineInCellar.getId() != null) {
-            throw new BadRequestAlertException("A new wineInCellar cannot already have an ID", ENTITY_NAME, "idexists");
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new wineInCellar cannot already have an ID")).body(null);
         }
         WineInCellar result = wineInCellarService.save(wineInCellar);
         return ResponseEntity.created(new URI("/api/wine-in-cellars/" + result.getId()))
@@ -132,17 +121,13 @@ public class WineInCellarResource {
     /**
      * GET  /wine-in-cellars : get all the wineInCellars.
      *
-     * @param pageable the pagination information
-     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of wineInCellars in body
      */
     @GetMapping("/wine-in-cellars")
     @Timed
-    public ResponseEntity<List<WineInCellar>> getAllWineInCellars(WineInCellarCriteria criteria, Pageable pageable) {
-        log.debug("REST request to get WineInCellars by criteria: {}", criteria);
-        Page<WineInCellar> page = wineInCellarQueryService.findByCriteria(criteria, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/wine-in-cellars");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    public List<WineInCellar> getAllWineInCellars() {
+        log.debug("REST request to get all WineInCellars");
+        return wineInCellarService.findAll();
     }
 
     /**
@@ -192,16 +177,13 @@ public class WineInCellarResource {
      * to the query.
      *
      * @param query the query of the wineInCellar search
-     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/wine-in-cellars")
     @Timed
-    public ResponseEntity<List<WineInCellar>> searchWineInCellars(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of WineInCellars for query {}", query);
-        Page<WineInCellar> page = wineInCellarService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/wine-in-cellars");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    public List<WineInCellar> searchWineInCellars(@RequestParam String query) {
+        log.debug("REST request to search WineInCellars for query {}", query);
+        return wineInCellarService.search(query);
     }
 
 }
