@@ -141,7 +141,6 @@ public class WineInCellarResource {
     public ResponseEntity<List<WineInCellar>> getAllWineInCellars(WineInCellarCriteria criteria, Pageable pageable) {
         log.debug("REST request to get WineInCellars by criteria: {}", criteria);
         Page<WineInCellar> page = wineInCellarQueryService.findByCriteria(criteria, pageable);
-        page.forEach(WineInCellar::setApogee);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/wine-in-cellars");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

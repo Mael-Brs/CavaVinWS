@@ -2,12 +2,13 @@ package com.mbras.cavavin.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.Wine;
+
 import com.mbras.cavavin.repository.WineRepository;
 import com.mbras.cavavin.repository.search.WineSearchRepository;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import com.mbras.cavavin.web.rest.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
+import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -15,16 +16,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Wine.
@@ -68,15 +69,10 @@ public class WineResource {
         }
 
         Wine result = wineRepository.save(wine);
-        asyncIndexing(result);
+        wineSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/wines/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
-    }
-
-    @Async
-    public void asyncIndexing(Wine result) {
-        wineSearchRepository.save(result);
     }
 
     /**
@@ -96,7 +92,7 @@ public class WineResource {
             return createWine(wine);
         }
         Wine result = wineRepository.save(wine);
-        asyncIndexing(result);
+        wineSearchRepository.save(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, wine.getId().toString()))
             .body(result);
@@ -142,13 +138,8 @@ public class WineResource {
     public ResponseEntity<Void> deleteWine(@PathVariable Long id) {
         log.debug("REST request to delete Wine : {}", id);
         wineRepository.delete(id);
-        asyncIndexDelete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
-
-    @Async
-    public void asyncIndexDelete(@PathVariable Long id) {
         wineSearchRepository.delete(id);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
     /**

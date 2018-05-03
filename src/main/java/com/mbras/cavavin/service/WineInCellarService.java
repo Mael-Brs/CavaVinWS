@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,13 +62,8 @@ public class WineInCellarService {
         }
         WineInCellar result = wineInCellarRepository.save(wineInCellar);
         result.setApogee();
-        asyncIndexing(result);
-        return result;
-    }
-
-    @Async
-    public void asyncIndexing(WineInCellar result) {
         wineInCellarSearchRepository.save(result);
+        return result;
     }
 
     /**
@@ -95,7 +89,7 @@ public class WineInCellarService {
         }
         WineInCellar result = wineInCellarRepository.save(wineInCellar);
         result.setApogee();
-        asyncIndexing(result);
+        wineInCellarSearchRepository.save(result);
         return result;
     }
 
@@ -151,11 +145,6 @@ public class WineInCellarService {
     public void delete(Long id) {
         log.debug("Request to delete WineInCellar : {}", id);
         wineInCellarRepository.delete(id);
-        asyncIndexDelete(id);
-    }
-
-    @Async
-    public void asyncIndexDelete(Long id) {
         wineInCellarSearchRepository.delete(id);
     }
 
