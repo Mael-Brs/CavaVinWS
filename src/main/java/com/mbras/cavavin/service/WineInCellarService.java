@@ -9,6 +9,7 @@ import com.mbras.cavavin.repository.search.WineInCellarSearchRepository;
 import com.mbras.cavavin.repository.search.WineSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,9 +61,9 @@ public class WineInCellarService {
         if(wineInCellar.getMaxKeep() == null || wineInCellar.getMinKeep() == null) {
             setWineAgingData(wineInCellar);
         }
+        wineInCellar.setApogee();
         WineInCellar result = wineInCellarRepository.save(wineInCellar);
-        result.setApogee();
-        wineInCellarSearchRepository.save(result);
+        asyncIndexing(result);
         return result;
     }
 
@@ -87,10 +88,19 @@ public class WineInCellarService {
         if(wineInCellar.getMaxKeep() == null || wineInCellar.getMinKeep() == null) {
             setWineAgingData(wineInCellar);
         }
+        wineInCellar.setApogee();
         WineInCellar result = wineInCellarRepository.save(wineInCellar);
-        result.setApogee();
-        wineInCellarSearchRepository.save(result);
+        asyncIndexing(result);
         return result;
+    }
+
+    /**
+     * Crée l'index elestciSearch en mode asynchrone
+     * @param result le vin à indexer
+     */
+    @Async
+    public void asyncIndexing(WineInCellar result) {
+        wineInCellarSearchRepository.save(result);
     }
 
     /**
@@ -101,11 +111,7 @@ public class WineInCellarService {
     @Transactional(readOnly = true)
     public List<WineInCellar> findAll() {
         log.debug("Request to get all WineInCellars");
-        List<WineInCellar> wineInCellarList = wineInCellarRepository.findByUserIsCurrentUser();
-        for(WineInCellar wineInCellar : wineInCellarList){
-            wineInCellar.setApogee();
-        }
-        return wineInCellarList;
+        return wineInCellarRepository.findByUserIsCurrentUser();
     }
 
     /**
@@ -117,11 +123,7 @@ public class WineInCellarService {
     @Transactional(readOnly = true)
     public WineInCellar findOne(Long id) {
         log.debug("Request to get WineInCellar : {}", id);
-        WineInCellar wineInCellar = wineInCellarRepository.findOne(id);
-        if (wineInCellar != null) {
-            wineInCellar.setApogee();
-        }
-        return wineInCellar;
+        return wineInCellarRepository.findOne(id);
     }
 
     /**

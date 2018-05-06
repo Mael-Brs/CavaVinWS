@@ -5,7 +5,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -31,6 +31,9 @@ public class WineInCellar implements Serializable {
     @Column(name = "max_keep")
     private Integer maxKeep;
 
+    @Column(name = "apogee")
+    private Integer apogee;
+
     @Column(name = "price")
     private Double price;
 
@@ -51,9 +54,6 @@ public class WineInCellar implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @NotNull
     private Vintage vintage;
-
-    @Transient
-    private Integer apogee;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {

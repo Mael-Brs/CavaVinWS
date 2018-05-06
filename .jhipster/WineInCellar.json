@@ -19,6 +19,10 @@
             "fieldType": "Integer"
         },
         {
+            "fieldName": "apogee",
+            "fieldType": "Integer"
+        },
+        {
             "fieldName": "price",
             "fieldType": "Double"
         },
@@ -50,5 +54,6 @@
     "dto": "no",
     "pagination": "no",
     "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
     "searchEngine": "elasticsearch"
 }
