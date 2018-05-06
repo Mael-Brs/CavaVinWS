@@ -125,22 +125,6 @@ public class WineInCellarService {
     }
 
     /**
-     *  Get all wineInCellar by cellar id.
-     *
-     *  @param id the id of the cellar entity
-     *  @return the entity
-     */
-    @Transactional(readOnly = true)
-    public List<WineInCellar> findByCellar(Long id) {
-        log.debug("Request to get WineInCellar for cellar : {}", id);
-        List<WineInCellar> wineInCellarList = wineInCellarRepository.findByCellarId(id);
-        for(WineInCellar wineInCellar : wineInCellarList){
-            wineInCellar.setApogee();
-        }
-        return wineInCellarList;
-    }
-
-    /**
      *  Delete the  wineInCellar by id.
      *
      *  @param id the id of the entity

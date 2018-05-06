@@ -145,20 +145,6 @@ public class WineInCellarResource {
     }
 
     /**
-     * GET  /cellars/:id/wine-in-cellars : get the "id" cellar.
-     *
-     * @param id the id of the cellar for wineInCellars to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the wineInCellars, or with status 404 (Not Found)
-     */
-    @GetMapping("/cellars/{id}/wine-in-cellars")
-    @Timed
-    public ResponseEntity<List<WineInCellar>> getWineInCellarForCellar(@PathVariable Long id) {
-        log.debug("REST request to get WineInCellars for Cellar : {}", id);
-        List<WineInCellar> wineInCellars = wineInCellarService.findByCellar(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(wineInCellars));
-    }
-
-    /**
      * DELETE  /wine-in-cellars/:id : delete the "id" wineInCellar.
      *
      * @param id the id of the wineInCellar to delete

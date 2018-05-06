@@ -277,26 +277,6 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    public void findByCellar() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-        int expectedApogee = DEFAULT_MAX_KEEP + wineInCellar.getVintage().getYear();
-        // Get the wineInCellar
-        restWineInCellarMockMvc.perform(get("/api/cellars/{id}/wine-in-cellars", wineInCellar.getCellarId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(wineInCellar.getId().intValue())))
-            .andExpect(jsonPath("$.[*].minKeep").value(hasItem(DEFAULT_MIN_KEEP)))
-            .andExpect(jsonPath("$.[*].maxKeep").value(hasItem(DEFAULT_MAX_KEEP)))
-            .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE)))
-            .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
-            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS)))
-            .andExpect(jsonPath("$.[*].apogee").value(expectedApogee))
-            .andExpect(jsonPath("$.[*].cellarId").value(hasItem(wineInCellar.getCellarId().intValue())));
-    }
-
-    @Test
-    @Transactional
     public void updateWineInCellar() throws Exception {
         // Initialize the database
         wineInCellarService.save(wineInCellar);
