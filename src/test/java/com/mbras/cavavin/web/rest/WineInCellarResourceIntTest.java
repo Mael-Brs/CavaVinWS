@@ -362,6 +362,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void searchWineInCellar() throws Exception {
         // Initialize the database
         wineInCellarService.save(wineInCellar);
