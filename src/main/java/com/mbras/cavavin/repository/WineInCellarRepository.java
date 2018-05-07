@@ -5,6 +5,7 @@ import com.mbras.cavavin.domain.WineByRegion;
 import com.mbras.cavavin.domain.WineByYear;
 import com.mbras.cavavin.domain.WineInCellar;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -32,4 +33,8 @@ public interface WineInCellarRepository extends JpaRepository<WineInCellar,Long>
 
     @Query("select w from WineInCellar w join Cellar c on c.id = w.cellarId join User u on u.id = c.userId where u.login = ?#{principal.username}")
     List<WineInCellar> findByUserIsCurrentUser();
+
+    @Modifying
+    @Query("delete from WineInCellar w where w.id in (select w.id from WineInCellar w join Cellar c on c.id = w.cellarId join User u on u.id = c.userId where u.login = ?#{principal.username} and w.id = :id)")
+    void deleteUserIsOwner(@Param("id") Long id);
 }

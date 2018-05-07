@@ -1,24 +1,25 @@
 package com.mbras.cavavin.service;
 
 import com.mbras.cavavin.domain.*;
-import com.mbras.cavavin.repository.VintageRepository;
-import com.mbras.cavavin.repository.WineAgingDataRepository;
-import com.mbras.cavavin.repository.WineInCellarRepository;
-import com.mbras.cavavin.repository.WineRepository;
+import com.mbras.cavavin.repository.*;
 import com.mbras.cavavin.repository.search.WineInCellarSearchRepository;
 import com.mbras.cavavin.repository.search.WineSearchRepository;
+import com.mbras.cavavin.security.SecurityUtils;
+import com.mbras.cavavin.web.rest.errors.BadRequestAlertException;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing WineInCellar.
@@ -41,13 +42,16 @@ public class WineInCellarService {
 
     private final WineAgingDataRepository wineAgingDataRepository;
 
-    public WineInCellarService(WineInCellarRepository wineInCellarRepository, WineInCellarSearchRepository wineInCellarSearchRepository, WineRepository wineRepository, WineSearchRepository wineSearchRepository, VintageRepository vintageRepository, WineAgingDataRepository wineAgingDataRepository) {
+    private final CellarRepository cellarRepository;
+
+    public WineInCellarService(WineInCellarRepository wineInCellarRepository, WineInCellarSearchRepository wineInCellarSearchRepository, WineRepository wineRepository, WineSearchRepository wineSearchRepository, VintageRepository vintageRepository, WineAgingDataRepository wineAgingDataRepository, CellarRepository cellarRepository) {
         this.wineInCellarRepository = wineInCellarRepository;
         this.wineInCellarSearchRepository = wineInCellarSearchRepository;
         this.wineRepository = wineRepository;
         this.wineSearchRepository = wineSearchRepository;
         this.vintageRepository = vintageRepository;
         this.wineAgingDataRepository = wineAgingDataRepository;
+        this.cellarRepository = cellarRepository;
     }
 
     /**
@@ -133,7 +137,7 @@ public class WineInCellarService {
      */
     public void delete(Long id) {
         log.debug("Request to delete WineInCellar : {}", id);
-        wineInCellarRepository.delete(id);
+        wineInCellarRepository.deleteUserIsOwner(id);
         wineInCellarSearchRepository.delete(id);
     }
 
@@ -141,13 +145,31 @@ public class WineInCellarService {
      * Search for the wineInCellar corresponding to the query.
      *
      *  @param query the query of the search
-     *  @return the list of entities
+     *  @param cellarId identifiant de la cave
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<WineInCellar> search(String query) {
+    public List<WineInCellar> search(String query, Long cellarId) {
         log.debug("Request to search WineInCellars for query {}", query);
+        List<Long> cellarIdList = new ArrayList<>();
+
+        if(cellarId == null){
+            cellarIdList.addAll(
+                this.cellarRepository.findByUserIsCurrentUser().stream().map(Cellar::getId).collect(Collectors.toList())
+            );
+        } else {
+            cellarIdList.add(cellarId);
+        }
+
+        if(cellarIdList.isEmpty()){
+            throw new BadRequestAlertException("No cellar found for user " + SecurityUtils.getCurrentUserLogin(), "wineInCellar", "nocellar");
+        }
+
+        BoolQueryBuilder queryBuild = boolQuery().must(queryStringQuery(query));
+        cellarIdList.forEach(id -> queryBuild.filter(matchQuery("cellarId", id)));
+
         return StreamSupport
-            .stream(wineInCellarSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .stream(wineInCellarSearchRepository.search(queryBuild).spliterator(), false)
             .collect(Collectors.toList());
     }
 

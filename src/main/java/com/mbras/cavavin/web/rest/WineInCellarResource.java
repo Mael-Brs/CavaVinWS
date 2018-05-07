@@ -167,9 +167,9 @@ public class WineInCellarResource {
      */
     @GetMapping("/_search/wine-in-cellars")
     @Timed
-    public List<WineInCellar> searchWineInCellars(@RequestParam String query) {
+    public List<WineInCellar> searchWineInCellars(@RequestParam String query, @RequestParam(required = false) Long cellarId) {
         log.debug("REST request to search WineInCellars for query {}", query);
-        return wineInCellarService.search(query);
+        return wineInCellarService.search(query, cellarId);
     }
 
 }
