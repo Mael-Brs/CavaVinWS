@@ -1,5 +1,6 @@
-import { browser, element, by, $ } from 'protractor';
-import { NavBarPage } from './../page-objects/jhi-page-objects';
+import {browser, by, element} from 'protractor';
+import {NavBarPage} from './../page-objects/jhi-page-objects';
+
 const path = require('path');
 
 describe('WineInCellar e2e test', () => {
@@ -9,7 +10,7 @@ describe('WineInCellar e2e test', () => {
     let wineInCellarComponentsPage: WineInCellarComponentsPage;
     const fileToUpload = '../../../../main/webapp/content/images/logo-jhipster.png';
     const absolutePath = path.resolve(__dirname, fileToUpload);
-    
+
 
     beforeAll(() => {
         browser.get('/');

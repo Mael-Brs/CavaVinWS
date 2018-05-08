@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
+
 /**
  * A WineInCellar.
  */
@@ -83,16 +84,29 @@ public class WineInCellar implements Serializable {
 
     public WineInCellar maxKeep(Integer maxKeep) {
         this.maxKeep = maxKeep;
-        if(maxKeep != null && this.vintage != null && this.vintage.getYear() != null){
-            this.apogee = this.vintage.getYear() + maxKeep;
-        }
         return this;
     }
 
     public void setMaxKeep(Integer maxKeep) {
         this.maxKeep = maxKeep;
-        if(maxKeep != null && this.vintage != null && this.vintage.getYear() != null){
-            this.apogee = this.vintage.getYear() + maxKeep;
+    }
+
+    public Integer getApogee() {
+        return apogee;
+    }
+
+    public WineInCellar apogee(Integer apogee) {
+        this.apogee = apogee;
+        return this;
+    }
+
+    public void setApogee(Integer apogee) {
+        this.apogee = apogee;
+    }
+
+    public void setApogee(){
+        if(this.maxKeep != null && this.vintage != null && this.vintage.getYear() != null){
+            this.apogee = this.vintage.getYear() + this.maxKeep;
         }
     }
 
@@ -167,29 +181,14 @@ public class WineInCellar implements Serializable {
 
     public WineInCellar vintage(Vintage vintage) {
         this.vintage = vintage;
-        if(this.maxKeep != null && vintage != null && vintage.getYear() != null){
-            this.apogee = vintage.getYear() + this.maxKeep;
-        }
         return this;
     }
 
     public void setVintage(Vintage vintage) {
         this.vintage = vintage;
-        if(this.maxKeep != null && vintage != null && vintage.getYear() != null){
-            this.apogee = vintage.getYear() + this.maxKeep;
-        }
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
-    public Integer getApogee() {
-        return apogee;
-    }
-
-    public void setApogee(){
-        if(this.maxKeep != null && this.vintage != null && this.vintage.getYear() != null){
-            this.apogee = this.vintage.getYear() + this.maxKeep;
-        }
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -215,13 +214,14 @@ public class WineInCellar implements Serializable {
     public String toString() {
         return "WineInCellar{" +
             "id=" + getId() +
-            ", minKeep='" + getMinKeep() + "'" +
-            ", maxKeep='" + getMaxKeep() + "'" +
-            ", price='" + getPrice() + "'" +
-            ", quantity='" + getQuantity() + "'" +
+            ", minKeep=" + getMinKeep() +
+            ", maxKeep=" + getMaxKeep() +
+            ", apogee=" + getApogee() +
+            ", price=" + getPrice() +
+            ", quantity=" + getQuantity() +
             ", comments='" + getComments() + "'" +
             ", location='" + getLocation() + "'" +
-            ", cellarId='" + getCellarId() + "'" +
+            ", cellarId=" + getCellarId() +
             "}";
     }
 }
