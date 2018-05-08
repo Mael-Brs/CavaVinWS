@@ -170,8 +170,8 @@ public class WineInCellarService {
 
         BoolQueryBuilder queryBuild = boolQuery().must(queryStringQuery(query));
         cellarIdList.forEach(id -> queryBuild.filter(matchQuery("cellarId", id)));
-        Page<WineInCellar> result = wineInCellarSearchRepository.search(queryBuild, pageable);
-        return result;
+
+        return wineInCellarSearchRepository.search(queryBuild, pageable);
     }
 
     /**
