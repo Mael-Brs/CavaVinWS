@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
-import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager} from 'ng-jhipster';
 
-import { WineInCellar } from './wine-in-cellar.model';
-import { WineInCellarPopupService } from './wine-in-cellar-popup.service';
-import { WineInCellarService } from './wine-in-cellar.service';
+import {WineInCellar} from './wine-in-cellar.model';
+import {WineInCellarPopupService} from './wine-in-cellar-popup.service';
+import {WineInCellarService} from './wine-in-cellar.service';
 
 @Component({
     selector: 'jhi-wine-in-cellar-delete-dialog',

@@ -34,12 +34,14 @@ describe('WineInCellar e2e test', () => {
         wineInCellarDialogPage.close();
     });
 
-   /* it('should create and save WineInCellars', () => {
+    it('should create and save WineInCellars', () => {
         wineInCellarComponentsPage.clickOnCreateButton();
         wineInCellarDialogPage.setMinKeepInput('5');
         expect(wineInCellarDialogPage.getMinKeepInput()).toMatch('5');
         wineInCellarDialogPage.setMaxKeepInput('5');
         expect(wineInCellarDialogPage.getMaxKeepInput()).toMatch('5');
+        wineInCellarDialogPage.setApogeeInput('5');
+        expect(wineInCellarDialogPage.getApogeeInput()).toMatch('5');
         wineInCellarDialogPage.setPriceInput('5');
         expect(wineInCellarDialogPage.getPriceInput()).toMatch('5');
         wineInCellarDialogPage.setQuantityInput('5');
@@ -53,7 +55,7 @@ describe('WineInCellar e2e test', () => {
         wineInCellarDialogPage.vintageSelectLastOption();
         wineInCellarDialogPage.save();
         expect(wineInCellarDialogPage.getSaveButton().isPresent()).toBeFalsy();
-    }); */
+    });
 
     afterAll(() => {
         navBarPage.autoSignOut();
@@ -79,6 +81,7 @@ export class WineInCellarDialogPage {
     closeButton = element(by.css('button.close'));
     minKeepInput = element(by.css('input#field_minKeep'));
     maxKeepInput = element(by.css('input#field_maxKeep'));
+    apogeeInput = element(by.css('input#field_apogee'));
     priceInput = element(by.css('input#field_price'));
     quantityInput = element(by.css('input#field_quantity'));
     commentsInput = element(by.css('input#field_comments'));
@@ -104,6 +107,14 @@ export class WineInCellarDialogPage {
 
     getMaxKeepInput = function () {
         return this.maxKeepInput.getAttribute('value');
+    }
+
+    setApogeeInput = function (apogee) {
+        this.apogeeInput.sendKeys(apogee);
+    }
+
+    getApogeeInput = function () {
+        return this.apogeeInput.getAttribute('value');
     }
 
     setPriceInput = function (price) {
