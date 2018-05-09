@@ -1,13 +1,16 @@
 package com.mbras.cavavin.repository;
 
-import com.mbras.cavavin.domain.WineByRegion;
 import com.mbras.cavavin.domain.WineByColor;
+import com.mbras.cavavin.domain.WineByRegion;
 import com.mbras.cavavin.domain.WineByYear;
 import com.mbras.cavavin.domain.WineInCellar;
-import org.springframework.stereotype.Repository;
-
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -17,7 +20,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface WineInCellarRepository extends JpaRepository<WineInCellar,Long> {
-	List<WineInCellar> findByCellarId(Long id);
 
     @Query(value = "select sum(w.quantity) from WineInCellar w where w.cellarId = :id")
     Long sumWine(@Param("id") Long id);
@@ -32,5 +34,9 @@ public interface WineInCellarRepository extends JpaRepository<WineInCellar,Long>
     List<WineByYear> sumWineByYear(@Param("id") Long id);
 
     @Query("select w from WineInCellar w join Cellar c on c.id = w.cellarId join User u on u.id = c.userId where u.login = ?#{principal.username}")
-    List<WineInCellar> findByUserIsCurrentUser();
+    Page<WineInCellar> findByUserIsCurrentUser(Pageable pageable);
+
+    @Modifying
+    @Query("delete from WineInCellar w where w.id in (select w.id from WineInCellar w join Cellar c on c.id = w.cellarId join User u on u.id = c.userId where u.login = ?#{principal.username} and w.id = :id)")
+    void deleteUserIsOwner(@Param("id") Long id);
 }

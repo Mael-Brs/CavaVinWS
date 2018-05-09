@@ -1,16 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Response } from '@angular/http';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Response} from '@angular/http';
 
-import { Observable } from 'rxjs/Rx';
-import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import {Observable} from 'rxjs/Rx';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
 
-import { WineInCellar } from './wine-in-cellar.model';
-import { WineInCellarPopupService } from './wine-in-cellar-popup.service';
-import { WineInCellarService } from './wine-in-cellar.service';
-import { Vintage, VintageService } from '../vintage';
-import { ResponseWrapper } from '../../shared';
+import {WineInCellar} from './wine-in-cellar.model';
+import {WineInCellarPopupService} from './wine-in-cellar-popup.service';
+import {WineInCellarService} from './wine-in-cellar.service';
+import {Vintage, VintageService} from '../vintage';
+import {ResponseWrapper} from '../../shared';
 
 @Component({
     selector: 'jhi-wine-in-cellar-dialog',

@@ -43,4 +43,5 @@ INSERT INTO PUBLIC.WINE_AGING_DATA(ID, MIN_KEEP, MAX_KEEP, COLOR_ID, REGION_ID) 
 (70, 1, 3, 1, 5),
 (71, 1, 4, 3, 9),
 (72, 1, 3, 3, 10),
-(73, 0, 2, 3, 15);
+(73, 0, 2, 3, 15),
+(74, 0, 1, 3, 13);

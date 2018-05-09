@@ -31,5 +31,5 @@
     "dto": "no",
     "pagination": "no",
     "service": "no",
-    "searchEngine": "no"
+    "jpaMetamodelFiltering": false
 }

@@ -19,5 +19,5 @@
     "dto": "no",
     "pagination": "no",
     "service": "serviceClass",
-    "searchEngine": "no"
+    "jpaMetamodelFiltering": false
 }

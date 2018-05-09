@@ -1,9 +1,15 @@
 package com.mbras.cavavin.service;
 
 import com.codahale.metrics.annotation.Timed;
-import com.mbras.cavavin.domain.*;
-import com.mbras.cavavin.repository.*;
-import com.mbras.cavavin.repository.search.*;
+import com.mbras.cavavin.domain.User;
+import com.mbras.cavavin.domain.Wine;
+import com.mbras.cavavin.domain.WineInCellar;
+import com.mbras.cavavin.repository.UserRepository;
+import com.mbras.cavavin.repository.WineInCellarRepository;
+import com.mbras.cavavin.repository.WineRepository;
+import com.mbras.cavavin.repository.search.UserSearchRepository;
+import com.mbras.cavavin.repository.search.WineInCellarSearchRepository;
+import com.mbras.cavavin.repository.search.WineSearchRepository;
 import org.elasticsearch.indices.IndexAlreadyExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +79,7 @@ public class ElasticsearchIndexService {
 
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
-    private <T, ID extends Serializable> void reindexForClass(Class<T> entityClass, JpaRepository<T, ID> jpaRepository,
+    public <T, ID extends Serializable> void reindexForClass(Class<T> entityClass, JpaRepository<T, ID> jpaRepository,
                                                               ElasticsearchRepository<T, ID> elasticsearchRepository) {
         elasticsearchTemplate.deleteIndex(entityClass);
         try {
@@ -90,6 +96,7 @@ public class ElasticsearchIndexService {
                 elasticsearchRepository.save(jpaRepository.findAll());
             }
         }
-        log.info("Elasticsearch: Indexed all rows for " + entityClass.getSimpleName());
+        log.info("Elasticsearch: Indexed all rows for {}", entityClass.getSimpleName());
     }
 }
+

@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.mbras.cavavin.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -39,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class WineInCellarResourceIntTest {
 
     private static final Integer DEFAULT_MIN_KEEP = 1;
-    public static final int CONFIG_MIN_KEEP = DEFAULT_MIN_KEEP + 1;
+    private static final int CONFIG_MIN_KEEP = DEFAULT_MIN_KEEP + 1;
     private static final Integer UPDATED_MIN_KEEP = 2;
 
     private static final Integer DEFAULT_MAX_KEEP = 1;
@@ -98,6 +99,7 @@ public class WineInCellarResourceIntTest {
         this.restWineInCellarMockMvc = MockMvcBuilders.standaloneSetup(wineInCellarResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -249,6 +251,20 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser
+    public void getAllWineInCellarsWithoutCellar() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList
+        restWineInCellarMockMvc.perform(get("/api/wine-in-cellars?sort=id,desc"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$").isEmpty());
+    }
+
+    @Test
+    @Transactional
     public void getWineInCellar() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -277,26 +293,6 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    public void findByCellar() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-        int expectedApogee = DEFAULT_MAX_KEEP + wineInCellar.getVintage().getYear();
-        // Get the wineInCellar
-        restWineInCellarMockMvc.perform(get("/api/cellars/{id}/wine-in-cellars", wineInCellar.getCellarId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(wineInCellar.getId().intValue())))
-            .andExpect(jsonPath("$.[*].minKeep").value(hasItem(DEFAULT_MIN_KEEP)))
-            .andExpect(jsonPath("$.[*].maxKeep").value(hasItem(DEFAULT_MAX_KEEP)))
-            .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE)))
-            .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
-            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS)))
-            .andExpect(jsonPath("$.[*].apogee").value(expectedApogee))
-            .andExpect(jsonPath("$.[*].cellarId").value(hasItem(wineInCellar.getCellarId().intValue())));
-    }
-
-    @Test
-    @Transactional
     public void updateWineInCellar() throws Exception {
         // Initialize the database
         wineInCellarService.save(wineInCellar);
@@ -305,7 +301,8 @@ public class WineInCellarResourceIntTest {
 
         // Update the wineInCellar
         WineInCellar updatedWineInCellar = wineInCellarRepository.findOne(wineInCellar.getId());
-        em.clear();
+        // Disconnect from session so that the updates on updatedWineInCellar are not directly saved in db
+        em.detach(updatedWineInCellar);
         updatedWineInCellar
             .minKeep(UPDATED_MIN_KEEP)
             .maxKeep(UPDATED_MAX_KEEP)
@@ -319,7 +316,6 @@ public class WineInCellarResourceIntTest {
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(updatedWineInCellar)))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.apogee").value(expectedApogee));
 
         // Validate the WineInCellar in the database
@@ -328,6 +324,7 @@ public class WineInCellarResourceIntTest {
         WineInCellar testWineInCellar = wineInCellarList.get(wineInCellarList.size() - 1);
         assertThat(testWineInCellar.getMinKeep()).isEqualTo(UPDATED_MIN_KEEP);
         assertThat(testWineInCellar.getMaxKeep()).isEqualTo(UPDATED_MAX_KEEP);
+        assertThat(testWineInCellar.getApogee()).isEqualTo(expectedApogee);
         assertThat(testWineInCellar.getPrice()).isEqualTo(UPDATED_PRICE);
         assertThat(testWineInCellar.getQuantity()).isEqualTo(UPDATED_QUANTITY);
         assertThat(testWineInCellar.getComments()).isEqualTo(UPDATED_COMMENTS);
@@ -359,6 +356,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void deleteWineInCellar() throws Exception {
         // Initialize the database
         wineInCellarService.save(wineInCellar);
@@ -381,6 +379,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void searchWineInCellar() throws Exception {
         // Initialize the database
         wineInCellarService.save(wineInCellar);

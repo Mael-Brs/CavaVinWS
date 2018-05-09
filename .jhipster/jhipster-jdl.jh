@@ -21,6 +21,7 @@ entity Vintage {
 entity WineInCellar {
 	minKeep Integer,
 	maxKeep Integer,
+	apogee Integer,
 	price Double,
     quantity Integer required,
     comments String,
@@ -54,3 +55,4 @@ relationship ManyToOne {
 
 service Cellar, WineInCellar with serviceClass
 search Wine, WineInCellar with elasticsearch
+paginate Wine, WineInCellar with infinite-scroll

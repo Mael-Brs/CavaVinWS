@@ -18,6 +18,7 @@
             },
             "minKeep": "Garde Min",
             "maxKeep": "Garde Max",
+            "apogee": "Apogée",
             "price": "Prix",
             "quantity": "Quantité",
             "comments": "Commentaires",

@@ -1,12 +1,10 @@
 package com.mbras.cavavin.domain;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -34,19 +32,15 @@ public class Cellar implements Serializable {
     private Long userId;
 
     @Transient
-    @JsonInclude
     private Long sumOfWine;
 
     @Transient
-    @JsonInclude
     private List<WineByRegion> wineByRegion;
 
     @Transient
-    @JsonInclude
     private List<WineByColor> wineByColor;
 
     @Transient
-    @JsonInclude
     private List<WineByYear> wineByYear;
 
     public Long getId() {
