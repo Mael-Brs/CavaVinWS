@@ -1,0 +1,11 @@
+<--Générer juste json-->
+jhipster import-jdl d:\Profiles\mbras\Documents\GitHub\CavaVinWS\.jhipster\jhipster-jdl.jh --json-only
+<--Forcer la génération-->
+jhipster import-jdl d:\Profiles\mbras\Documents\GitHub\CavaVinWS\.jhipster\jhipster-jdl.jh --force
+
+jhipster entity <entityName> --regenerate
+
+##Générer seulement serveur##
+jhipster --skip-client
+##Générer seulement client##
+jhipster --skip-server

@@ -1,0 +1,98 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myWineInCellarLabel" jhiTranslate="cavavinApp.wineInCellar.home.createOrEditLabel">Create or edit a Wine In Cellar</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!wineInCellar.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="wineInCellar.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.minKeep" for="field_minKeep">Min Keep</label>
+            <input type="number" class="form-control" name="minKeep" id="field_minKeep"
+                [(ngModel)]="wineInCellar.minKeep" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.maxKeep" for="field_maxKeep">Max Keep</label>
+            <input type="number" class="form-control" name="maxKeep" id="field_maxKeep"
+                [(ngModel)]="wineInCellar.maxKeep" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.apogee" for="field_apogee">Apogee</label>
+            <input type="number" class="form-control" name="apogee" id="field_apogee"
+                [(ngModel)]="wineInCellar.apogee" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.price" for="field_price">Price</label>
+            <input type="number" class="form-control" name="price" id="field_price"
+                [(ngModel)]="wineInCellar.price" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.quantity" for="field_quantity">Quantity</label>
+            <input type="number" class="form-control" name="quantity" id="field_quantity"
+                [(ngModel)]="wineInCellar.quantity" required/>
+            <div [hidden]="!(editForm.controls.quantity?.dirty && editForm.controls.quantity?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.quantity?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.quantity?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.comments" for="field_comments">Comments</label>
+            <input type="text" class="form-control" name="comments" id="field_comments"
+                [(ngModel)]="wineInCellar.comments" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.location" for="field_location">Location</label>
+            <input type="text" class="form-control" name="location" id="field_location"
+                [(ngModel)]="wineInCellar.location" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.cellarId" for="field_cellarId">Cellar Id</label>
+            <input type="number" class="form-control" name="cellarId" id="field_cellarId"
+                [(ngModel)]="wineInCellar.cellarId" required/>
+            <div [hidden]="!(editForm.controls.cellarId?.dirty && editForm.controls.cellarId?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.cellarId?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.cellarId?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.vintage" for="field_vintage">Vintage</label>
+            <select class="form-control" id="field_vintage" name="vintage" [(ngModel)]="wineInCellar.vintage"  required>
+                <option *ngIf="!editForm.value.vintage" [ngValue]="null" selected></option>
+                <option [ngValue]="vintageOption.id === wineInCellar.vintage?.id ? wineInCellar.vintage : vintageOption" *ngFor="let vintageOption of vintages; trackBy: trackVintageById">{{vintageOption.id}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.vintage?.dirty && editForm.controls.vintage?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.vintage?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

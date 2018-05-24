@@ -1,0 +1,58 @@
+entity Region {
+	regionName String required
+}
+
+entity Color {
+	colorName String required
+}
+
+entity Wine {
+	name String required,
+	appellation String,
+	producer String required,
+	creatorId Long
+}
+
+entity Vintage {
+	year Integer required,
+	bareCode Integer
+}
+
+entity WineInCellar {
+	minKeep Integer,
+	maxKeep Integer,
+	apogee Integer,
+	price Double,
+    quantity Integer required,
+    comments String,
+    location String,
+	cellarId Long required
+}
+
+entity Cellar {
+	capacity Integer,
+	userId Long required
+}
+
+entity WineAgingData {
+	minKeep Integer,
+	maxKeep Integer
+}
+
+entity PinnedWine {
+	userId Long required,
+}
+
+relationship ManyToOne {
+	Wine{region(regionName) required} to Region,
+    Wine{color(colorName) required} to Color,
+    Vintage{wine(name) required} to Wine,
+    WineInCellar{vintage required} to Vintage,
+    WineAgingData{color(colorName) required} to Color,
+    WineAgingData{region(regionName) required} to Region,
+    PinnedWine{wine required} to Wine
+}
+
+service Cellar, WineInCellar with serviceClass
+search Wine, WineInCellar with elasticsearch
+paginate Wine, WineInCellar with infinite-scroll

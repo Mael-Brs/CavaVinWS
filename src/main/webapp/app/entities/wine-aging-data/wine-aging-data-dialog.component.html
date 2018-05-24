@@ -1,0 +1,61 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myWineAgingDataLabel" jhiTranslate="cavavinApp.wineAgingData.home.createOrEditLabel">Create or edit a Wine Aging Data</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!wineAgingData.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="wineAgingData.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wineAgingData.minKeep" for="field_minKeep">Min Keep</label>
+            <input type="number" class="form-control" name="minKeep" id="field_minKeep"
+                [(ngModel)]="wineAgingData.minKeep" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wineAgingData.maxKeep" for="field_maxKeep">Max Keep</label>
+            <input type="number" class="form-control" name="maxKeep" id="field_maxKeep"
+                [(ngModel)]="wineAgingData.maxKeep" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wineAgingData.color" for="field_color">Color</label>
+            <select class="form-control" id="field_color" name="color" [(ngModel)]="wineAgingData.color"  required>
+                <option *ngIf="!editForm.value.color" [ngValue]="null" selected></option>
+                <option [ngValue]="colorOption.id === wineAgingData.color?.id ? wineAgingData.color : colorOption" *ngFor="let colorOption of colors; trackBy: trackColorById">{{colorOption.colorName}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.color?.dirty && editForm.controls.color?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.color?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wineAgingData.region" for="field_region">Region</label>
+            <select class="form-control" id="field_region" name="region" [(ngModel)]="wineAgingData.region"  required>
+                <option *ngIf="!editForm.value.region" [ngValue]="null" selected></option>
+                <option [ngValue]="regionOption.id === wineAgingData.region?.id ? wineAgingData.region : regionOption" *ngFor="let regionOption of regions; trackBy: trackRegionById">{{regionOption.regionName}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.region?.dirty && editForm.controls.region?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.region?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>
