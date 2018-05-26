@@ -2,7 +2,9 @@ package com.mbras.cavavin.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.WineInCellar;
+import com.mbras.cavavin.service.WineInCellarQueryService;
 import com.mbras.cavavin.service.WineInCellarService;
+import com.mbras.cavavin.service.dto.WineInCellarCriteria;
 import com.mbras.cavavin.web.rest.errors.BadRequestAlertException;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import com.mbras.cavavin.web.rest.util.PaginationUtil;
@@ -35,8 +37,11 @@ public class WineInCellarResource {
 
     private final WineInCellarService wineInCellarService;
 
-    public WineInCellarResource(WineInCellarService wineInCellarService) {
+    private final WineInCellarQueryService wineInCellarQueryService;
+
+    public WineInCellarResource(WineInCellarService wineInCellarService, WineInCellarQueryService wineInCellarQueryService) {
         this.wineInCellarService = wineInCellarService;
+        this.wineInCellarQueryService = wineInCellarQueryService;
     }
 
     /**
@@ -128,13 +133,14 @@ public class WineInCellarResource {
      * GET  /wine-in-cellars : get all the wineInCellars.
      *
      * @param pageable the pagination information
+     * @param criteria the criterias which the requested entities should match
      * @return the ResponseEntity with status 200 (OK) and the list of wineInCellars in body
      */
     @GetMapping("/wine-in-cellars")
     @Timed
-    public ResponseEntity<List<WineInCellar>> getAllWineInCellars(Pageable pageable) {
-        log.debug("REST request to get a page of WineInCellars");
-        Page<WineInCellar> page = wineInCellarService.findAll(pageable);
+    public ResponseEntity<List<WineInCellar>> getAllWineInCellars(WineInCellarCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get WineInCellars by criteria: {}", criteria);
+        Page<WineInCellar> page = wineInCellarQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/wine-in-cellars");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
