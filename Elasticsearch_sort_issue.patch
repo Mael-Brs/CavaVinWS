@@ -1,0 +1,356 @@
+Index: src/main/java/com/mbras/cavavin/config/DatabaseConfiguration.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mbras/cavavin/config/DatabaseConfiguration.java	(revision 1879381303f49c75616b16b3e5cd81ea1801736c)
++++ src/main/java/com/mbras/cavavin/config/DatabaseConfiguration.java	(date 1527191508576)
+@@ -2,18 +2,18 @@
+ 
+ import io.github.jhipster.config.JHipsterConstants;
+ import io.github.jhipster.config.liquibase.AsyncSpringLiquibase;
+-
+ import liquibase.integration.spring.SpringLiquibase;
+ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+ import org.springframework.beans.factory.annotation.Qualifier;
+ import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
++import org.springframework.cache.CacheManager;
+ import org.springframework.context.annotation.Bean;
+ import org.springframework.context.annotation.Configuration;
+ import org.springframework.context.annotation.Profile;
+ import org.springframework.core.env.Environment;
+-import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
+ import org.springframework.core.task.TaskExecutor;
++import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
+ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+ import org.springframework.transaction.annotation.EnableTransactionManagement;
+@@ -34,8 +34,11 @@
+ 
+     private final Environment env;
+ 
+-    public DatabaseConfiguration(Environment env) {
++    private final CacheManager cacheManager;
++
++    public DatabaseConfiguration(Environment env, CacheManager cacheManager) {
+         this.env = env;
++        this.cacheManager = cacheManager;
+     }
+ 
+     /**
+Index: src/main/java/com/mbras/cavavin/domain/Vintage.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mbras/cavavin/domain/Vintage.java	(revision 1879381303f49c75616b16b3e5cd81ea1801736c)
++++ src/main/java/com/mbras/cavavin/domain/Vintage.java	(date 1527152018556)
+@@ -2,9 +2,11 @@
+ 
+ import org.hibernate.annotations.Cache;
+ import org.hibernate.annotations.CacheConcurrencyStrategy;
++import org.springframework.data.elasticsearch.annotations.Field;
++import org.springframework.data.elasticsearch.annotations.FieldType;
+ 
+ import javax.persistence.*;
+-import javax.validation.constraints.*;
++import javax.validation.constraints.NotNull;
+ import java.io.Serializable;
+ import java.util.Objects;
+ 
+@@ -32,6 +34,7 @@
+ 
+     @ManyToOne(optional = false, fetch = FetchType.EAGER)
+     @NotNull
++    @Field(type = FieldType.Nested)
+     private Wine wine;
+ 
+     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+Index: src/main/java/com/mbras/cavavin/domain/WineInCellar.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mbras/cavavin/domain/WineInCellar.java	(revision 1879381303f49c75616b16b3e5cd81ea1801736c)
++++ src/main/java/com/mbras/cavavin/domain/WineInCellar.java	(date 1527152018585)
+@@ -3,6 +3,8 @@
+ import org.hibernate.annotations.Cache;
+ import org.hibernate.annotations.CacheConcurrencyStrategy;
+ import org.springframework.data.elasticsearch.annotations.Document;
++import org.springframework.data.elasticsearch.annotations.Field;
++import org.springframework.data.elasticsearch.annotations.FieldType;
+ 
+ import javax.persistence.*;
+ import javax.validation.constraints.NotNull;
+@@ -54,6 +56,7 @@
+ 
+     @ManyToOne(optional = false, fetch = FetchType.EAGER)
+     @NotNull
++    @Field(type = FieldType.Nested)
+     private Vintage vintage;
+ 
+     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+Index: src/main/java/com/mbras/cavavin/domain/Region.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mbras/cavavin/domain/Region.java	(revision 1879381303f49c75616b16b3e5cd81ea1801736c)
++++ src/main/java/com/mbras/cavavin/domain/Region.java	(date 1527152204958)
+@@ -2,6 +2,9 @@
+ 
+ import org.hibernate.annotations.Cache;
+ import org.hibernate.annotations.CacheConcurrencyStrategy;
++import org.springframework.data.elasticsearch.annotations.Field;
++import org.springframework.data.elasticsearch.annotations.FieldIndex;
++import org.springframework.data.elasticsearch.annotations.FieldType;
+ 
+ import javax.persistence.*;
+ import javax.validation.constraints.NotNull;
+@@ -26,6 +29,7 @@
+ 
+     @NotNull
+     @Column(name = "region_name", nullable = false)
++    @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+     private String regionName;
+ 
+     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+Index: src/main/java/com/mbras/cavavin/config/CacheConfiguration.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mbras/cavavin/config/CacheConfiguration.java	(revision 1879381303f49c75616b16b3e5cd81ea1801736c)
++++ src/main/java/com/mbras/cavavin/config/CacheConfiguration.java	(date 1527191508614)
+@@ -6,19 +6,15 @@
+ import org.ehcache.expiry.Duration;
+ import org.ehcache.expiry.Expirations;
+ import org.ehcache.jsr107.Eh107Configuration;
+-
+-import java.util.concurrent.TimeUnit;
+-
+-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+ import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
+ import org.springframework.cache.annotation.EnableCaching;
+-import org.springframework.context.annotation.*;
++import org.springframework.context.annotation.Bean;
++import org.springframework.context.annotation.Configuration;
++
++import java.util.concurrent.TimeUnit;
+ 
+ @Configuration
+ @EnableCaching
+-@AutoConfigureAfter(value = { MetricsConfiguration.class })
+-@AutoConfigureBefore(value = { WebConfigurer.class, DatabaseConfiguration.class })
+ public class CacheConfiguration {
+ 
+     private final javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration;
+Index: src/main/java/com/mbras/cavavin/domain/Wine.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/mbras/cavavin/domain/Wine.java	(revision 1879381303f49c75616b16b3e5cd81ea1801736c)
++++ src/main/java/com/mbras/cavavin/domain/Wine.java	(date 1527191508609)
+@@ -3,9 +3,12 @@
+ import org.hibernate.annotations.Cache;
+ import org.hibernate.annotations.CacheConcurrencyStrategy;
+ import org.springframework.data.elasticsearch.annotations.Document;
++import org.springframework.data.elasticsearch.annotations.Field;
++import org.springframework.data.elasticsearch.annotations.FieldIndex;
++import org.springframework.data.elasticsearch.annotations.FieldType;
+ 
+ import javax.persistence.*;
+-import javax.validation.constraints.*;
++import javax.validation.constraints.NotNull;
+ import java.io.Serializable;
+ import java.util.Objects;
+ 
+@@ -41,10 +44,12 @@
+ 
+     @ManyToOne(fetch=FetchType.EAGER, optional = false)
+     @NotNull
++    @Field(type = FieldType.Nested, index = FieldIndex.not_analyzed)
+     private Region region;
+ 
+     @ManyToOne(fetch=FetchType.EAGER, optional = false)
+     @NotNull
++    @Field(type = FieldType.Nested)
+     private Color color;
+ 
+     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- pom.xml	(revision 1879381303f49c75616b16b3e5cd81ea1801736c)
++++ pom.xml	(date 1527172823037)
+@@ -13,7 +13,7 @@
+         <maven.version>3.0.0</maven.version>
+         <java.version>1.8</java.version>
+         <scala.version>2.12.1</scala.version>
+-        <node.version>v8.9.1</node.version>
++        <node.version>v8.9.3</node.version>
+         <yarn.version>v1.3.2</yarn.version>
+         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+@@ -29,22 +29,22 @@
+         <profile.swagger />
+ 
+         <!-- Dependency versions -->
+-        <jhipster-dependencies.version>0.1.9</jhipster-dependencies.version>
++        <jhipster-dependencies.version>0.1.12</jhipster-dependencies.version>
+         <!-- The spring-boot version should match the one managed by
+         https://mvnrepository.com/artifact/io.github.jhipster/jhipster-dependencies/${jhipster-dependencies.version} -->
+-        <spring-boot.version>1.5.11.RELEASE</spring-boot.version>
++        <spring-boot.version>1.5.13.RELEASE</spring-boot.version>
+         <!-- The hibernate version should match the one managed by
+         https://mvnrepository.com/artifact/io.github.jhipster/jhipster-dependencies/${jhipster-dependencies.version} -->
+-        <hibernate.version>5.2.10.Final</hibernate.version>
++        <hibernate.version>5.2.12.Final</hibernate.version>
+         <!-- The javassist version should match the one managed by
+         https://mvnrepository.com/artifact/org.hibernate/hibernate-core/${hibernate.version} -->
+         <javassist.version>3.20.0-GA</javassist.version>
+         <!-- The liquibase version should match the one managed by
+         https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies/${spring-boot.version} -->
+-        <liquibase.version>3.5.3</liquibase.version>
++        <liquibase.version>3.5.5</liquibase.version>
+         <liquibase-hibernate5.version>3.6</liquibase-hibernate5.version>
+         <validation-api.version>1.1.0.Final</validation-api.version>
+-        <mapstruct.version>1.1.0.Final</mapstruct.version>
++        <mapstruct.version>1.2.0.Final</mapstruct.version>
+ 
+         <!-- Plugin versions -->
+         <maven-clean-plugin.version>2.6.1</maven-clean-plugin.version>
+@@ -61,7 +61,7 @@
+         <sonar-maven-plugin.version>3.2</sonar-maven-plugin.version>
+ 
+         <!-- Sonar properties -->
+-        <sonar.exclusions>src/main/webapp/content/**/*.*, src/main/webapp/i18n/*.js, target/www/**/*.*, src/main/webapp/app/app.main-aot.ts</sonar.exclusions>
++        <sonar.exclusions>src/main/webapp/content/**/*.*, src/main/webapp/i18n/*.js, target/www/**/*.*</sonar.exclusions>
+         <sonar.issue.ignore.multicriteria>S3437,UndocumentedApi,BoldAndItalicTagsCheck</sonar.issue.ignore.multicriteria>
+         <!-- Rule https://sonarqube.com/coding_rules#rule_key=Web%3ABoldAndItalicTagsCheck is ignored. Even if we agree that using the "i" tag is an awful practice, this is what is recommended by http://fontawesome.io/examples/ -->
+         <sonar.issue.ignore.multicriteria.BoldAndItalicTagsCheck.resourceKey>src/main/webapp/app/**/*.*</sonar.issue.ignore.multicriteria.BoldAndItalicTagsCheck.resourceKey>
+@@ -99,6 +99,10 @@
+     </dependencyManagement>
+ 
+     <dependencies>
++        <dependency>
++            <groupId>org.springframework.boot</groupId>
++            <artifactId>spring-boot-starter-cache</artifactId>
++        </dependency>
+         <dependency>
+             <groupId>io.github.jhipster</groupId>
+             <artifactId>jhipster</artifactId>
+@@ -189,10 +193,6 @@
+         <dependency>
+             <groupId>org.apache.commons</groupId>
+             <artifactId>commons-lang3</artifactId>
+-        </dependency>
+-        <dependency>
+-            <groupId>com.jcraft</groupId>
+-            <artifactId>jzlib</artifactId>
+         </dependency>
+         <dependency>
+             <groupId>javax.cache</groupId>
+@@ -410,16 +410,14 @@
+                                     <directory>src/main/resources/</directory>
+                                     <filtering>true</filtering>
+                                     <includes>
+-                                        <include>**/*.xml</include>
+-                                        <include>**/*.yml</include>
++                                        <include>config/*.yml</include>
+                                     </includes>
+                                 </resource>
+                                 <resource>
+                                     <directory>src/main/resources/</directory>
+                                     <filtering>false</filtering>
+                                     <excludes>
+-                                        <exclude>**/*.xml</exclude>
+-                                        <exclude>**/*.yml</exclude>
++                                        <exclude>config/*.yml</exclude>
+                                     </excludes>
+                                 </resource>
+                             </resources>
+@@ -669,6 +667,7 @@
+                                 <phase>generate-resources</phase>
+                                 <configuration>
+                                     <arguments>run webpack:build</arguments>
++                                    <yarnInheritsProxyConfigFromMaven>false</yarnInheritsProxyConfigFromMaven>
+                                 </configuration>
+                             </execution>
+                         </executions>
+@@ -718,8 +717,6 @@
+                 </plugins>
+             </build>
+             <properties>
+-                <!-- log configuration -->
+-                <logback.loglevel>DEBUG</logback.loglevel>
+                 <!-- default Spring profiles -->
+                 <spring.profiles.active>dev${profile.no-liquibase}</spring.profiles.active>
+             </properties>
+@@ -810,6 +807,7 @@
+                                 <phase>test</phase>
+                                 <configuration>
+                                     <arguments>run webpack:test</arguments>
++                                    <yarnInheritsProxyConfigFromMaven>false</yarnInheritsProxyConfigFromMaven>
+                                 </configuration>
+                             </execution>
+                             <execution>
+@@ -820,15 +818,35 @@
+                                 <phase>generate-resources</phase>
+                                 <configuration>
+                                     <arguments>run webpack:prod</arguments>
++                                    <yarnInheritsProxyConfigFromMaven>false</yarnInheritsProxyConfigFromMaven>
+                                 </configuration>
+                             </execution>
+                         </executions>
++                    </plugin>
++                    <plugin>
++                        <groupId>pl.project13.maven</groupId>
++                        <artifactId>git-commit-id-plugin</artifactId>
++                        <version>2.2.4</version>
++                            <executions>
++                                <execution>
++                                    <goals>
++                                        <goal>revision</goal>
++                                    </goals>
++                                </execution>
++                            </executions>
++                            <configuration>
++                                <failOnNoGitDirectory>false</failOnNoGitDirectory>
++                                <generateGitPropertiesFile>true</generateGitPropertiesFile>
++                                <includeOnlyProperties>
++                                    <includeOnlyProperty>^git.commit.id.abbrev$</includeOnlyProperty>
++                                    <includeOnlyProperty>^git.commit.id.describe$</includeOnlyProperty>
++                                    <includeOnlyProperty>^git.branch$</includeOnlyProperty>
++                                </includeOnlyProperties>
++                        </configuration>
+                     </plugin>
+                 </plugins>
+             </build>
+             <properties>
+-                <!-- log configuration -->
+-                <logback.loglevel>INFO</logback.loglevel>
+                 <!-- default Spring profiles -->
+                 <spring.profiles.active>prod${profile.swagger}${profile.no-liquibase}</spring.profiles.active>
+             </properties>
+@@ -927,8 +945,6 @@
+                 </plugins>
+             </build>
+             <properties>
+-                <!-- log configuration -->
+-                <logback.loglevel>DEBUG</logback.loglevel>
+                 <!-- default Spring profiles -->
+                 <spring.profiles.active>dev,swagger</spring.profiles.active>
+             </properties>
+@@ -980,5 +996,6 @@
+                 </dependency>
+             </dependencies>
+         </profile>
++        <!-- jhipster-needle-maven-add-profile -->
+     </profiles>
+ </project>
