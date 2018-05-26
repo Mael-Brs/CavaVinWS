@@ -59,7 +59,6 @@ public class WineInCellarResourceIntTest {
     private static final String DEFAULT_LOCATION = "AAAAAAAAAA";
     private static final String UPDATED_LOCATION = "BBBBBBBBBB";
 
-    private static final Long DEFAULT_CELLAR_ID = 1L;
     private static final Long UPDATED_CELLAR_ID = 2L;
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
@@ -292,6 +291,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByMinKeepIsEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -305,6 +305,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByMinKeepIsInShouldWork() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -318,6 +319,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByMinKeepIsNullOrNotNull() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -344,6 +346,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByMinKeepIsLessThanSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -358,6 +361,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByMaxKeepIsEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -371,6 +375,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByMaxKeepIsInShouldWork() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -384,6 +389,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByMaxKeepIsNullOrNotNull() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -397,6 +403,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByMaxKeepIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -410,6 +417,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByMaxKeepIsLessThanSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -424,6 +432,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByPriceIsEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -437,6 +446,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByPriceIsInShouldWork() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -450,6 +460,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByPriceIsNullOrNotNull() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -463,6 +474,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByQuantityIsEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -476,6 +488,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByQuantityIsInShouldWork() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -489,6 +502,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByQuantityIsNullOrNotNull() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -502,6 +516,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByQuantityIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -515,6 +530,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByQuantityIsLessThanSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -529,6 +545,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByCommentsIsEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -542,6 +559,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByCommentsIsInShouldWork() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -555,6 +573,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByCommentsIsNullOrNotNull() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -568,6 +587,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByLocationIsEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -581,6 +601,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByLocationIsInShouldWork() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -594,6 +615,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByLocationIsNullOrNotNull() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -607,12 +629,13 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByCellarIdIsEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
 
-        // Get all the wineInCellarList where cellarId equals to DEFAULT_CELLAR_ID
-        defaultWineInCellarShouldBeFound("cellarId.equals=" + DEFAULT_CELLAR_ID);
+        // Get all the wineInCellarList where cellarId equals to wineInCellar.getCellarId()
+        defaultWineInCellarShouldBeFound("cellarId.equals=" + wineInCellar.getCellarId());
 
         // Get all the wineInCellarList where cellarId equals to UPDATED_CELLAR_ID
         defaultWineInCellarShouldNotBeFound("cellarId.equals=" + UPDATED_CELLAR_ID);
@@ -620,12 +643,13 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByCellarIdIsInShouldWork() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
 
-        // Get all the wineInCellarList where cellarId in DEFAULT_CELLAR_ID or UPDATED_CELLAR_ID
-        defaultWineInCellarShouldBeFound("cellarId.in=" + DEFAULT_CELLAR_ID + "," + UPDATED_CELLAR_ID);
+        // Get all the wineInCellarList where cellarId in wineInCellar.getCellarId() or UPDATED_CELLAR_ID
+        defaultWineInCellarShouldBeFound("cellarId.in=" + wineInCellar.getCellarId() + "," + UPDATED_CELLAR_ID);
 
         // Get all the wineInCellarList where cellarId equals to UPDATED_CELLAR_ID
         defaultWineInCellarShouldNotBeFound("cellarId.in=" + UPDATED_CELLAR_ID);
@@ -633,6 +657,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByCellarIdIsNullOrNotNull() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -646,33 +671,36 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByCellarIdIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
 
-        // Get all the wineInCellarList where cellarId greater than or equals to DEFAULT_CELLAR_ID
-        defaultWineInCellarShouldBeFound("cellarId.greaterOrEqualThan=" + DEFAULT_CELLAR_ID);
+        // Get all the wineInCellarList where cellarId greater than or equals to wineInCellar.getCellarId()
+        defaultWineInCellarShouldBeFound("cellarId.greaterOrEqualThan=" + wineInCellar.getCellarId());
 
         // Get all the wineInCellarList where cellarId greater than or equals to UPDATED_CELLAR_ID
-        defaultWineInCellarShouldNotBeFound("cellarId.greaterOrEqualThan=" + UPDATED_CELLAR_ID);
+        defaultWineInCellarShouldNotBeFound("cellarId.greaterOrEqualThan=" + wineInCellar.getCellarId() + 1);
     }
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByCellarIdIsLessThanSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
 
-        // Get all the wineInCellarList where cellarId less than or equals to DEFAULT_CELLAR_ID
-        defaultWineInCellarShouldNotBeFound("cellarId.lessThan=" + DEFAULT_CELLAR_ID);
+        // Get all the wineInCellarList where cellarId less than or equals to wineInCellar.getCellarId()
+        defaultWineInCellarShouldNotBeFound("cellarId.lessThan=" + wineInCellar.getCellarId());
 
         // Get all the wineInCellarList where cellarId less than or equals to UPDATED_CELLAR_ID
-        defaultWineInCellarShouldBeFound("cellarId.lessThan=" + UPDATED_CELLAR_ID);
+        defaultWineInCellarShouldBeFound("cellarId.lessThan=" + wineInCellar.getCellarId() + 1);
     }
 
 
     @Test
     @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByVintageIsEqualToSomething() throws Exception {
         // Initialize the database
         Vintage vintage = VintageResourceIntTest.createEntity(em);
@@ -703,7 +731,7 @@ public class WineInCellarResourceIntTest {
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())))
             .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION.toString())))
-            .andExpect(jsonPath("$.[*].cellarId").value(hasItem(DEFAULT_CELLAR_ID.intValue())));
+            .andExpect(jsonPath("$.[*].cellarId").value(hasItem(wineInCellar.getCellarId().intValue())));
     }
 
     /**
@@ -901,6 +929,26 @@ public class WineInCellarResourceIntTest {
         // Validate the WineInCellar in Elasticsearch
         WineInCellar wineInCellarEs = wineInCellarSearchRepository.findOne(testWineInCellar.getId());
         assertThat(wineInCellarEs).isEqualToComparingFieldByField(testWineInCellar);
+    }
+
+    @Test
+    @Transactional
+    public void findByCellar() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+        int expectedApogee = DEFAULT_MAX_KEEP + wineInCellar.getVintage().getYear();
+        // Get the wineInCellar
+        restWineInCellarMockMvc.perform(get("/api/cellars/{id}/wine-in-cellars", wineInCellar.getCellarId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(wineInCellar.getId().intValue())))
+            .andExpect(jsonPath("$.[*].minKeep").value(hasItem(DEFAULT_MIN_KEEP)))
+            .andExpect(jsonPath("$.[*].maxKeep").value(hasItem(DEFAULT_MAX_KEEP)))
+            .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE)))
+            .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
+            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS)))
+            .andExpect(jsonPath("$.[*].apogee").value(expectedApogee))
+            .andExpect(jsonPath("$.[*].cellarId").value(hasItem(wineInCellar.getCellarId().intValue())));
     }
 
     @Test
