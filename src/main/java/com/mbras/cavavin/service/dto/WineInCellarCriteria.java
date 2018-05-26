@@ -39,6 +39,14 @@ public class WineInCellarCriteria implements Serializable {
 
     private LongFilter vintageId;
 
+    private StringFilter region;
+
+    private StringFilter color;
+
+    private StringFilter wine;
+
+    private String keywords;
+
     public WineInCellarCriteria() {
     }
 
@@ -112,6 +120,38 @@ public class WineInCellarCriteria implements Serializable {
 
     public void setVintageId(LongFilter vintageId) {
         this.vintageId = vintageId;
+    }
+
+    public StringFilter getRegion() {
+        return region;
+    }
+
+    public void setRegion(StringFilter region) {
+        this.region = region;
+    }
+
+    public StringFilter getColor() {
+        return color;
+    }
+
+    public void setColor(StringFilter color) {
+        this.color = color;
+    }
+
+    public StringFilter getWine() {
+        return wine;
+    }
+
+    public void setWine(StringFilter wine) {
+        this.wine = wine;
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
     }
 
     @Override
