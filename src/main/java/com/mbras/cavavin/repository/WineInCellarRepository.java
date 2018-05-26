@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,7 +21,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface WineInCellarRepository extends JpaRepository<WineInCellar,Long> {
+public interface WineInCellarRepository extends JpaRepository<WineInCellar,Long>, JpaSpecificationExecutor<WineInCellar> {
 
     @Query(value = "select sum(w.quantity) from WineInCellar w where w.cellarId = :id")
     Long sumWine(@Param("id") Long id);

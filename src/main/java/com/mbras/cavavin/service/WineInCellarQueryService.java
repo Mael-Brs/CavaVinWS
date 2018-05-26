@@ -61,7 +61,7 @@ public class WineInCellarQueryService extends QueryService<WineInCellar> {
     public Page<WineInCellar> findByCriteria(WineInCellarCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specifications<WineInCellar> specification = createSpecification(criteria);
-        return wineInCellarRepository.findAll(specification, page);
+        return wineInCellarRepository.findByUserIsCurrentUser(specification, page);
     }
 
     /**
