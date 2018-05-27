@@ -250,7 +250,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser
     public void getAllWineInCellarsWithoutCellar() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);

@@ -43,11 +43,10 @@ public class WineInCellarCriteria implements Serializable {
 
     private StringFilter color;
 
-    private StringFilter wine;
-
     private String keywords;
 
     public WineInCellarCriteria() {
+        //default constructor
     }
 
     public LongFilter getId() {
@@ -136,14 +135,6 @@ public class WineInCellarCriteria implements Serializable {
 
     public void setColor(StringFilter color) {
         this.color = color;
-    }
-
-    public StringFilter getWine() {
-        return wine;
-    }
-
-    public void setWine(StringFilter wine) {
-        this.wine = wine;
     }
 
     public String getKeywords() {
