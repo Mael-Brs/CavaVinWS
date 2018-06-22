@@ -35,6 +35,19 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
+    </changeSet>
+
+    <changeSet id="201806221739-1" author="mbras">
+        <addColumn tableName="vintage">
+            <column name="child_year" type="integer">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+        <addColumn tableName="vintage">
+            <column name="apogee_year" type="integer">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
     </changeSet>
 </databaseChangeLog>

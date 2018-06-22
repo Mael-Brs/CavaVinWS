@@ -18,6 +18,14 @@
             ]
         },
         {
+            "fieldName": "childYear",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "apogeeYear",
+            "fieldType": "Integer"
+        },
+        {
             "fieldName": "bareCode",
             "fieldType": "Integer"
         }

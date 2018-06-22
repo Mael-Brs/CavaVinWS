@@ -37,6 +37,10 @@ describe('Vintage e2e test', () => {
         vintageComponentsPage.clickOnCreateButton();
         vintageDialogPage.setYearInput('5');
         expect(vintageDialogPage.getYearInput()).toMatch('5');
+        vintageDialogPage.setChildYearInput('5');
+        expect(vintageDialogPage.getChildYearInput()).toMatch('5');
+        vintageDialogPage.setApogeeYearInput('5');
+        expect(vintageDialogPage.getApogeeYearInput()).toMatch('5');
         vintageDialogPage.setBareCodeInput('5');
         expect(vintageDialogPage.getBareCodeInput()).toMatch('5');
         vintageDialogPage.wineSelectLastOption();
@@ -67,6 +71,8 @@ export class VintageDialogPage {
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
     yearInput = element(by.css('input#field_year'));
+    childYearInput = element(by.css('input#field_childYear'));
+    apogeeYearInput = element(by.css('input#field_apogeeYear'));
     bareCodeInput = element(by.css('input#field_bareCode'));
     wineSelect = element(by.css('select#field_wine'));
 
@@ -80,6 +86,22 @@ export class VintageDialogPage {
 
     getYearInput = function () {
         return this.yearInput.getAttribute('value');
+    }
+
+    setChildYearInput = function (childYear) {
+        this.childYearInput.sendKeys(childYear);
+    }
+
+    getChildYearInput = function () {
+        return this.childYearInput.getAttribute('value');
+    }
+
+    setApogeeYearInput = function (apogeeYear) {
+        this.apogeeYearInput.sendKeys(apogeeYear);
+    }
+
+    getApogeeYearInput = function () {
+        return this.apogeeYearInput.getAttribute('value');
     }
 
     setBareCodeInput = function (bareCode) {

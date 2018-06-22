@@ -3,7 +3,7 @@
         <span jhiTranslate="cavavinApp.vintage.home.title">Vintages</span>
         <button class="btn btn-primary float-right jh-create-entity create-vintage" [routerLink]="['/', { outlets: { popup: ['vintage-new'] } }]">
             <span class="fa fa-plus"></span>
-            <span  jhiTranslate="cavavinApp.vintage.home.createLabel">
+            <span class="hidden-sm-down"  jhiTranslate="cavavinApp.vintage.home.createLabel">
             Create new Vintage
             </span>
         </button>
@@ -18,6 +18,8 @@
             <tr>
             <th><span jhiTranslate="global.field.id">ID</span></th>
             <th><span jhiTranslate="cavavinApp.vintage.year">Year</span></th>
+            <th><span jhiTranslate="cavavinApp.vintage.childYear">Child Year</span></th>
+            <th><span jhiTranslate="cavavinApp.vintage.apogeeYear">Apogee Year</span></th>
             <th><span jhiTranslate="cavavinApp.vintage.bareCode">Bare Code</span></th>
             <th><span jhiTranslate="cavavinApp.vintage.wine">Wine</span></th>
             <th></th>
@@ -27,6 +29,8 @@
             <tr *ngFor="let vintage of vintages ;trackBy: trackId">
                 <td><a [routerLink]="['../vintage', vintage.id ]">{{vintage.id}}</a></td>
                 <td>{{vintage.year}}</td>
+                <td>{{vintage.childYear}}</td>
+                <td>{{vintage.apogeeYear}}</td>
                 <td>{{vintage.bareCode}}</td>
                 <td>
                     <div *ngIf="vintage.wine">

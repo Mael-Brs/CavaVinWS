@@ -1,13 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes, CanActivate } from '@angular/router';
+import {Routes} from '@angular/router';
 
-import { UserRouteAccessService } from '../../shared';
-import { JhiPaginationUtil } from 'ng-jhipster';
+import {UserRouteAccessService} from '../../shared';
 
-import { VintageComponent } from './vintage.component';
-import { VintageDetailComponent } from './vintage-detail.component';
-import { VintagePopupComponent } from './vintage-dialog.component';
-import { VintageDeletePopupComponent } from './vintage-delete-dialog.component';
+import {VintageComponent} from './vintage.component';
+import {VintageDetailComponent} from './vintage-detail.component';
+import {VintagePopupComponent} from './vintage-dialog.component';
+import {VintageDeletePopupComponent} from './vintage-delete-dialog.component';
 
 export const vintageRoute: Routes = [
     {

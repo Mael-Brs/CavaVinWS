@@ -15,7 +15,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="cavavinApp.vintage.year" for="field_year">Year</label>
             <input type="number" class="form-control" name="year" id="field_year"
-                [(ngModel)]="vintage.year" pattern="\d{4}" required />
+                [(ngModel)]="vintage.year" required/>
             <div [hidden]="!(editForm.controls.year?.dirty && editForm.controls.year?.invalid)">
                 <small class="form-text text-danger"
                    [hidden]="!editForm.controls.year?.errors?.required" jhiTranslate="entity.validation.required">
@@ -28,9 +28,19 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.vintage.childYear" for="field_childYear">Child Year</label>
+            <input type="number" class="form-control" name="childYear" id="field_childYear"
+                [(ngModel)]="vintage.childYear" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.vintage.apogeeYear" for="field_apogeeYear">Apogee Year</label>
+            <input type="number" class="form-control" name="apogeeYear" id="field_apogeeYear"
+                [(ngModel)]="vintage.apogeeYear" />
+        </div>
+        <div class="form-group">
             <label class="form-control-label" jhiTranslate="cavavinApp.vintage.bareCode" for="field_bareCode">Bare Code</label>
             <input type="number" class="form-control" name="bareCode" id="field_bareCode"
-                [(ngModel)]="vintage.bareCode"  />
+                [(ngModel)]="vintage.bareCode" />
         </div>
 
         <div class="form-group">

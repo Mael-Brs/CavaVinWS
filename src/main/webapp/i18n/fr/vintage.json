@@ -16,7 +16,9 @@
                 "title": "Millésime"
             },
             "year": "Année",
-            "bareCode": "Code Barre",
+            "childYear": "Bon à partir de",
+            "apogeeYear": "Apogée",
+            "bareCode": "Code barre",
             "wine": "Vin"
         }
     }

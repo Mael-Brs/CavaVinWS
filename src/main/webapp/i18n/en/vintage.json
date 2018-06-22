@@ -16,6 +16,8 @@
                 "title": "Vintage"
             },
             "year": "Year",
+            "childYear": "Child Year",
+            "apogeeYear": "Apogee Year",
             "bareCode": "Bare Code",
             "wine": "Wine"
         }

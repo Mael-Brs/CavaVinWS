@@ -1,12 +1,10 @@
 package com.mbras.cavavin.web.rest;
 
 import com.mbras.cavavin.CavavinApp;
-
 import com.mbras.cavavin.domain.Vintage;
 import com.mbras.cavavin.domain.Wine;
 import com.mbras.cavavin.repository.VintageRepository;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.mbras.cavavin.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -40,6 +39,12 @@ public class VintageResourceIntTest {
 
     private static final Integer DEFAULT_YEAR = 1;
     private static final Integer UPDATED_YEAR = 2;
+
+    private static final Integer DEFAULT_CHILD_YEAR = 1;
+    private static final Integer UPDATED_CHILD_YEAR = 2;
+
+    private static final Integer DEFAULT_APOGEE_YEAR = 1;
+    private static final Integer UPDATED_APOGEE_YEAR = 2;
 
     private static final Integer DEFAULT_BARE_CODE = 1;
     private static final Integer UPDATED_BARE_CODE = 2;
@@ -70,6 +75,7 @@ public class VintageResourceIntTest {
         this.restVintageMockMvc = MockMvcBuilders.standaloneSetup(vintageResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -82,6 +88,8 @@ public class VintageResourceIntTest {
     public static Vintage createEntity(EntityManager em) {
         Vintage vintage = new Vintage()
             .year(DEFAULT_YEAR)
+            .childYear(DEFAULT_CHILD_YEAR)
+            .apogeeYear(DEFAULT_APOGEE_YEAR)
             .bareCode(DEFAULT_BARE_CODE);
         // Add required entity
         Wine wine = WineResourceIntTest.createEntity(em);
@@ -112,6 +120,8 @@ public class VintageResourceIntTest {
         assertThat(vintageList).hasSize(databaseSizeBeforeCreate + 1);
         Vintage testVintage = vintageList.get(vintageList.size() - 1);
         assertThat(testVintage.getYear()).isEqualTo(DEFAULT_YEAR);
+        assertThat(testVintage.getChildYear()).isEqualTo(DEFAULT_CHILD_YEAR);
+        assertThat(testVintage.getApogeeYear()).isEqualTo(DEFAULT_APOGEE_YEAR);
         assertThat(testVintage.getBareCode()).isEqualTo(DEFAULT_BARE_CODE);
     }
 
@@ -164,6 +174,8 @@ public class VintageResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(vintage.getId().intValue())))
             .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)))
+            .andExpect(jsonPath("$.[*].childYear").value(hasItem(DEFAULT_CHILD_YEAR)))
+            .andExpect(jsonPath("$.[*].apogeeYear").value(hasItem(DEFAULT_APOGEE_YEAR)))
             .andExpect(jsonPath("$.[*].bareCode").value(hasItem(DEFAULT_BARE_CODE)));
     }
 
@@ -179,6 +191,8 @@ public class VintageResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(vintage.getId().intValue()))
             .andExpect(jsonPath("$.year").value(DEFAULT_YEAR))
+            .andExpect(jsonPath("$.childYear").value(DEFAULT_CHILD_YEAR))
+            .andExpect(jsonPath("$.apogeeYear").value(DEFAULT_APOGEE_YEAR))
             .andExpect(jsonPath("$.bareCode").value(DEFAULT_BARE_CODE));
     }
 
@@ -199,8 +213,12 @@ public class VintageResourceIntTest {
 
         // Update the vintage
         Vintage updatedVintage = vintageRepository.findOne(vintage.getId());
+        // Disconnect from session so that the updates on updatedVintage are not directly saved in db
+        em.detach(updatedVintage);
         updatedVintage
             .year(UPDATED_YEAR)
+            .childYear(UPDATED_CHILD_YEAR)
+            .apogeeYear(UPDATED_APOGEE_YEAR)
             .bareCode(UPDATED_BARE_CODE);
 
         restVintageMockMvc.perform(put("/api/vintages")
@@ -213,6 +231,8 @@ public class VintageResourceIntTest {
         assertThat(vintageList).hasSize(databaseSizeBeforeUpdate);
         Vintage testVintage = vintageList.get(vintageList.size() - 1);
         assertThat(testVintage.getYear()).isEqualTo(UPDATED_YEAR);
+        assertThat(testVintage.getChildYear()).isEqualTo(UPDATED_CHILD_YEAR);
+        assertThat(testVintage.getApogeeYear()).isEqualTo(UPDATED_APOGEE_YEAR);
         assertThat(testVintage.getBareCode()).isEqualTo(UPDATED_BARE_CODE);
     }
 

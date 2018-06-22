@@ -4,9 +4,10 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
+
 
 /**
  * A Vintage.
@@ -26,6 +27,12 @@ public class Vintage implements Serializable {
     @NotNull
     @Column(name = "jhi_year", nullable = false)
     private Integer year;
+
+    @Column(name = "child_year")
+    private Integer childYear;
+
+    @Column(name = "apogee_year")
+    private Integer apogeeYear;
 
     @Column(name = "bare_code")
     private Integer bareCode;
@@ -54,6 +61,32 @@ public class Vintage implements Serializable {
 
     public void setYear(Integer year) {
         this.year = year;
+    }
+
+    public Integer getChildYear() {
+        return childYear;
+    }
+
+    public Vintage childYear(Integer childYear) {
+        this.childYear = childYear;
+        return this;
+    }
+
+    public void setChildYear(Integer childYear) {
+        this.childYear = childYear;
+    }
+
+    public Integer getApogeeYear() {
+        return apogeeYear;
+    }
+
+    public Vintage apogeeYear(Integer apogeeYear) {
+        this.apogeeYear = apogeeYear;
+        return this;
+    }
+
+    public void setApogeeYear(Integer apogeeYear) {
+        this.apogeeYear = apogeeYear;
     }
 
     public Integer getBareCode() {
@@ -107,8 +140,10 @@ public class Vintage implements Serializable {
     public String toString() {
         return "Vintage{" +
             "id=" + getId() +
-            ", year='" + getYear() + "'" +
-            ", bareCode='" + getBareCode() + "'" +
+            ", year=" + getYear() +
+            ", childYear=" + getChildYear() +
+            ", apogeeYear=" + getApogeeYear() +
+            ", bareCode=" + getBareCode() +
             "}";
     }
 }
