@@ -4,6 +4,7 @@ import com.mbras.cavavin.CavavinApp;
 import com.mbras.cavavin.domain.Vintage;
 import com.mbras.cavavin.domain.Wine;
 import com.mbras.cavavin.repository.VintageRepository;
+import com.mbras.cavavin.repository.WineAgingDataRepository;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,6 +54,9 @@ public class VintageResourceIntTest {
     private VintageRepository vintageRepository;
 
     @Autowired
+    private WineAgingDataRepository wineAgingDataRepository;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -71,7 +75,7 @@ public class VintageResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final VintageResource vintageResource = new VintageResource(vintageRepository);
+        final VintageResource vintageResource = new VintageResource(vintageRepository, wineAgingDataRepository);
         this.restVintageMockMvc = MockMvcBuilders.standaloneSetup(vintageResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

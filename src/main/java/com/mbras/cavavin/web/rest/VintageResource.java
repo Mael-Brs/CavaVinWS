@@ -2,7 +2,10 @@ package com.mbras.cavavin.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.Vintage;
+import com.mbras.cavavin.domain.Wine;
+import com.mbras.cavavin.domain.WineAgingData;
 import com.mbras.cavavin.repository.VintageRepository;
+import com.mbras.cavavin.repository.WineAgingDataRepository;
 import com.mbras.cavavin.web.rest.errors.BadRequestAlertException;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -30,8 +33,11 @@ public class VintageResource {
 
     private final VintageRepository vintageRepository;
 
-    public VintageResource(VintageRepository vintageRepository) {
+    private final WineAgingDataRepository wineAgingDataRepository;
+
+    public VintageResource(VintageRepository vintageRepository, WineAgingDataRepository wineAgingDataRepository) {
         this.vintageRepository = vintageRepository;
+        this.wineAgingDataRepository = wineAgingDataRepository;
     }
 
     /**
@@ -48,6 +54,19 @@ public class VintageResource {
         if (vintage.getId() != null) {
             throw new BadRequestAlertException("A new vintage cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        if (vintage.getApogeeYear() == null || vintage.getChildYear() == null) {
+            Wine wine = vintage.getWine();
+
+            WineAgingData wineAgingData = wineAgingDataRepository.findByColorAndRegion(wine.getColor(), wine.getRegion());
+            if(wineAgingData != null) {
+                Integer childYear = vintage.getChildYear() != null ? vintage.getChildYear() : wineAgingData.getMinKeep() + vintage.getYear();
+                vintage.setChildYear(childYear);
+                Integer apogeeYear = vintage.getApogeeYear() != null ? vintage.getApogeeYear() : wineAgingData.getMaxKeep() + vintage.getYear();
+                vintage.setApogeeYear(apogeeYear);
+            }
+        }
+
         Vintage result = vintageRepository.save(vintage);
         return ResponseEntity.created(new URI("/api/vintages/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
