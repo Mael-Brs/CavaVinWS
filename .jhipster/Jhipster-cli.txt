@@ -9,3 +9,6 @@ jhipster entity <entityName> --regenerate
 jhipster --skip-client
 ##Générer seulement client##
 jhipster --skip-server
+
+git checkout local-config -- ./src/main/resources/config/application-prod.yml
+
