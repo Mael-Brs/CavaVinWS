@@ -1,13 +1,20 @@
+** open app url in broser **
 heroku open
+** display app logs **
 heroku logs --tail
+** display heroku process **
 heroku ps
+** init heroku for jhipster **
 jhipster heroku
+
+** prod deploy **
 heroku deploy:jar --jar target/cavavin-0.0.1-SNAPSHOT.war
 heroku war:deploy target/cavavin-0.0.1-SNAPSHOT.war
+mvn clean heroku:deploy-war -Pprod -DskipTests
+
 ** test prod local **
 docker-compose -f src/main/docker/postgresql.yml up
 java -jar cavavin-0.0.1-SNAPSHOT.war --spring.profiles.active=prod
-java -jar bfg.jar --delete-files jvm.config
 
 ** heroku pg backup **
 * create backup
@@ -22,9 +29,6 @@ heroku pg:backups --app cellar-manager
 
 ** posgres client **
 heroku pg:psql
-
-mvn clean heroku:deploy-war -Pprod -DskipTests
-
 
 ** add heroku remote
 heroku git:remote -a cellar-manager

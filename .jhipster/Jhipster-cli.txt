@@ -10,5 +10,8 @@ jhipster --skip-client
 ##Générer seulement client##
 jhipster --skip-server
 
+##Récupérer prod config##
 git checkout local-config -- ./src/main/resources/config/application-prod.yml
 
+##Supprimer fichier de l'historique git##
+java -jar bfg.jar --delete-files jvm.config
