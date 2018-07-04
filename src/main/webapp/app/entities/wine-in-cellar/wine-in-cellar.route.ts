@@ -1,6 +1,7 @@
 import {Routes} from '@angular/router';
 
 import {UserRouteAccessService} from '../../shared';
+
 import {WineInCellarComponent} from './wine-in-cellar.component';
 import {WineInCellarDetailComponent} from './wine-in-cellar-detail.component';
 import {WineInCellarPopupComponent} from './wine-in-cellar-dialog.component';

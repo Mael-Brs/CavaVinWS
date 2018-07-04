@@ -63,5 +63,20 @@
             </column>
         </addColumn>
     </changeSet>
+    <changeSet id="201807021346-1" author="mbras">
+        <addColumn tableName="wine_in_cellar">
+            <column name="child_year" type="integer">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201807021346-2" author="mbras">
+        <addColumn tableName="wine_in_cellar">
+            <column name="apogee_year" type="integer">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>

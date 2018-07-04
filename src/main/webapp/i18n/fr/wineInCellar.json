@@ -18,12 +18,13 @@
             },
             "minKeep": "Garde Min",
             "maxKeep": "Garde Max",
-            "apogee": "Apogée",
             "price": "Prix",
             "quantity": "Quantité",
             "comments": "Commentaires",
             "location": "Emplacement",
             "cellarId": "Id Cave",
+            "childYear": "Bon à partir de",
+            "apogeeYear": "Apogée",
             "vintage": "Millésime"
         }
     }

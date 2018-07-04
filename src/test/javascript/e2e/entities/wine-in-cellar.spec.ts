@@ -1,5 +1,5 @@
 import {browser, by, element} from 'protractor';
-import {NavBarPage} from '../page-objects/jhi-page-objects';
+import {NavBarPage} from './../page-objects/jhi-page-objects';
 
 const path = require('path');
 
@@ -34,7 +34,7 @@ describe('WineInCellar e2e test', () => {
         wineInCellarDialogPage.close();
     });
 
-    /*it('should create and save WineInCellars', () => {
+   /* it('should create and save WineInCellars', () => {
         wineInCellarComponentsPage.clickOnCreateButton();
         wineInCellarDialogPage.setMinKeepInput('5');
         expect(wineInCellarDialogPage.getMinKeepInput()).toMatch('5');
@@ -50,10 +50,14 @@ describe('WineInCellar e2e test', () => {
         expect(wineInCellarDialogPage.getLocationInput()).toMatch('location');
         wineInCellarDialogPage.setCellarIdInput('5');
         expect(wineInCellarDialogPage.getCellarIdInput()).toMatch('5');
+        wineInCellarDialogPage.setChildYearInput('5');
+        expect(wineInCellarDialogPage.getChildYearInput()).toMatch('5');
+        wineInCellarDialogPage.setApogeeYearInput('5');
+        expect(wineInCellarDialogPage.getApogeeYearInput()).toMatch('5');
         wineInCellarDialogPage.vintageSelectLastOption();
         wineInCellarDialogPage.save();
         expect(wineInCellarDialogPage.getSaveButton().isPresent()).toBeFalsy();
-    });*/
+    }); */
 
     afterAll(() => {
         navBarPage.autoSignOut();
@@ -79,12 +83,13 @@ export class WineInCellarDialogPage {
     closeButton = element(by.css('button.close'));
     minKeepInput = element(by.css('input#field_minKeep'));
     maxKeepInput = element(by.css('input#field_maxKeep'));
-    apogeeInput = element(by.css('input#field_apogee'));
     priceInput = element(by.css('input#field_price'));
     quantityInput = element(by.css('input#field_quantity'));
     commentsInput = element(by.css('input#field_comments'));
     locationInput = element(by.css('input#field_location'));
     cellarIdInput = element(by.css('input#field_cellarId'));
+    childYearInput = element(by.css('input#field_childYear'));
+    apogeeYearInput = element(by.css('input#field_apogeeYear'));
     vintageSelect = element(by.css('select#field_vintage'));
 
     getModalTitle() {
@@ -105,14 +110,6 @@ export class WineInCellarDialogPage {
 
     getMaxKeepInput = function () {
         return this.maxKeepInput.getAttribute('value');
-    }
-
-    setApogeeInput = function (apogee) {
-        this.apogeeInput.sendKeys(apogee);
-    }
-
-    getApogeeInput = function () {
-        return this.apogeeInput.getAttribute('value');
     }
 
     setPriceInput = function (price) {
@@ -153,6 +150,22 @@ export class WineInCellarDialogPage {
 
     getCellarIdInput = function () {
         return this.cellarIdInput.getAttribute('value');
+    }
+
+    setChildYearInput = function (childYear) {
+        this.childYearInput.sendKeys(childYear);
+    }
+
+    getChildYearInput = function () {
+        return this.childYearInput.getAttribute('value');
+    }
+
+    setApogeeYearInput = function (apogeeYear) {
+        this.apogeeYearInput.sendKeys(apogeeYear);
+    }
+
+    getApogeeYearInput = function () {
+        return this.apogeeYearInput.getAttribute('value');
     }
 
     vintageSelectLastOption = function () {

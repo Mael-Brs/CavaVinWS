@@ -19,10 +19,6 @@
             "fieldType": "Integer"
         },
         {
-            "fieldName": "apogee",
-            "fieldType": "Integer"
-        },
-        {
             "fieldName": "price",
             "fieldType": "Double"
         },
@@ -47,9 +43,17 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "childYear",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "apogeeYear",
+            "fieldType": "Integer"
         }
     ],
-    "changelogDate": "20171005151652",
+    "changelogDate": "20170805153503",
     "entityTableName": "wine_in_cellar",
     "dto": "no",
     "pagination": "infinite-scroll",

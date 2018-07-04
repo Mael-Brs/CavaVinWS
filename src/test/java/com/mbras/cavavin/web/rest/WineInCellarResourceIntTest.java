@@ -41,7 +41,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class WineInCellarResourceIntTest {
 
     private static final Integer DEFAULT_MIN_KEEP = 1;
-    private static final int CONFIG_MIN_KEEP = DEFAULT_MIN_KEEP + 1;
     private static final Integer UPDATED_MIN_KEEP = 2;
 
     private static final Integer DEFAULT_MAX_KEEP = 1;
@@ -62,6 +61,11 @@ public class WineInCellarResourceIntTest {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final Integer DEFAULT_CHILD_YEAR = 1;
+    private static final Integer UPDATED_CHILD_YEAR = 2;
+
+    private static final Integer DEFAULT_APOGEE_YEAR = 1;
+    private static final Integer UPDATED_APOGEE_YEAR = 2;
 
     @Autowired
     private WineInCellarRepository wineInCellarRepository;
@@ -115,14 +119,16 @@ public class WineInCellarResourceIntTest {
             .price(DEFAULT_PRICE)
             .quantity(DEFAULT_QUANTITY)
             .comments(DEFAULT_COMMENTS)
-            .location(DEFAULT_LOCATION);
+            .location(DEFAULT_LOCATION)
+            .childYear(DEFAULT_CHILD_YEAR)
+            .apogeeYear(DEFAULT_APOGEE_YEAR);
         // Add required entity
         Vintage vintage = VintageResourceIntTest.createEntity(em);
         Cellar cellar = CellarResourceIntTest.createEntity(em);
         WineAgingData wineAgingData = new WineAgingData();
         wineAgingData.setColor(vintage.getWine().getColor());
         wineAgingData.setRegion(vintage.getWine().getRegion());
-        wineAgingData.setMinKeep(CONFIG_MIN_KEEP);
+        wineAgingData.setMinKeep(DEFAULT_MIN_KEEP + 1);
         wineAgingData.setMaxKeep(DEFAULT_MAX_KEEP + 1);
         em.persist(vintage);
         em.persist(cellar);
@@ -143,28 +149,29 @@ public class WineInCellarResourceIntTest {
     @Transactional
     public void createWineInCellar() throws Exception {
         int databaseSizeBeforeCreate = wineInCellarRepository.findAll().size();
-        int expectedApogee = DEFAULT_MAX_KEEP + wineInCellar.getVintage().getYear();
+        wineInCellar.setApogeeYear(null);
+        wineInCellar.setChildYear(null);
         wineInCellar.setMinKeep(null);
+        wineInCellar.setMaxKeep(null);
         // Create the WineInCellar
         restWineInCellarMockMvc.perform(post("/api/wine-in-cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(wineInCellar)))
-            .andExpect(status().isCreated())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.apogee").value(expectedApogee))
-            .andExpect(jsonPath("$.maxKeep").value(DEFAULT_MAX_KEEP));
+            .andExpect(status().isCreated());
 
         // Validate the WineInCellar in the database
         List<WineInCellar> wineInCellarList = wineInCellarRepository.findAll();
         assertThat(wineInCellarList).hasSize(databaseSizeBeforeCreate + 1);
         WineInCellar testWineInCellar = wineInCellarList.get(wineInCellarList.size() - 1);
-        assertThat(testWineInCellar.getMinKeep()).isEqualTo(CONFIG_MIN_KEEP);
-        assertThat(testWineInCellar.getMaxKeep()).isEqualTo(DEFAULT_MAX_KEEP);
+        assertThat(testWineInCellar.getMinKeep()).isEqualTo(DEFAULT_MIN_KEEP + 1);
+        assertThat(testWineInCellar.getMaxKeep()).isEqualTo(DEFAULT_MAX_KEEP + 1);
         assertThat(testWineInCellar.getPrice()).isEqualTo(DEFAULT_PRICE);
         assertThat(testWineInCellar.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
         assertThat(testWineInCellar.getComments()).isEqualTo(DEFAULT_COMMENTS);
         assertThat(testWineInCellar.getLocation()).isEqualTo(DEFAULT_LOCATION);
         assertThat(testWineInCellar.getCellarId()).isEqualTo(wineInCellar.getCellarId().intValue());
+        assertThat(testWineInCellar.getChildYear()).isEqualTo(DEFAULT_MIN_KEEP + 1 + wineInCellar.getVintage().getYear());
+        assertThat(testWineInCellar.getApogeeYear()).isEqualTo(DEFAULT_MAX_KEEP + 1 +  wineInCellar.getVintage().getYear());
 
         // Validate the WineInCellar in Elasticsearch
         WineInCellar wineInCellarEs = wineInCellarSearchRepository.findOne(testWineInCellar.getId());
@@ -244,8 +251,9 @@ public class WineInCellarResourceIntTest {
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())))
             .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION.toString())))
-            .andExpect(jsonPath("$.[*].apogee").exists())
-            .andExpect(jsonPath("$.[*].cellarId").value(hasItem(wineInCellar.getCellarId().intValue())));
+            .andExpect(jsonPath("$.[*].cellarId").value(hasItem(wineInCellar.getCellarId().intValue())))
+            .andExpect(jsonPath("$.[*].childYear").value(hasItem(DEFAULT_CHILD_YEAR)))
+            .andExpect(jsonPath("$.[*].apogeeYear").value(hasItem(DEFAULT_APOGEE_YEAR)));
     }
 
     @Test
@@ -279,7 +287,9 @@ public class WineInCellarResourceIntTest {
             .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY))
             .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS.toString()))
             .andExpect(jsonPath("$.location").value(DEFAULT_LOCATION.toString()))
-            .andExpect(jsonPath("$.cellarId").value(wineInCellar.getCellarId().intValue()));
+            .andExpect(jsonPath("$.cellarId").value(wineInCellar.getCellarId().intValue()))
+            .andExpect(jsonPath("$.childYear").value(DEFAULT_CHILD_YEAR))
+            .andExpect(jsonPath("$.apogeeYear").value(DEFAULT_APOGEE_YEAR));
     }
 
     @Test
@@ -422,7 +432,6 @@ public class WineInCellarResourceIntTest {
         // Get all the wineInCellarList where maxKeep less than or equals to UPDATED_MAX_KEEP
         defaultWineInCellarShouldBeFound("maxKeep.lessThan=" + UPDATED_MAX_KEEP);
     }
-
 
     @Test
     @Transactional
@@ -695,6 +704,148 @@ public class WineInCellarResourceIntTest {
     @Test
     @Transactional
     @WithMockUser("system")
+    public void getAllWineInCellarsByChildYearIsEqualToSomething() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where childYear equals to DEFAULT_CHILD_YEAR
+        defaultWineInCellarShouldBeFound("childYear.equals=" + DEFAULT_CHILD_YEAR);
+
+        // Get all the wineInCellarList where childYear equals to UPDATED_CHILD_YEAR
+        defaultWineInCellarShouldNotBeFound("childYear.equals=" + UPDATED_CHILD_YEAR);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser("system")
+    public void getAllWineInCellarsByChildYearIsInShouldWork() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where childYear in DEFAULT_CHILD_YEAR or UPDATED_CHILD_YEAR
+        defaultWineInCellarShouldBeFound("childYear.in=" + DEFAULT_CHILD_YEAR + "," + UPDATED_CHILD_YEAR);
+
+        // Get all the wineInCellarList where childYear equals to UPDATED_CHILD_YEAR
+        defaultWineInCellarShouldNotBeFound("childYear.in=" + UPDATED_CHILD_YEAR);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser("system")
+    public void getAllWineInCellarsByChildYearIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where childYear is not null
+        defaultWineInCellarShouldBeFound("childYear.specified=true");
+
+        // Get all the wineInCellarList where childYear is null
+        defaultWineInCellarShouldNotBeFound("childYear.specified=false");
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser("system")
+    public void getAllWineInCellarsByChildYearIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where childYear greater than or equals to DEFAULT_CHILD_YEAR
+        defaultWineInCellarShouldBeFound("childYear.greaterOrEqualThan=" + DEFAULT_CHILD_YEAR);
+
+        // Get all the wineInCellarList where childYear greater than or equals to UPDATED_CHILD_YEAR
+        defaultWineInCellarShouldNotBeFound("childYear.greaterOrEqualThan=" + UPDATED_CHILD_YEAR);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser("system")
+    public void getAllWineInCellarsByChildYearIsLessThanSomething() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where childYear less than or equals to DEFAULT_CHILD_YEAR
+        defaultWineInCellarShouldNotBeFound("childYear.lessThan=" + DEFAULT_CHILD_YEAR);
+
+        // Get all the wineInCellarList where childYear less than or equals to UPDATED_CHILD_YEAR
+        defaultWineInCellarShouldBeFound("childYear.lessThan=" + UPDATED_CHILD_YEAR);
+    }
+
+
+    @Test
+    @Transactional
+    @WithMockUser("system")
+    public void getAllWineInCellarsByApogeeYearIsEqualToSomething() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where apogeeYear equals to DEFAULT_APOGEE_YEAR
+        defaultWineInCellarShouldBeFound("apogeeYear.equals=" + DEFAULT_APOGEE_YEAR);
+
+        // Get all the wineInCellarList where apogeeYear equals to UPDATED_APOGEE_YEAR
+        defaultWineInCellarShouldNotBeFound("apogeeYear.equals=" + UPDATED_APOGEE_YEAR);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser("system")
+    public void getAllWineInCellarsByApogeeYearIsInShouldWork() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where apogeeYear in DEFAULT_APOGEE_YEAR or UPDATED_APOGEE_YEAR
+        defaultWineInCellarShouldBeFound("apogeeYear.in=" + DEFAULT_APOGEE_YEAR + "," + UPDATED_APOGEE_YEAR);
+
+        // Get all the wineInCellarList where apogeeYear equals to UPDATED_APOGEE_YEAR
+        defaultWineInCellarShouldNotBeFound("apogeeYear.in=" + UPDATED_APOGEE_YEAR);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser("system")
+    public void getAllWineInCellarsByApogeeYearIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where apogeeYear is not null
+        defaultWineInCellarShouldBeFound("apogeeYear.specified=true");
+
+        // Get all the wineInCellarList where apogeeYear is null
+        defaultWineInCellarShouldNotBeFound("apogeeYear.specified=false");
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser("system")
+    public void getAllWineInCellarsByApogeeYearIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where apogeeYear greater than or equals to DEFAULT_APOGEE_YEAR
+        defaultWineInCellarShouldBeFound("apogeeYear.greaterOrEqualThan=" + DEFAULT_APOGEE_YEAR);
+
+        // Get all the wineInCellarList where apogeeYear greater than or equals to UPDATED_APOGEE_YEAR
+        defaultWineInCellarShouldNotBeFound("apogeeYear.greaterOrEqualThan=" + UPDATED_APOGEE_YEAR);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser("system")
+    public void getAllWineInCellarsByApogeeYearIsLessThanSomething() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where apogeeYear less than or equals to DEFAULT_APOGEE_YEAR
+        defaultWineInCellarShouldNotBeFound("apogeeYear.lessThan=" + DEFAULT_APOGEE_YEAR);
+
+        // Get all the wineInCellarList where apogeeYear less than or equals to UPDATED_APOGEE_YEAR
+        defaultWineInCellarShouldBeFound("apogeeYear.lessThan=" + UPDATED_APOGEE_YEAR);
+    }
+
+
+    @Test
+    @Transactional
+    @WithMockUser("system")
     public void getAllWineInCellarsByVintageIsEqualToSomething() throws Exception {
         // Initialize the database
         Vintage vintage = VintageResourceIntTest.createEntity(em);
@@ -752,7 +903,9 @@ public class WineInCellarResourceIntTest {
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())))
             .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION.toString())))
-            .andExpect(jsonPath("$.[*].cellarId").value(hasItem(wineInCellar.getCellarId().intValue())));
+            .andExpect(jsonPath("$.[*].cellarId").value(hasItem(wineInCellar.getCellarId().intValue())))
+            .andExpect(jsonPath("$.[*].childYear").value(hasItem(DEFAULT_CHILD_YEAR)))
+            .andExpect(jsonPath("$.[*].apogeeYear").value(hasItem(DEFAULT_APOGEE_YEAR)));
     }
 
     /**
@@ -793,15 +946,14 @@ public class WineInCellarResourceIntTest {
             .price(UPDATED_PRICE)
             .quantity(UPDATED_QUANTITY)
             .comments(UPDATED_COMMENTS)
-            .location(UPDATED_LOCATION);
+            .location(UPDATED_LOCATION)
+            .childYear(UPDATED_CHILD_YEAR)
+            .apogeeYear(UPDATED_APOGEE_YEAR);
 
-        int expectedApogee = UPDATED_MAX_KEEP + updatedWineInCellar.getVintage().getYear();
         restWineInCellarMockMvc.perform(put("/api/wine-in-cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(updatedWineInCellar)))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.apogee").value(expectedApogee));
+            .andExpect(status().isOk());
 
         // Validate the WineInCellar in the database
         List<WineInCellar> wineInCellarList = wineInCellarRepository.findAll();
@@ -809,12 +961,13 @@ public class WineInCellarResourceIntTest {
         WineInCellar testWineInCellar = wineInCellarList.get(wineInCellarList.size() - 1);
         assertThat(testWineInCellar.getMinKeep()).isEqualTo(UPDATED_MIN_KEEP);
         assertThat(testWineInCellar.getMaxKeep()).isEqualTo(UPDATED_MAX_KEEP);
-        assertThat(testWineInCellar.getApogee()).isEqualTo(expectedApogee);
         assertThat(testWineInCellar.getPrice()).isEqualTo(UPDATED_PRICE);
         assertThat(testWineInCellar.getQuantity()).isEqualTo(UPDATED_QUANTITY);
         assertThat(testWineInCellar.getComments()).isEqualTo(UPDATED_COMMENTS);
         assertThat(testWineInCellar.getLocation()).isEqualTo(UPDATED_LOCATION);
         assertThat(testWineInCellar.getCellarId()).isEqualTo(wineInCellar.getCellarId().intValue());
+        assertThat(testWineInCellar.getChildYear()).isEqualTo(UPDATED_CHILD_YEAR);
+        assertThat(testWineInCellar.getApogeeYear()).isEqualTo(UPDATED_APOGEE_YEAR);
 
         // Validate the WineInCellar in Elasticsearch
         WineInCellar wineInCellarEs = wineInCellarSearchRepository.findOne(testWineInCellar.getId());
@@ -880,7 +1033,9 @@ public class WineInCellarResourceIntTest {
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())))
             .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION.toString())))
-            .andExpect(jsonPath("$.[*].cellarId").value(hasItem(wineInCellar.getCellarId().intValue())));
+            .andExpect(jsonPath("$.[*].cellarId").value(hasItem(wineInCellar.getCellarId().intValue())))
+            .andExpect(jsonPath("$.[*].childYear").value(hasItem(DEFAULT_CHILD_YEAR)))
+            .andExpect(jsonPath("$.[*].apogeeYear").value(hasItem(DEFAULT_APOGEE_YEAR)));
     }
 
     @Test
@@ -893,13 +1048,10 @@ public class WineInCellarResourceIntTest {
         wineInCellar.setVintage(vintage);
         // Create the WineInCellar
 
-        int expectedApogee = DEFAULT_MAX_KEEP + wineInCellar.getVintage().getYear();
         restWineInCellarMockMvc.perform(post("/api/wine-in-cellars/all")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(wineInCellar)))
-            .andExpect(status().isCreated())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.apogee").value(expectedApogee));
+            .andExpect(status().isCreated());
 
         // Validate the WineInCellar in the database
         List<WineInCellar> wineInCellarList = wineInCellarRepository.findAll();
@@ -932,13 +1084,10 @@ public class WineInCellarResourceIntTest {
         updatedWineInCellar.getVintage().getWine().setName(UPDATED_NAME);
         updatedWineInCellar.setMaxKeep(UPDATED_MAX_KEEP);
 
-        int expectedApogee = UPDATED_MAX_KEEP + updatedWineInCellar.getVintage().getYear();
         restWineInCellarMockMvc.perform(put("/api/wine-in-cellars/all")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(updatedWineInCellar)))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.apogee").value(expectedApogee));
+            .andExpect(status().isOk());
 
         // Validate the WineInCellar in the database
         List<WineInCellar> wineInCellarList = wineInCellarRepository.findAll();

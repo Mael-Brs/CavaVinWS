@@ -67,6 +67,16 @@
                 </small>
             </div>
         </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.childYear" for="field_childYear">Child Year</label>
+            <input type="number" class="form-control" name="childYear" id="field_childYear"
+                [(ngModel)]="wineInCellar.childYear" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.apogeeYear" for="field_apogeeYear">Apogee Year</label>
+            <input type="number" class="form-control" name="apogeeYear" id="field_apogeeYear"
+                [(ngModel)]="wineInCellar.apogeeYear" />
+        </div>
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.vintage" for="field_vintage">Vintage</label>

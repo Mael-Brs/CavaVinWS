@@ -18,12 +18,13 @@
             },
             "minKeep": "Min Keep",
             "maxKeep": "Max Keep",
-            "apogee": "Apogee",
             "price": "Price",
             "quantity": "Quantity",
             "comments": "Comments",
             "location": "Location",
             "cellarId": "Cellar Id",
+            "childYear": "Child Year",
+            "apogeeYear": "Apogee Year",
             "vintage": "Vintage"
         }
     }

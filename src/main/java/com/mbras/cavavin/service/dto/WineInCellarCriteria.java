@@ -37,6 +37,10 @@ public class WineInCellarCriteria implements Serializable {
 
     private LongFilter cellarId;
 
+    private IntegerFilter childYear;
+
+    private IntegerFilter apogeeYear;
+
     private LongFilter vintageId;
 
     private StringFilter region;
@@ -113,6 +117,22 @@ public class WineInCellarCriteria implements Serializable {
         this.cellarId = cellarId;
     }
 
+    public IntegerFilter getChildYear() {
+        return childYear;
+    }
+
+    public void setChildYear(IntegerFilter childYear) {
+        this.childYear = childYear;
+    }
+
+    public IntegerFilter getApogeeYear() {
+        return apogeeYear;
+    }
+
+    public void setApogeeYear(IntegerFilter apogeeYear) {
+        this.apogeeYear = apogeeYear;
+    }
+
     public LongFilter getVintageId() {
         return vintageId;
     }
@@ -156,6 +176,8 @@ public class WineInCellarCriteria implements Serializable {
                 (comments != null ? "comments=" + comments + ", " : "") +
                 (location != null ? "location=" + location + ", " : "") +
                 (cellarId != null ? "cellarId=" + cellarId + ", " : "") +
+                (childYear != null ? "childYear=" + childYear + ", " : "") +
+                (apogeeYear != null ? "apogeeYear=" + apogeeYear + ", " : "") +
                 (vintageId != null ? "vintageId=" + vintageId + ", " : "") +
             "}";
     }

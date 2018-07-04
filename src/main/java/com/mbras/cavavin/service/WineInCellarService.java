@@ -66,7 +66,6 @@ public class WineInCellarService {
         if(wineInCellar.getMaxKeep() == null || wineInCellar.getMinKeep() == null) {
             setWineAgingData(wineInCellar);
         }
-        wineInCellar.setApogee();
         WineInCellar result = wineInCellarRepository.save(wineInCellar);
         asyncIndexing(result);
         return result;
@@ -93,7 +92,6 @@ public class WineInCellarService {
         if(wineInCellar.getMaxKeep() == null || wineInCellar.getMinKeep() == null) {
             setWineAgingData(wineInCellar);
         }
-        wineInCellar.setApogee();
         WineInCellar result = wineInCellarRepository.save(wineInCellar);
         asyncIndexing(result);
         return result;
@@ -231,8 +229,10 @@ public class WineInCellarService {
         if(wineAgingData != null) {
             Integer minKeep = wineInCellar.getMinKeep() != null ? wineInCellar.getMinKeep() : wineAgingData.getMinKeep();
             wineInCellar.setMinKeep(minKeep);
+            wineInCellar.setChildYear(minKeep + wineInCellar.getVintage().getYear());
             Integer maxKeep = wineInCellar.getMaxKeep() != null ? wineInCellar.getMaxKeep() : wineAgingData.getMaxKeep();
             wineInCellar.setMaxKeep(maxKeep);
+            wineInCellar.setApogeeYear(maxKeep + wineInCellar.getVintage().getYear());
         }
     }
 }

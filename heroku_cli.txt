@@ -26,6 +26,8 @@ heroku pg:backups:url b00x
 heroku pg:backups:download --app cellar-manager
 * status
 heroku pg:backups --app cellar-manager
+* import local
+psql cavavin < latest.dump
 
 ** posgres client **
 heroku pg:psql

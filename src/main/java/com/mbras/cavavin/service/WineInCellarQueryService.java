@@ -3,6 +3,7 @@ package com.mbras.cavavin.service;
 
 import com.mbras.cavavin.domain.*;
 import com.mbras.cavavin.repository.WineInCellarRepository;
+import com.mbras.cavavin.repository.search.WineInCellarSearchRepository;
 import com.mbras.cavavin.security.SecurityUtils;
 import com.mbras.cavavin.service.dto.WineInCellarCriteria;
 import com.mbras.cavavin.web.rest.errors.InternalServerErrorException;
@@ -38,8 +39,11 @@ public class WineInCellarQueryService extends QueryService<WineInCellar> {
 
     private final WineInCellarRepository wineInCellarRepository;
 
-    public WineInCellarQueryService(WineInCellarRepository wineInCellarRepository) {
+    private final WineInCellarSearchRepository wineInCellarSearchRepository;
+
+    public WineInCellarQueryService(WineInCellarRepository wineInCellarRepository, WineInCellarSearchRepository wineInCellarSearchRepository) {
         this.wineInCellarRepository = wineInCellarRepository;
+        this.wineInCellarSearchRepository = wineInCellarSearchRepository;
     }
 
     /**
@@ -117,6 +121,12 @@ public class WineInCellarQueryService extends QueryService<WineInCellar> {
         }
         if (criteria.getVintageId() != null) {
             specification = specification.and(buildReferringEntitySpecification(criteria.getVintageId(), WineInCellar_.vintage, Vintage_.id));
+        }
+        if (criteria.getChildYear() != null) {
+            specification = specification.and(buildRangeSpecification(criteria.getChildYear(), WineInCellar_.childYear));
+        }
+        if (criteria.getApogeeYear() != null) {
+            specification = specification.and(buildRangeSpecification(criteria.getApogeeYear(), WineInCellar_.apogeeYear));
         }
         if(criteria.getRegion() != null){
             specification = specification.and((root, criteriaQuery, criteriaBuilder) ->

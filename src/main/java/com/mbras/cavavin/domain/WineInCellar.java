@@ -32,9 +32,6 @@ public class WineInCellar implements Serializable {
     @Column(name = "max_keep")
     private Integer maxKeep;
 
-    @Column(name = "apogee")
-    private Integer apogee;
-
     @Column(name = "price")
     private Double price;
 
@@ -51,6 +48,12 @@ public class WineInCellar implements Serializable {
     @NotNull
     @Column(name = "cellar_id", nullable = false)
     private Long cellarId;
+
+    @Column(name = "child_year")
+    private Integer childYear;
+
+    @Column(name = "apogee_year")
+    private Integer apogeeYear;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @NotNull
@@ -91,24 +94,6 @@ public class WineInCellar implements Serializable {
         this.maxKeep = maxKeep;
     }
 
-    public Integer getApogee() {
-        return apogee;
-    }
-
-    public WineInCellar apogee(Integer apogee) {
-        this.apogee = apogee;
-        return this;
-    }
-
-    public void setApogee(Integer apogee) {
-        this.apogee = apogee;
-    }
-
-    public void setApogee(){
-        if(this.maxKeep != null && this.vintage != null && this.vintage.getYear() != null){
-            this.apogee = this.vintage.getYear() + this.maxKeep;
-        }
-    }
 
     public Double getPrice() {
         return price;
@@ -175,6 +160,32 @@ public class WineInCellar implements Serializable {
         this.cellarId = cellarId;
     }
 
+    public Integer getChildYear() {
+        return childYear;
+    }
+
+    public WineInCellar childYear(Integer childYear) {
+        this.childYear = childYear;
+        return this;
+    }
+
+    public void setChildYear(Integer childYear) {
+        this.childYear = childYear;
+    }
+
+    public Integer getApogeeYear() {
+        return apogeeYear;
+    }
+
+    public WineInCellar apogeeYear(Integer apogeeYear) {
+        this.apogeeYear = apogeeYear;
+        return this;
+    }
+
+    public void setApogeeYear(Integer apogeeYear) {
+        this.apogeeYear = apogeeYear;
+    }
+
     public Vintage getVintage() {
         return vintage;
     }
@@ -188,7 +199,6 @@ public class WineInCellar implements Serializable {
         this.vintage = vintage;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
-
 
     @Override
     public boolean equals(Object o) {
@@ -216,12 +226,13 @@ public class WineInCellar implements Serializable {
             "id=" + getId() +
             ", minKeep=" + getMinKeep() +
             ", maxKeep=" + getMaxKeep() +
-            ", apogee=" + getApogee() +
             ", price=" + getPrice() +
             ", quantity=" + getQuantity() +
             ", comments='" + getComments() + "'" +
             ", location='" + getLocation() + "'" +
             ", cellarId=" + getCellarId() +
+            ", childYear=" + getChildYear() +
+            ", apogeeYear=" + getApogeeYear() +
             "}";
     }
 }
