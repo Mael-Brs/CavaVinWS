@@ -79,4 +79,16 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="201807071346-1" author="mbras">
+        <dropColumn tableName="wine_in_cellar">
+            <column name="apogee"/>
+        </dropColumn>
+        <dropColumn tableName="wine_in_cellar">
+            <column name="min_keep"/>
+        </dropColumn>
+        <dropColumn tableName="wine_in_cellar">
+            <column name="max_keep"/>
+        </dropColumn>
+    </changeSet>
+
 </databaseChangeLog>

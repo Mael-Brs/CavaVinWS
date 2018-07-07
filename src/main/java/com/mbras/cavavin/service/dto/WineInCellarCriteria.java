@@ -23,10 +23,6 @@ public class WineInCellarCriteria implements Serializable {
 
     private LongFilter id;
 
-    private IntegerFilter minKeep;
-
-    private IntegerFilter maxKeep;
-
     private DoubleFilter price;
 
     private IntegerFilter quantity;
@@ -59,22 +55,6 @@ public class WineInCellarCriteria implements Serializable {
 
     public void setId(LongFilter id) {
         this.id = id;
-    }
-
-    public IntegerFilter getMinKeep() {
-        return minKeep;
-    }
-
-    public void setMinKeep(IntegerFilter minKeep) {
-        this.minKeep = minKeep;
-    }
-
-    public IntegerFilter getMaxKeep() {
-        return maxKeep;
-    }
-
-    public void setMaxKeep(IntegerFilter maxKeep) {
-        this.maxKeep = maxKeep;
     }
 
     public DoubleFilter getPrice() {
@@ -169,8 +149,6 @@ public class WineInCellarCriteria implements Serializable {
     public String toString() {
         return "WineInCellarCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
-                (minKeep != null ? "minKeep=" + minKeep + ", " : "") +
-                (maxKeep != null ? "maxKeep=" + maxKeep + ", " : "") +
                 (price != null ? "price=" + price + ", " : "") +
                 (quantity != null ? "quantity=" + quantity + ", " : "") +
                 (comments != null ? "comments=" + comments + ", " : "") +

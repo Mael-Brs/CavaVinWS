@@ -16,8 +16,6 @@
             "detail": {
                 "title": "Vin en Cave"
             },
-            "minKeep": "Garde Min",
-            "maxKeep": "Garde Max",
             "price": "Prix",
             "quantity": "Quantité",
             "comments": "Commentaires",

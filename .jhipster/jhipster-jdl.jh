@@ -21,8 +21,6 @@ entity Vintage {
 }
 
 entity WineInCellar {
-	minKeep Integer,
-	maxKeep Integer,
 	childYear Integer,
 	apogeeYear Integer,
 	price Double,

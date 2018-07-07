@@ -41,10 +41,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class WineInCellarResourceIntTest {
 
     private static final Integer DEFAULT_MIN_KEEP = 1;
-    private static final Integer UPDATED_MIN_KEEP = 2;
 
     private static final Integer DEFAULT_MAX_KEEP = 1;
-    private static final Integer UPDATED_MAX_KEEP = 2;
 
     private static final Double DEFAULT_PRICE = 1D;
     private static final Double UPDATED_PRICE = 2D;
@@ -114,8 +112,6 @@ public class WineInCellarResourceIntTest {
      */
     public static WineInCellar createEntity(EntityManager em) {
         WineInCellar wineInCellar = new WineInCellar()
-            .minKeep(DEFAULT_MIN_KEEP)
-            .maxKeep(DEFAULT_MAX_KEEP)
             .price(DEFAULT_PRICE)
             .quantity(DEFAULT_QUANTITY)
             .comments(DEFAULT_COMMENTS)
@@ -128,8 +124,8 @@ public class WineInCellarResourceIntTest {
         WineAgingData wineAgingData = new WineAgingData();
         wineAgingData.setColor(vintage.getWine().getColor());
         wineAgingData.setRegion(vintage.getWine().getRegion());
-        wineAgingData.setMinKeep(DEFAULT_MIN_KEEP + 1);
-        wineAgingData.setMaxKeep(DEFAULT_MAX_KEEP + 1);
+        wineAgingData.setMinKeep(DEFAULT_MIN_KEEP);
+        wineAgingData.setMaxKeep(DEFAULT_MAX_KEEP);
         em.persist(vintage);
         em.persist(cellar);
         em.persist(wineAgingData);
@@ -151,8 +147,6 @@ public class WineInCellarResourceIntTest {
         int databaseSizeBeforeCreate = wineInCellarRepository.findAll().size();
         wineInCellar.setApogeeYear(null);
         wineInCellar.setChildYear(null);
-        wineInCellar.setMinKeep(null);
-        wineInCellar.setMaxKeep(null);
         // Create the WineInCellar
         restWineInCellarMockMvc.perform(post("/api/wine-in-cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -163,15 +157,13 @@ public class WineInCellarResourceIntTest {
         List<WineInCellar> wineInCellarList = wineInCellarRepository.findAll();
         assertThat(wineInCellarList).hasSize(databaseSizeBeforeCreate + 1);
         WineInCellar testWineInCellar = wineInCellarList.get(wineInCellarList.size() - 1);
-        assertThat(testWineInCellar.getMinKeep()).isEqualTo(DEFAULT_MIN_KEEP + 1);
-        assertThat(testWineInCellar.getMaxKeep()).isEqualTo(DEFAULT_MAX_KEEP + 1);
         assertThat(testWineInCellar.getPrice()).isEqualTo(DEFAULT_PRICE);
         assertThat(testWineInCellar.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
         assertThat(testWineInCellar.getComments()).isEqualTo(DEFAULT_COMMENTS);
         assertThat(testWineInCellar.getLocation()).isEqualTo(DEFAULT_LOCATION);
         assertThat(testWineInCellar.getCellarId()).isEqualTo(wineInCellar.getCellarId().intValue());
-        assertThat(testWineInCellar.getChildYear()).isEqualTo(DEFAULT_MIN_KEEP + 1 + wineInCellar.getVintage().getYear());
-        assertThat(testWineInCellar.getApogeeYear()).isEqualTo(DEFAULT_MAX_KEEP + 1 +  wineInCellar.getVintage().getYear());
+        assertThat(testWineInCellar.getChildYear()).isEqualTo(DEFAULT_MIN_KEEP + wineInCellar.getVintage().getYear());
+        assertThat(testWineInCellar.getApogeeYear()).isEqualTo(DEFAULT_MAX_KEEP +  wineInCellar.getVintage().getYear());
 
         // Validate the WineInCellar in Elasticsearch
         WineInCellar wineInCellarEs = wineInCellarSearchRepository.findOne(testWineInCellar.getId());
@@ -245,8 +237,6 @@ public class WineInCellarResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(wineInCellar.getId().intValue())))
-            .andExpect(jsonPath("$.[*].minKeep").value(hasItem(DEFAULT_MIN_KEEP)))
-            .andExpect(jsonPath("$.[*].maxKeep").value(hasItem(DEFAULT_MAX_KEEP)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())))
@@ -281,8 +271,6 @@ public class WineInCellarResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(wineInCellar.getId().intValue()))
-            .andExpect(jsonPath("$.minKeep").value(DEFAULT_MIN_KEEP))
-            .andExpect(jsonPath("$.maxKeep").value(DEFAULT_MAX_KEEP))
             .andExpect(jsonPath("$.price").value(DEFAULT_PRICE))
             .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY))
             .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS.toString()))
@@ -290,147 +278,6 @@ public class WineInCellarResourceIntTest {
             .andExpect(jsonPath("$.cellarId").value(wineInCellar.getCellarId().intValue()))
             .andExpect(jsonPath("$.childYear").value(DEFAULT_CHILD_YEAR))
             .andExpect(jsonPath("$.apogeeYear").value(DEFAULT_APOGEE_YEAR));
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByMinKeepIsEqualToSomething() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where minKeep equals to DEFAULT_MIN_KEEP
-        defaultWineInCellarShouldBeFound("minKeep.equals=" + DEFAULT_MIN_KEEP);
-
-        // Get all the wineInCellarList where minKeep equals to UPDATED_MIN_KEEP
-        defaultWineInCellarShouldNotBeFound("minKeep.equals=" + UPDATED_MIN_KEEP);
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByMinKeepIsInShouldWork() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where minKeep in DEFAULT_MIN_KEEP or UPDATED_MIN_KEEP
-        defaultWineInCellarShouldBeFound("minKeep.in=" + DEFAULT_MIN_KEEP + "," + UPDATED_MIN_KEEP);
-
-        // Get all the wineInCellarList where minKeep equals to UPDATED_MIN_KEEP
-        defaultWineInCellarShouldNotBeFound("minKeep.in=" + UPDATED_MIN_KEEP);
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByMinKeepIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where minKeep is not null
-        defaultWineInCellarShouldBeFound("minKeep.specified=true");
-
-        // Get all the wineInCellarList where minKeep is null
-        defaultWineInCellarShouldNotBeFound("minKeep.specified=false");
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByMinKeepIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where minKeep greater than or equals to DEFAULT_MIN_KEEP
-        defaultWineInCellarShouldBeFound("minKeep.greaterOrEqualThan=" + DEFAULT_MIN_KEEP);
-
-        // Get all the wineInCellarList where minKeep greater than or equals to UPDATED_MIN_KEEP
-        defaultWineInCellarShouldNotBeFound("minKeep.greaterOrEqualThan=" + UPDATED_MIN_KEEP);
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByMinKeepIsLessThanSomething() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where minKeep less than or equals to DEFAULT_MIN_KEEP
-        defaultWineInCellarShouldNotBeFound("minKeep.lessThan=" + DEFAULT_MIN_KEEP);
-
-        // Get all the wineInCellarList where minKeep less than or equals to UPDATED_MIN_KEEP
-        defaultWineInCellarShouldBeFound("minKeep.lessThan=" + UPDATED_MIN_KEEP);
-    }
-
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByMaxKeepIsEqualToSomething() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where maxKeep equals to DEFAULT_MAX_KEEP
-        defaultWineInCellarShouldBeFound("maxKeep.equals=" + DEFAULT_MAX_KEEP);
-
-        // Get all the wineInCellarList where maxKeep equals to UPDATED_MAX_KEEP
-        defaultWineInCellarShouldNotBeFound("maxKeep.equals=" + UPDATED_MAX_KEEP);
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByMaxKeepIsInShouldWork() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where maxKeep in DEFAULT_MAX_KEEP or UPDATED_MAX_KEEP
-        defaultWineInCellarShouldBeFound("maxKeep.in=" + DEFAULT_MAX_KEEP + "," + UPDATED_MAX_KEEP);
-
-        // Get all the wineInCellarList where maxKeep equals to UPDATED_MAX_KEEP
-        defaultWineInCellarShouldNotBeFound("maxKeep.in=" + UPDATED_MAX_KEEP);
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByMaxKeepIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where maxKeep is not null
-        defaultWineInCellarShouldBeFound("maxKeep.specified=true");
-
-        // Get all the wineInCellarList where maxKeep is null
-        defaultWineInCellarShouldNotBeFound("maxKeep.specified=false");
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByMaxKeepIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where maxKeep greater than or equals to DEFAULT_MAX_KEEP
-        defaultWineInCellarShouldBeFound("maxKeep.greaterOrEqualThan=" + DEFAULT_MAX_KEEP);
-
-        // Get all the wineInCellarList where maxKeep greater than or equals to UPDATED_MAX_KEEP
-        defaultWineInCellarShouldNotBeFound("maxKeep.greaterOrEqualThan=" + UPDATED_MAX_KEEP);
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByMaxKeepIsLessThanSomething() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where maxKeep less than or equals to DEFAULT_MAX_KEEP
-        defaultWineInCellarShouldNotBeFound("maxKeep.lessThan=" + DEFAULT_MAX_KEEP);
-
-        // Get all the wineInCellarList where maxKeep less than or equals to UPDATED_MAX_KEEP
-        defaultWineInCellarShouldBeFound("maxKeep.lessThan=" + UPDATED_MAX_KEEP);
     }
 
     @Test
@@ -897,8 +744,6 @@ public class WineInCellarResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(wineInCellar.getId().intValue())))
-            .andExpect(jsonPath("$.[*].minKeep").value(hasItem(DEFAULT_MIN_KEEP)))
-            .andExpect(jsonPath("$.[*].maxKeep").value(hasItem(DEFAULT_MAX_KEEP)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())))
@@ -941,8 +786,6 @@ public class WineInCellarResourceIntTest {
         // Disconnect from session so that the updates on updatedWineInCellar are not directly saved in db
         em.detach(updatedWineInCellar);
         updatedWineInCellar
-            .minKeep(UPDATED_MIN_KEEP)
-            .maxKeep(UPDATED_MAX_KEEP)
             .price(UPDATED_PRICE)
             .quantity(UPDATED_QUANTITY)
             .comments(UPDATED_COMMENTS)
@@ -959,8 +802,6 @@ public class WineInCellarResourceIntTest {
         List<WineInCellar> wineInCellarList = wineInCellarRepository.findAll();
         assertThat(wineInCellarList).hasSize(databaseSizeBeforeUpdate);
         WineInCellar testWineInCellar = wineInCellarList.get(wineInCellarList.size() - 1);
-        assertThat(testWineInCellar.getMinKeep()).isEqualTo(UPDATED_MIN_KEEP);
-        assertThat(testWineInCellar.getMaxKeep()).isEqualTo(UPDATED_MAX_KEEP);
         assertThat(testWineInCellar.getPrice()).isEqualTo(UPDATED_PRICE);
         assertThat(testWineInCellar.getQuantity()).isEqualTo(UPDATED_QUANTITY);
         assertThat(testWineInCellar.getComments()).isEqualTo(UPDATED_COMMENTS);
@@ -1027,8 +868,6 @@ public class WineInCellarResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(wineInCellar.getId().intValue())))
-            .andExpect(jsonPath("$.[*].minKeep").value(hasItem(DEFAULT_MIN_KEEP)))
-            .andExpect(jsonPath("$.[*].maxKeep").value(hasItem(DEFAULT_MAX_KEEP)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())))
@@ -1057,8 +896,6 @@ public class WineInCellarResourceIntTest {
         List<WineInCellar> wineInCellarList = wineInCellarRepository.findAll();
         assertThat(wineInCellarList).hasSize(databaseSizeBeforeCreate + 1);
         WineInCellar testWineInCellar = wineInCellarList.get(wineInCellarList.size() - 1);
-        assertThat(testWineInCellar.getMinKeep()).isEqualTo(DEFAULT_MIN_KEEP);
-        assertThat(testWineInCellar.getMaxKeep()).isEqualTo(DEFAULT_MAX_KEEP);
         assertThat(testWineInCellar.getPrice()).isEqualTo(DEFAULT_PRICE);
         assertThat(testWineInCellar.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
         assertThat(testWineInCellar.getComments()).isEqualTo(DEFAULT_COMMENTS);
@@ -1082,7 +919,6 @@ public class WineInCellarResourceIntTest {
         // Clear entity association
         em.clear();
         updatedWineInCellar.getVintage().getWine().setName(UPDATED_NAME);
-        updatedWineInCellar.setMaxKeep(UPDATED_MAX_KEEP);
 
         restWineInCellarMockMvc.perform(put("/api/wine-in-cellars/all")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -1094,7 +930,6 @@ public class WineInCellarResourceIntTest {
         assertThat(wineInCellarList).hasSize(databaseSizeBeforeUpdate);
         WineInCellar testWineInCellar = wineInCellarList.get(wineInCellarList.size() - 1);
         assertThat(testWineInCellar.getVintage().getWine().getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testWineInCellar.getMaxKeep()).isEqualTo(UPDATED_MAX_KEEP);
 
         // Validate the WineInCellar in Elasticsearch
         WineInCellar wineInCellarEs = wineInCellarSearchRepository.findOne(testWineInCellar.getId());

@@ -36,10 +36,6 @@ describe('WineInCellar e2e test', () => {
 
    /* it('should create and save WineInCellars', () => {
         wineInCellarComponentsPage.clickOnCreateButton();
-        wineInCellarDialogPage.setMinKeepInput('5');
-        expect(wineInCellarDialogPage.getMinKeepInput()).toMatch('5');
-        wineInCellarDialogPage.setMaxKeepInput('5');
-        expect(wineInCellarDialogPage.getMaxKeepInput()).toMatch('5');
         wineInCellarDialogPage.setPriceInput('5');
         expect(wineInCellarDialogPage.getPriceInput()).toMatch('5');
         wineInCellarDialogPage.setQuantityInput('5');
@@ -81,8 +77,6 @@ export class WineInCellarDialogPage {
     modalTitle = element(by.css('h4#myWineInCellarLabel'));
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
-    minKeepInput = element(by.css('input#field_minKeep'));
-    maxKeepInput = element(by.css('input#field_maxKeep'));
     priceInput = element(by.css('input#field_price'));
     quantityInput = element(by.css('input#field_quantity'));
     commentsInput = element(by.css('input#field_comments'));
@@ -94,22 +88,6 @@ export class WineInCellarDialogPage {
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
-    }
-
-    setMinKeepInput = function (minKeep) {
-        this.minKeepInput.sendKeys(minKeep);
-    }
-
-    getMinKeepInput = function () {
-        return this.minKeepInput.getAttribute('value');
-    }
-
-    setMaxKeepInput = function (maxKeep) {
-        this.maxKeepInput.sendKeys(maxKeep);
-    }
-
-    getMaxKeepInput = function () {
-        return this.maxKeepInput.getAttribute('value');
     }
 
     setPriceInput = function (price) {

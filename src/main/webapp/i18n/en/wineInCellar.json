@@ -16,8 +16,6 @@
             "detail": {
                 "title": "Wine In Cellar"
             },
-            "minKeep": "Min Keep",
-            "maxKeep": "Max Keep",
             "price": "Price",
             "quantity": "Quantity",
             "comments": "Comments",

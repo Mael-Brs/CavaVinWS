@@ -63,7 +63,7 @@ public class WineInCellarService {
      */
     public WineInCellar save(WineInCellar wineInCellar) {
         log.debug("Request to save WineInCellar : {}", wineInCellar);
-        if(wineInCellar.getMaxKeep() == null || wineInCellar.getMinKeep() == null) {
+        if(wineInCellar.getChildYear() == null || wineInCellar.getApogeeYear() == null) {
             setWineAgingData(wineInCellar);
         }
         WineInCellar result = wineInCellarRepository.save(wineInCellar);
@@ -89,7 +89,7 @@ public class WineInCellarService {
         newVintage = vintageRepository.save(newVintage);
         wineInCellar.setVintage(newVintage);
 
-        if(wineInCellar.getMaxKeep() == null || wineInCellar.getMinKeep() == null) {
+        if(wineInCellar.getChildYear() == null || wineInCellar.getApogeeYear() == null) {
             setWineAgingData(wineInCellar);
         }
         WineInCellar result = wineInCellarRepository.save(wineInCellar);
@@ -217,7 +217,7 @@ public class WineInCellarService {
     }
 
     /**
-     * Set maxKeep or minKeep if it is not with default config values
+     * Set getChildYear or getApogeeYear if it is not with default config values
      * @param wineInCellar the wine to add aging data
      */
     private void setWineAgingData(WineInCellar wineInCellar) {
@@ -227,12 +227,12 @@ public class WineInCellarService {
         }
         WineAgingData wineAgingData = wineAgingDataRepository.findByColorAndRegion(wine.getColor(), wine.getRegion());
         if(wineAgingData != null) {
-            Integer minKeep = wineInCellar.getMinKeep() != null ? wineInCellar.getMinKeep() : wineAgingData.getMinKeep();
-            wineInCellar.setMinKeep(minKeep);
-            wineInCellar.setChildYear(minKeep + wineInCellar.getVintage().getYear());
-            Integer maxKeep = wineInCellar.getMaxKeep() != null ? wineInCellar.getMaxKeep() : wineAgingData.getMaxKeep();
-            wineInCellar.setMaxKeep(maxKeep);
-            wineInCellar.setApogeeYear(maxKeep + wineInCellar.getVintage().getYear());
+            if(wineInCellar.getChildYear() == null) {
+                wineInCellar.setChildYear(wineAgingData.getMinKeep() + wineInCellar.getVintage().getYear());
+            }
+            if (wineInCellar.getApogeeYear() == null) {
+                wineInCellar.setApogeeYear(wineAgingData.getMaxKeep() + wineInCellar.getVintage().getYear());
+            }
         }
     }
 }

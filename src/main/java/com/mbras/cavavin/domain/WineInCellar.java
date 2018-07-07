@@ -26,12 +26,6 @@ public class WineInCellar implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "min_keep")
-    private Integer minKeep;
-
-    @Column(name = "max_keep")
-    private Integer maxKeep;
-
     @Column(name = "price")
     private Double price;
 
@@ -67,33 +61,6 @@ public class WineInCellar implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Integer getMinKeep() {
-        return minKeep;
-    }
-
-    public WineInCellar minKeep(Integer minKeep) {
-        this.minKeep = minKeep;
-        return this;
-    }
-
-    public void setMinKeep(Integer minKeep) {
-        this.minKeep = minKeep;
-    }
-
-    public Integer getMaxKeep() {
-        return maxKeep;
-    }
-
-    public WineInCellar maxKeep(Integer maxKeep) {
-        this.maxKeep = maxKeep;
-        return this;
-    }
-
-    public void setMaxKeep(Integer maxKeep) {
-        this.maxKeep = maxKeep;
-    }
-
 
     public Double getPrice() {
         return price;
@@ -224,8 +191,6 @@ public class WineInCellar implements Serializable {
     public String toString() {
         return "WineInCellar{" +
             "id=" + getId() +
-            ", minKeep=" + getMinKeep() +
-            ", maxKeep=" + getMaxKeep() +
             ", price=" + getPrice() +
             ", quantity=" + getQuantity() +
             ", comments='" + getComments() + "'" +

@@ -11,14 +11,6 @@
     ],
     "fields": [
         {
-            "fieldName": "minKeep",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "maxKeep",
-            "fieldType": "Integer"
-        },
-        {
             "fieldName": "price",
             "fieldType": "Double"
         },

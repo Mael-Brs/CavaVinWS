@@ -98,12 +98,6 @@ public class WineInCellarQueryService extends QueryService<WineInCellar> {
         if (criteria.getId() != null) {
             specification = specification.and(buildSpecification(criteria.getId(), WineInCellar_.id));
         }
-        if (criteria.getMinKeep() != null) {
-            specification = specification.and(buildRangeSpecification(criteria.getMinKeep(), WineInCellar_.minKeep));
-        }
-        if (criteria.getMaxKeep() != null) {
-            specification = specification.and(buildRangeSpecification(criteria.getMaxKeep(), WineInCellar_.maxKeep));
-        }
         if (criteria.getPrice() != null) {
             specification = specification.and(buildRangeSpecification(criteria.getPrice(), WineInCellar_.price));
         }
