@@ -18,19 +18,20 @@ java -jar cavavin-0.0.1-SNAPSHOT.war --spring.profiles.active=prod
 
 ** heroku pg backup **
 * create backup
-heroku pg:backups:capture --app cellar-manager
+heroku pg:backups:capture --app dans-ma-cave
 * create url
 heroku pg:backups:url b00x
 
 * download
-heroku pg:backups:download --app cellar-manager
+heroku pg:backups:download --app dans-ma-cave
 * status
-heroku pg:backups --app cellar-manager
+heroku pg:backups --app dans-ma-cave
 * import local
-psql cavavin < latest.dump
+heroku pg:pull DATABASE_URL cavavin --app dans-ma-cave
+docker exec -ti docker_cavavin-postgresql_1 pg_restore --verbose --clean --no-acl --no-owner -h localhost -U user -d cavavin /home/CavaVinWS/latest.dump
 
 ** posgres client **
 heroku pg:psql
 
 ** add heroku remote
-heroku git:remote -a cellar-manager
+heroku git:remote -a dans-ma-cave
