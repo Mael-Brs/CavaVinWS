@@ -32,7 +32,7 @@ export const winePopupRoute: Routes = [
         path: 'wine-new',
         component: WinePopupComponent,
         data: {
-            authorities: ['ROLE_ADMIN'],
+            authorities: ['ROLE_USER'],
             pageTitle: 'cavavinApp.wine.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -42,7 +42,7 @@ export const winePopupRoute: Routes = [
         path: 'wine/:id/edit',
         component: WinePopupComponent,
         data: {
-            authorities: ['ROLE_ADMIN'],
+            authorities: ['ROLE_USER'],
             pageTitle: 'cavavinApp.wine.home.title'
         },
         canActivate: [UserRouteAccessService],

@@ -32,7 +32,7 @@ export const vintagePopupRoute: Routes = [
         path: 'vintage-new',
         component: VintagePopupComponent,
         data: {
-            authorities: ['ROLE_ADMIN'],
+            authorities: ['ROLE_USER'],
             pageTitle: 'cavavinApp.vintage.home.title'
         },
         canActivate: [UserRouteAccessService],
@@ -42,7 +42,7 @@ export const vintagePopupRoute: Routes = [
         path: 'vintage/:id/edit',
         component: VintagePopupComponent,
         data: {
-            authorities: ['ROLE_ADMIN'],
+            authorities: ['ROLE_USER'],
             pageTitle: 'cavavinApp.vintage.home.title'
         },
         canActivate: [UserRouteAccessService],
