@@ -3,12 +3,14 @@ package com.mbras.cavavin.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.WineAgingData;
 import com.mbras.cavavin.repository.WineAgingDataRepository;
+import com.mbras.cavavin.security.AuthoritiesConstants;
 import com.mbras.cavavin.web.rest.errors.BadRequestAlertException;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -43,6 +45,7 @@ public class WineAgingDataResource {
      */
     @PostMapping("/wine-aging-data")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<WineAgingData> createWineAgingData(@Valid @RequestBody WineAgingData wineAgingData) throws URISyntaxException {
         log.debug("REST request to save WineAgingData : {}", wineAgingData);
         if (wineAgingData.getId() != null) {
@@ -65,6 +68,7 @@ public class WineAgingDataResource {
      */
     @PutMapping("/wine-aging-data")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<WineAgingData> updateWineAgingData(@Valid @RequestBody WineAgingData wineAgingData) throws URISyntaxException {
         log.debug("REST request to update WineAgingData : {}", wineAgingData);
         if (wineAgingData.getId() == null) {
@@ -110,6 +114,7 @@ public class WineAgingDataResource {
      */
     @DeleteMapping("/wine-aging-data/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteWineAgingData(@PathVariable Long id) {
         log.debug("REST request to delete WineAgingData : {}", id);
         wineAgingDataRepository.delete(id);

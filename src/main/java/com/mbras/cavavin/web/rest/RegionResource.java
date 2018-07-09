@@ -3,12 +3,14 @@ package com.mbras.cavavin.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.Region;
 import com.mbras.cavavin.repository.RegionRepository;
+import com.mbras.cavavin.security.AuthoritiesConstants;
 import com.mbras.cavavin.web.rest.errors.BadRequestAlertException;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -65,6 +67,7 @@ public class RegionResource {
      */
     @PutMapping("/regions")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Region> updateRegion(@Valid @RequestBody Region region) throws URISyntaxException {
         log.debug("REST request to update Region : {}", region);
         if (region.getId() == null) {
@@ -110,6 +113,7 @@ public class RegionResource {
      */
     @DeleteMapping("/regions/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteRegion(@PathVariable Long id) {
         log.debug("REST request to delete Region : {}", id);
         regionRepository.delete(id);

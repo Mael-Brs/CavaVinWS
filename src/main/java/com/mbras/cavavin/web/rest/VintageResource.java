@@ -6,12 +6,14 @@ import com.mbras.cavavin.domain.Wine;
 import com.mbras.cavavin.domain.WineAgingData;
 import com.mbras.cavavin.repository.VintageRepository;
 import com.mbras.cavavin.repository.WineAgingDataRepository;
+import com.mbras.cavavin.security.AuthoritiesConstants;
 import com.mbras.cavavin.web.rest.errors.BadRequestAlertException;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -143,6 +145,7 @@ public class VintageResource {
      */
     @DeleteMapping("/vintages/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteVintage(@PathVariable Long id) {
         log.debug("REST request to delete Vintage : {}", id);
         vintageRepository.delete(id);

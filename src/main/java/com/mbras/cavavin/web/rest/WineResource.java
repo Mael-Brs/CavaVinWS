@@ -2,13 +2,13 @@ package com.mbras.cavavin.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.Wine;
-
 import com.mbras.cavavin.repository.WineRepository;
 import com.mbras.cavavin.repository.search.WineSearchRepository;
+import com.mbras.cavavin.security.AuthoritiesConstants;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import com.mbras.cavavin.web.rest.util.PaginationUtil;
-import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -16,16 +16,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing Wine.
@@ -135,6 +135,7 @@ public class WineResource {
      */
     @DeleteMapping("/wines/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteWine(@PathVariable Long id) {
         log.debug("REST request to delete Wine : {}", id);
         wineRepository.delete(id);

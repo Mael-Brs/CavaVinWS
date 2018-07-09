@@ -2,20 +2,20 @@ package com.mbras.cavavin.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.mbras.cavavin.domain.Color;
-
 import com.mbras.cavavin.repository.ColorRepository;
+import com.mbras.cavavin.security.AuthoritiesConstants;
 import com.mbras.cavavin.web.rest.errors.BadRequestAlertException;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -67,6 +67,7 @@ public class ColorResource {
      */
     @PutMapping("/colors")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Color> updateColor(@Valid @RequestBody Color color) throws URISyntaxException {
         log.debug("REST request to update Color : {}", color);
         if (color.getId() == null) {
@@ -112,6 +113,7 @@ public class ColorResource {
      */
     @DeleteMapping("/colors/{id}")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> deleteColor(@PathVariable Long id) {
         log.debug("REST request to delete Color : {}", id);
         colorRepository.delete(id);
