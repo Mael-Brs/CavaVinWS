@@ -1,13 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 
-import { UserRouteAccessService } from '../../shared';
-import { JhiPaginationUtil } from 'ng-jhipster';
+import {UserRouteAccessService} from '../../shared';
 
-import { ColorComponent } from './color.component';
-import { ColorDetailComponent } from './color-detail.component';
-import { ColorPopupComponent } from './color-dialog.component';
-import { ColorDeletePopupComponent } from './color-delete-dialog.component';
+import {ColorComponent} from './color.component';
+import {ColorDetailComponent} from './color-detail.component';
+import {ColorPopupComponent} from './color-dialog.component';
+import {ColorDeletePopupComponent} from './color-delete-dialog.component';
 
 export const colorRoute: Routes = [
     {
@@ -22,7 +20,7 @@ export const colorRoute: Routes = [
         path: 'color/:id',
         component: ColorDetailComponent,
         data: {
-            authorities: ['ROLE_ADMIN'],
+            authorities: ['ROLE_USER'],
             pageTitle: 'cavavinApp.color.home.title'
         },
         canActivate: [UserRouteAccessService]

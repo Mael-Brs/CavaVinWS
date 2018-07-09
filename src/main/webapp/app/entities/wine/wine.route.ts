@@ -1,13 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes, CanActivate } from '@angular/router';
+import {Routes} from '@angular/router';
 
-import { UserRouteAccessService } from '../../shared';
-import { JhiPaginationUtil } from 'ng-jhipster';
+import {UserRouteAccessService} from '../../shared';
 
-import { WineComponent } from './wine.component';
-import { WineDetailComponent } from './wine-detail.component';
-import { WinePopupComponent } from './wine-dialog.component';
-import { WineDeletePopupComponent } from './wine-delete-dialog.component';
+import {WineComponent} from './wine.component';
+import {WineDetailComponent} from './wine-detail.component';
+import {WinePopupComponent} from './wine-dialog.component';
+import {WineDeletePopupComponent} from './wine-delete-dialog.component';
 
 export const wineRoute: Routes = [
     {
@@ -22,7 +20,7 @@ export const wineRoute: Routes = [
         path: 'wine/:id',
         component: WineDetailComponent,
         data: {
-            authorities: ['ROLE_ADMIN'],
+            authorities: ['ROLE_USER'],
             pageTitle: 'cavavinApp.wine.home.title'
         },
         canActivate: [UserRouteAccessService]

@@ -20,7 +20,7 @@ export const vintageRoute: Routes = [
         path: 'vintage/:id',
         component: VintageDetailComponent,
         data: {
-            authorities: ['ROLE_ADMIN'],
+            authorities: ['ROLE_USER'],
             pageTitle: 'cavavinApp.vintage.home.title'
         },
         canActivate: [UserRouteAccessService]

@@ -1,13 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 
-import { UserRouteAccessService } from '../../shared';
-import { JhiPaginationUtil } from 'ng-jhipster';
+import {UserRouteAccessService} from '../../shared';
 
-import { RegionComponent } from './region.component';
-import { RegionDetailComponent } from './region-detail.component';
-import { RegionPopupComponent } from './region-dialog.component';
-import { RegionDeletePopupComponent } from './region-delete-dialog.component';
+import {RegionComponent} from './region.component';
+import {RegionDetailComponent} from './region-detail.component';
+import {RegionPopupComponent} from './region-dialog.component';
+import {RegionDeletePopupComponent} from './region-delete-dialog.component';
 
 export const regionRoute: Routes = [
     {
@@ -22,7 +20,7 @@ export const regionRoute: Routes = [
         path: 'region/:id',
         component: RegionDetailComponent,
         data: {
-            authorities: ['ROLE_ADMIN'],
+            authorities: ['ROLE_USER'],
             pageTitle: 'cavavinApp.region.home.title'
         },
         canActivate: [UserRouteAccessService]
