@@ -15,3 +15,7 @@ git checkout local-config -- ./src/main/resources/config/application-prod.yml
 
 ##Supprimer fichier de l'historique git##
 java -jar bfg.jar --delete-files jvm.config
+##Build docker image
+./mvnw package -Pprod dockerfile:build
+##Démarage app docker
+docker-compose -f src/main/docker/app.yml up

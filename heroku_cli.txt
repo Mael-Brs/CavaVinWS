@@ -33,5 +33,5 @@ docker exec -ti docker_cavavin-postgresql_1 pg_restore --verbose --clean --no-ac
 ** posgres client **
 heroku pg:psql
 
-** add heroku remote
+** add heroku remote **
 heroku git:remote -a dans-ma-cave
