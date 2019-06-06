@@ -4,12 +4,27 @@
         {
             "relationshipType": "many-to-one",
             "relationshipValidateRules": "required",
+            "relationshipName": "cellar",
+            "otherEntityName": "cellar",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
             "relationshipName": "vintage",
             "otherEntityName": "vintage",
             "otherEntityField": "id"
         }
     ],
     "fields": [
+        {
+            "fieldName": "childYear",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "apogeeYear",
+            "fieldType": "Integer"
+        },
         {
             "fieldName": "price",
             "fieldType": "Double"
@@ -35,19 +50,11 @@
             "fieldValidateRules": [
                 "required"
             ]
-        },
-        {
-            "fieldName": "childYear",
-            "fieldType": "Integer"
-        },
-        {
-            "fieldName": "apogeeYear",
-            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20170805153503",
     "entityTableName": "wine_in_cellar",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "infinite-scroll",
     "service": "serviceClass",
     "jpaMetamodelFiltering": true,
