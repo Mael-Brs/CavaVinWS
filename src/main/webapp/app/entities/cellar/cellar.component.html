@@ -19,6 +19,7 @@
             <th><span jhiTranslate="global.field.id">ID</span></th>
             <th><span jhiTranslate="cavavinApp.cellar.capacity">Capacity</span></th>
             <th><span jhiTranslate="cavavinApp.cellar.userId">User Id</span></th>
+            <th><span jhiTranslate="cavavinApp.cellar.user">User</span></th>
             <th></th>
             </tr>
             </thead>
@@ -27,6 +28,9 @@
                 <td><a [routerLink]="['../cellar', cellar.id ]">{{cellar.id}}</a></td>
                 <td>{{cellar.capacity}}</td>
                 <td>{{cellar.userId}}</td>
+                <td>
+                    {{cellar.userLogin}}
+                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

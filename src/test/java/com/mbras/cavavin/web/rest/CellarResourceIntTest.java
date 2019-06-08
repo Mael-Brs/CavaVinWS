@@ -3,9 +3,11 @@ package com.mbras.cavavin.web.rest;
 import com.mbras.cavavin.CavavinApp;
 
 import com.mbras.cavavin.domain.Cellar;
+import com.mbras.cavavin.domain.User;
 import com.mbras.cavavin.repository.CellarRepository;
 import com.mbras.cavavin.service.CellarService;
-import com.mbras.cavavin.service.WineInCellarService;
+import com.mbras.cavavin.service.dto.CellarDTO;
+import com.mbras.cavavin.service.mapper.CellarMapper;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -17,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.mbras.cavavin.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -49,6 +51,9 @@ public class CellarResourceIntTest {
 
     @Autowired
     private CellarRepository cellarRepository;
+
+    @Autowired
+    private CellarMapper cellarMapper;
 
     @Autowired
     private CellarService cellarService;
@@ -79,6 +84,7 @@ public class CellarResourceIntTest {
         this.restCellarMockMvc = MockMvcBuilders.standaloneSetup(cellarResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -92,6 +98,11 @@ public class CellarResourceIntTest {
         Cellar cellar = new Cellar()
             .capacity(DEFAULT_CAPACITY)
             .userId(DEFAULT_USER_ID);
+        // Add required entity
+        User user = UserResourceIntTest.createEntity(em);
+        em.persist(user);
+        em.flush();
+        cellar.setUser(user);
         return cellar;
     }
 
@@ -106,9 +117,10 @@ public class CellarResourceIntTest {
         int databaseSizeBeforeCreate = cellarRepository.findAll().size();
 
         // Create the Cellar
+        CellarDTO cellarDTO = cellarMapper.toDto(cellar);
         restCellarMockMvc.perform(post("/api/cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(cellar)))
+            .content(TestUtil.convertObjectToJsonBytes(cellarDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Cellar in the database
@@ -126,11 +138,12 @@ public class CellarResourceIntTest {
 
         // Create the Cellar with an existing ID
         cellar.setId(1L);
+        CellarDTO cellarDTO = cellarMapper.toDto(cellar);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCellarMockMvc.perform(post("/api/cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(cellar)))
+            .content(TestUtil.convertObjectToJsonBytes(cellarDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Cellar in the database
@@ -146,10 +159,11 @@ public class CellarResourceIntTest {
         cellar.setUserId(null);
 
         // Create the Cellar, which fails.
+        CellarDTO cellarDTO = cellarMapper.toDto(cellar);
 
         restCellarMockMvc.perform(post("/api/cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(cellar)))
+            .content(TestUtil.convertObjectToJsonBytes(cellarDTO)))
             .andExpect(status().isBadRequest());
 
         List<Cellar> cellarList = cellarRepository.findAll();
@@ -158,7 +172,6 @@ public class CellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
     public void getAllCellars() throws Exception {
         // Initialize the database
         cellarRepository.saveAndFlush(cellar);
@@ -203,19 +216,21 @@ public class CellarResourceIntTest {
     @Transactional
     public void updateCellar() throws Exception {
         // Initialize the database
-        cellarService.save(cellar);
-
+        cellarRepository.saveAndFlush(cellar);
         int databaseSizeBeforeUpdate = cellarRepository.findAll().size();
 
         // Update the cellar
         Cellar updatedCellar = cellarRepository.findOne(cellar.getId());
+        // Disconnect from session so that the updates on updatedCellar are not directly saved in db
+        em.detach(updatedCellar);
         updatedCellar
             .capacity(UPDATED_CAPACITY)
             .userId(UPDATED_USER_ID);
+        CellarDTO cellarDTO = cellarMapper.toDto(updatedCellar);
 
         restCellarMockMvc.perform(put("/api/cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedCellar)))
+            .content(TestUtil.convertObjectToJsonBytes(cellarDTO)))
             .andExpect(status().isOk());
 
         // Validate the Cellar in the database
@@ -232,11 +247,12 @@ public class CellarResourceIntTest {
         int databaseSizeBeforeUpdate = cellarRepository.findAll().size();
 
         // Create the Cellar
+        CellarDTO cellarDTO = cellarMapper.toDto(cellar);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restCellarMockMvc.perform(put("/api/cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(cellar)))
+            .content(TestUtil.convertObjectToJsonBytes(cellarDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Cellar in the database
@@ -248,8 +264,7 @@ public class CellarResourceIntTest {
     @Transactional
     public void deleteCellar() throws Exception {
         // Initialize the database
-        cellarService.save(cellar);
-
+        cellarRepository.saveAndFlush(cellar);
         int databaseSizeBeforeDelete = cellarRepository.findAll().size();
 
         // Get the cellar
@@ -277,4 +292,26 @@ public class CellarResourceIntTest {
         assertThat(cellar1).isNotEqualTo(cellar2);
     }
 
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(CellarDTO.class);
+        CellarDTO cellarDTO1 = new CellarDTO();
+        cellarDTO1.setId(1L);
+        CellarDTO cellarDTO2 = new CellarDTO();
+        assertThat(cellarDTO1).isNotEqualTo(cellarDTO2);
+        cellarDTO2.setId(cellarDTO1.getId());
+        assertThat(cellarDTO1).isEqualTo(cellarDTO2);
+        cellarDTO2.setId(2L);
+        assertThat(cellarDTO1).isNotEqualTo(cellarDTO2);
+        cellarDTO1.setId(null);
+        assertThat(cellarDTO1).isNotEqualTo(cellarDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(cellarMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(cellarMapper.fromId(null)).isNull();
+    }
 }

@@ -16,7 +16,8 @@
                 "title": "Cave"
             },
             "capacity": "Capacité",
-            "userId": "Id Utilisateur"
+            "userId": "Id utilisateur",
+            "user": "Utilisateur"
         }
     }
 }
