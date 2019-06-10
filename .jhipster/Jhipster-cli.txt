@@ -1,3 +1,15 @@
+## Jhipster installation with docker
+docker image pull jhipster/jhipster
+mkdir ~/jhipster
+docker container run --name jhipster -v ~/jhipster:/home/jhipster/app -v ~/.m2:/home/jhipster/.m2 -p 8080:8080 -p 9000:9000 -p 3001:3001 -d -t jhipster/jhipster
+## Accessing the container
+docker container exec -it jhipster bash
+cd /home/jhipster/app
+jhipster
+./mvnw
+## Access the app from outside
+http://DOCKER_HOST:8080
+
 <--Générer juste json-->
 jhipster import-jdl d:\Profiles\mbras\Documents\GitHub\CavaVinWS\.jhipster\jhipster-jdl.jh --json-only
 <--Forcer la génération-->
