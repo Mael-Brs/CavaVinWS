@@ -6,6 +6,7 @@ import com.mbras.cavavin.domain.Cellar;
 import com.mbras.cavavin.domain.User;
 import com.mbras.cavavin.repository.CellarRepository;
 import com.mbras.cavavin.service.CellarService;
+import com.mbras.cavavin.service.WineInCellarService;
 import com.mbras.cavavin.service.dto.CellarDTO;
 import com.mbras.cavavin.service.mapper.CellarMapper;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
@@ -13,12 +14,14 @@ import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -45,9 +48,6 @@ public class CellarResourceIntTest {
     private static final Integer DEFAULT_CAPACITY = 1;
     private static final Integer UPDATED_CAPACITY = 2;
     private static final Integer DEFAULT_SUM_OF_WINE = 0;
-
-    private static final Long DEFAULT_USER_ID = 1L;
-    private static final Long UPDATED_USER_ID = 2L;
 
     @Autowired
     private CellarRepository cellarRepository;
@@ -96,8 +96,7 @@ public class CellarResourceIntTest {
      */
     public static Cellar createEntity(EntityManager em) {
         Cellar cellar = new Cellar()
-            .capacity(DEFAULT_CAPACITY)
-            .userId(DEFAULT_USER_ID);
+            .capacity(DEFAULT_CAPACITY);
         // Add required entity
         User user = UserResourceIntTest.createEntity(em);
         em.persist(user);
@@ -128,7 +127,6 @@ public class CellarResourceIntTest {
         assertThat(cellarList).hasSize(databaseSizeBeforeCreate + 1);
         Cellar testCellar = cellarList.get(cellarList.size() - 1);
         assertThat(testCellar.getCapacity()).isEqualTo(DEFAULT_CAPACITY);
-        assertThat(testCellar.getUserId()).isEqualTo(DEFAULT_USER_ID);
     }
 
     @Test
@@ -153,27 +151,13 @@ public class CellarResourceIntTest {
 
     @Test
     @Transactional
-    public void checkUserIdIsRequired() throws Exception {
-        int databaseSizeBeforeTest = cellarRepository.findAll().size();
-        // set the field null
-        cellar.setUserId(null);
-
-        // Create the Cellar, which fails.
-        CellarDTO cellarDTO = cellarMapper.toDto(cellar);
-
-        restCellarMockMvc.perform(post("/api/cellars")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(cellarDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Cellar> cellarList = cellarRepository.findAll();
-        assertThat(cellarList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
+    @WithMockUser("system")
     public void getAllCellars() throws Exception {
         // Initialize the database
+        long id = 1;
+        User user = new User();
+        user.setId(id);
+        cellar.setUser(user);
         cellarRepository.saveAndFlush(cellar);
 
         // Get all the cellarList
@@ -181,8 +165,7 @@ public class CellarResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(cellar.getId().intValue())))
-            .andExpect(jsonPath("$.[*].capacity").value(hasItem(DEFAULT_CAPACITY)))
-            .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID.intValue())));
+            .andExpect(jsonPath("$.[*].capacity").value(hasItem(DEFAULT_CAPACITY)));
     }
 
     @Test
@@ -197,7 +180,6 @@ public class CellarResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(cellar.getId().intValue()))
             .andExpect(jsonPath("$.capacity").value(DEFAULT_CAPACITY))
-            .andExpect(jsonPath("$.userId").value(DEFAULT_USER_ID.intValue()))
             .andExpect(jsonPath("$.sumOfWine").value(DEFAULT_SUM_OF_WINE))
             .andExpect(jsonPath("$.wineByRegion").isEmpty())
             .andExpect(jsonPath("$.wineByColor").isEmpty())
@@ -224,8 +206,7 @@ public class CellarResourceIntTest {
         // Disconnect from session so that the updates on updatedCellar are not directly saved in db
         em.detach(updatedCellar);
         updatedCellar
-            .capacity(UPDATED_CAPACITY)
-            .userId(UPDATED_USER_ID);
+            .capacity(UPDATED_CAPACITY);
         CellarDTO cellarDTO = cellarMapper.toDto(updatedCellar);
 
         restCellarMockMvc.perform(put("/api/cellars")
@@ -238,7 +219,6 @@ public class CellarResourceIntTest {
         assertThat(cellarList).hasSize(databaseSizeBeforeUpdate);
         Cellar testCellar = cellarList.get(cellarList.size() - 1);
         assertThat(testCellar.getCapacity()).isEqualTo(UPDATED_CAPACITY);
-        assertThat(testCellar.getUserId()).isEqualTo(UPDATED_USER_ID);
     }
 
     @Test

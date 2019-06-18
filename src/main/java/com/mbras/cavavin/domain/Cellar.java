@@ -28,10 +28,6 @@ public class Cellar implements Serializable {
     @Column(name = "capacity")
     private Integer capacity;
 
-    @NotNull
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
-
     @OneToOne(optional = false)
     @NotNull
     @JoinColumn(unique = true)
@@ -71,18 +67,6 @@ public class Cellar implements Serializable {
         this.capacity = capacity;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public Cellar userId(Long userId) {
-        this.userId = userId;
-        return this;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
     public User getUser() {
         return user;
@@ -154,7 +138,6 @@ public class Cellar implements Serializable {
         return "Cellar{" +
             "id=" + getId() +
             ", capacity=" + getCapacity() +
-            ", userId=" + getUserId() +
             ", sumOfWine=" + getSumOfWine() +
             ", wineByRegion=" + getWineByRegion() +
             ", wineByColor=" + getWineByColor() +

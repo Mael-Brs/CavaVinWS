@@ -35,9 +35,9 @@ public interface WineInCellarRepository extends JpaRepository<WineInCellar, Long
     List<WineByYear> sumWineByYear(@Param("id") Long id);
 
     @Modifying
-    @Query("delete from WineInCellar w where w.id in (select w.id from WineInCellar w join Cellar c on c.id = w.cellarId join User u on u.id = c.userId where u.login = ?#{principal.username} and w.id = :id)")
+    @Query("delete from WineInCellar w where w.id in (select w.id from WineInCellar w join Cellar c on c.id = w.cellarId where c.user.login = ?#{principal.username} and w.id = :id)")
     void deleteUserIsOwner(@Param("id") Long id);
 
-    @Query("select w from WineInCellar w inner join Cellar c on c.id = w.cellarId inner join User u on u.id = c.userId where u.login = ?#{principal.username}")
+    @Query("select w from WineInCellar w inner join Cellar c on c.id = w.cellarId where c.user.login = ?#{principal.username}")
     Page<WineInCellar> findByUserIsCurrentUser(Pageable pageable);
 }

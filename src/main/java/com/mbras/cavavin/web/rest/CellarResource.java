@@ -35,6 +35,7 @@ public class CellarResource {
 
     public CellarResource(CellarService cellarService, WineInCellarService wineInCellarService) {
         this.cellarService = cellarService;
+        this.wineInCellarService = wineInCellarService;
     }
 
     /**
