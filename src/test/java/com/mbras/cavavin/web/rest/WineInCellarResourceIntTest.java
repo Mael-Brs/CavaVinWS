@@ -26,6 +26,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.mbras.cavavin.web.rest.TestUtil.createFormattingConversionService;
+import static com.mbras.cavavin.web.rest.UserResourceIntTest.DEFAULT_LOGIN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -227,7 +228,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellars() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -282,7 +283,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByPriceIsEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -296,7 +297,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByPriceIsInShouldWork() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -310,7 +311,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByPriceIsNullOrNotNull() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -324,7 +325,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByQuantityIsEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -338,7 +339,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByQuantityIsInShouldWork() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -352,7 +353,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByQuantityIsNullOrNotNull() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -366,7 +367,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByQuantityIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -380,7 +381,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByQuantityIsLessThanSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -395,7 +396,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByCommentsIsEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -409,7 +410,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByCommentsIsInShouldWork() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -423,7 +424,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByCommentsIsNullOrNotNull() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -437,7 +438,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByLocationIsEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -451,7 +452,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByLocationIsInShouldWork() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -465,7 +466,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByLocationIsNullOrNotNull() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -479,7 +480,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByCellarIdIsEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -493,7 +494,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByCellarIdIsInShouldWork() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -507,7 +508,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByCellarIdIsNullOrNotNull() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -521,7 +522,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByCellarIdIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -535,7 +536,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByCellarIdIsLessThanSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -550,7 +551,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByChildYearIsEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -564,7 +565,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByChildYearIsInShouldWork() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -578,7 +579,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByChildYearIsNullOrNotNull() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -592,7 +593,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByChildYearIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -606,7 +607,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByChildYearIsLessThanSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -621,7 +622,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByApogeeYearIsEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -635,7 +636,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByApogeeYearIsInShouldWork() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -649,7 +650,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByApogeeYearIsNullOrNotNull() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -663,7 +664,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByApogeeYearIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -677,7 +678,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByApogeeYearIsLessThanSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -692,7 +693,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByVintageIsEqualToSomething() throws Exception {
         // Initialize the database
         Vintage vintage = VintageResourceIntTest.createEntity(em);
@@ -711,7 +712,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByRegionIsEqualToSomething() throws Exception {
         wineInCellarRepository.saveAndFlush(wineInCellar);
         String regionName = wineInCellar.getVintage().getWine().getRegion().getRegionName();
@@ -724,7 +725,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByKeywordsContainsSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -835,7 +836,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void deleteWineInCellar() throws Exception {
         // Initialize the database
         wineInCellarService.save(wineInCellar);
@@ -858,7 +859,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void searchWineInCellar() throws Exception {
         // Initialize the database
         wineInCellarService.save(wineInCellar);

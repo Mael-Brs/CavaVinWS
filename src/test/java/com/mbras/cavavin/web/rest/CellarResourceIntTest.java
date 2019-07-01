@@ -1,7 +1,6 @@
 package com.mbras.cavavin.web.rest;
 
 import com.mbras.cavavin.CavavinApp;
-
 import com.mbras.cavavin.domain.Cellar;
 import com.mbras.cavavin.domain.User;
 import com.mbras.cavavin.repository.CellarRepository;
@@ -10,11 +9,9 @@ import com.mbras.cavavin.service.WineInCellarService;
 import com.mbras.cavavin.service.dto.CellarDTO;
 import com.mbras.cavavin.service.mapper.CellarMapper;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,6 +28,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.mbras.cavavin.web.rest.TestUtil.createFormattingConversionService;
+import static com.mbras.cavavin.web.rest.UserResourceIntTest.DEFAULT_LOGIN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -98,11 +96,24 @@ public class CellarResourceIntTest {
         Cellar cellar = new Cellar()
             .capacity(DEFAULT_CAPACITY);
         // Add required entity
-        User user = UserResourceIntTest.createEntity(em);
+        User user = createUser(em);
         em.persist(user);
         em.flush();
         cellar.setUser(user);
         return cellar;
+    }
+
+    /**
+     * Create user with static login
+     * @param em EntityManager
+     * @return User
+     */
+    public static User createUser(EntityManager em) {
+        User user = UserResourceIntTest.createEntity(em);
+        user.setLogin(DEFAULT_LOGIN);
+        em.persist(user);
+        em.flush();
+        return user;
     }
 
     @Before
@@ -151,13 +162,9 @@ public class CellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllCellars() throws Exception {
         // Initialize the database
-        long id = 1;
-        User user = new User();
-        user.setId(id);
-        cellar.setUser(user);
         cellarRepository.saveAndFlush(cellar);
 
         // Get all the cellarList

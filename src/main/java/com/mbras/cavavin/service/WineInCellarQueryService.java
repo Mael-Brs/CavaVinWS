@@ -3,7 +3,6 @@ package com.mbras.cavavin.service;
 
 import com.mbras.cavavin.domain.*;
 import com.mbras.cavavin.repository.WineInCellarRepository;
-import com.mbras.cavavin.repository.search.WineInCellarSearchRepository;
 import com.mbras.cavavin.security.SecurityUtils;
 import com.mbras.cavavin.service.dto.WineInCellarCriteria;
 import com.mbras.cavavin.web.rest.errors.InternalServerErrorException;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
@@ -39,11 +39,9 @@ public class WineInCellarQueryService extends QueryService<WineInCellar> {
 
     private final WineInCellarRepository wineInCellarRepository;
 
-    private final WineInCellarSearchRepository wineInCellarSearchRepository;
 
-    public WineInCellarQueryService(WineInCellarRepository wineInCellarRepository, WineInCellarSearchRepository wineInCellarSearchRepository) {
+    public WineInCellarQueryService(WineInCellarRepository wineInCellarRepository) {
         this.wineInCellarRepository = wineInCellarRepository;
-        this.wineInCellarSearchRepository = wineInCellarSearchRepository;
     }
 
     /**
@@ -82,8 +80,9 @@ public class WineInCellarQueryService extends QueryService<WineInCellar> {
         // Restrict on current user CellarIds
         Specifications<WineInCellar> specification = Specifications.where((root, criteriaQuery, criteriaBuilder) -> {
             Root<Cellar> cellar = criteriaQuery.from(Cellar.class);
-            Root<User> user = criteriaQuery.from(User.class);
-            return criteriaBuilder.and(criteriaBuilder.equal(root.get("cellarId"), cellar.get("id")), criteriaBuilder.equal(user.get("id"), cellar.get("userId")), criteriaBuilder.equal(user.get("login"), userLogin.get()));
+            //Do a join
+            Join<Cellar, User> user = cellar.join(Cellar_.user);
+            return criteriaBuilder.and(criteriaBuilder.equal(root.get("cellarId"), cellar.get("id")), criteriaBuilder.equal(user.get("login"), userLogin.get()));
         });
         if (criteria != null) {
             specification = getWineInCellarSpecifications(criteria, specification);
