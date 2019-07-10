@@ -1,18 +1,18 @@
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
-import {CavavinSharedModule} from '../../shared';
+import { CavavinSharedModule } from '../../shared';
 import {
+    WineInCellarService,
+    WineInCellarPopupService,
     WineInCellarComponent,
-    WineInCellarDeleteDialogComponent,
-    WineInCellarDeletePopupComponent,
     WineInCellarDetailComponent,
     WineInCellarDialogComponent,
     WineInCellarPopupComponent,
-    wineInCellarPopupRoute,
-    WineInCellarPopupService,
+    WineInCellarDeletePopupComponent,
+    WineInCellarDeleteDialogComponent,
     wineInCellarRoute,
-    WineInCellarService,
+    wineInCellarPopupRoute,
 } from './';
 
 const ENTITY_STATES = [

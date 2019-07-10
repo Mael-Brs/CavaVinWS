@@ -16,13 +16,13 @@
             "detail": {
                 "title": "Vin en Cave"
             },
+            "childYear": "Bon à partir de",
+            "apogeeYear": "Apogée",
             "price": "Prix",
             "quantity": "Quantité",
             "comments": "Commentaires",
             "location": "Emplacement",
-            "cellarId": "Id Cave",
-            "childYear": "Bon à partir de",
-            "apogeeYear": "Apogée",
+            "cellar": "Cave",
             "vintage": "Millésime"
         }
     }

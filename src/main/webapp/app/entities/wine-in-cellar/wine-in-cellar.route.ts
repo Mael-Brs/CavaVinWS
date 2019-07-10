@@ -1,11 +1,13 @@
-import {Routes} from '@angular/router';
+import { Injectable } from '@angular/core';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
 
-import {UserRouteAccessService} from '../../shared';
+import { UserRouteAccessService } from '../../shared';
+import { JhiPaginationUtil } from 'ng-jhipster';
 
-import {WineInCellarComponent} from './wine-in-cellar.component';
-import {WineInCellarDetailComponent} from './wine-in-cellar-detail.component';
-import {WineInCellarPopupComponent} from './wine-in-cellar-dialog.component';
-import {WineInCellarDeletePopupComponent} from './wine-in-cellar-delete-dialog.component';
+import { WineInCellarComponent } from './wine-in-cellar.component';
+import { WineInCellarDetailComponent } from './wine-in-cellar-detail.component';
+import { WineInCellarPopupComponent } from './wine-in-cellar-dialog.component';
+import { WineInCellarDeletePopupComponent } from './wine-in-cellar-delete-dialog.component';
 
 export const wineInCellarRoute: Routes = [
     {

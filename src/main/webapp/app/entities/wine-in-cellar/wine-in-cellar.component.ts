@@ -1,11 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs/Rx';
-import {JhiAlertService, JhiEventManager, JhiParseLinks} from 'ng-jhipster';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs/Rx';
+import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
-import {WineInCellar} from './wine-in-cellar.model';
-import {WineInCellarService} from './wine-in-cellar.service';
-import {ITEMS_PER_PAGE, Principal, ResponseWrapper} from '../../shared';
+import { WineInCellar } from './wine-in-cellar.model';
+import { WineInCellarService } from './wine-in-cellar.service';
+import { ITEMS_PER_PAGE, Principal, ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-wine-in-cellar',

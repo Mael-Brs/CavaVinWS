@@ -1,16 +1,17 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Response} from '@angular/http';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Response } from '@angular/http';
 
-import {Observable} from 'rxjs/Rx';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
+import { Observable } from 'rxjs/Rx';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
-import {WineInCellar} from './wine-in-cellar.model';
-import {WineInCellarPopupService} from './wine-in-cellar-popup.service';
-import {WineInCellarService} from './wine-in-cellar.service';
-import {Vintage, VintageService} from '../vintage';
-import {ResponseWrapper} from '../../shared';
+import { WineInCellar } from './wine-in-cellar.model';
+import { WineInCellarPopupService } from './wine-in-cellar-popup.service';
+import { WineInCellarService } from './wine-in-cellar.service';
+import { Cellar, CellarService } from '../cellar';
+import { Vintage, VintageService } from '../vintage';
+import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-wine-in-cellar-dialog',
@@ -21,12 +22,15 @@ export class WineInCellarDialogComponent implements OnInit {
     wineInCellar: WineInCellar;
     isSaving: boolean;
 
+    cellars: Cellar[];
+
     vintages: Vintage[];
 
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private wineInCellarService: WineInCellarService,
+        private cellarService: CellarService,
         private vintageService: VintageService,
         private eventManager: JhiEventManager
     ) {
@@ -34,6 +38,8 @@ export class WineInCellarDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
+        this.cellarService.query()
+            .subscribe((res: ResponseWrapper) => { this.cellars = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.vintageService.query()
             .subscribe((res: ResponseWrapper) => { this.vintages = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
@@ -70,6 +76,10 @@ export class WineInCellarDialogComponent implements OnInit {
 
     private onError(error: any) {
         this.jhiAlertService.error(error.message, null, null);
+    }
+
+    trackCellarById(index: number, item: Cellar) {
+        return item.id;
     }
 
     trackVintageById(index: number, item: Vintage) {

@@ -16,13 +16,13 @@
             "detail": {
                 "title": "Wine In Cellar"
             },
+            "childYear": "Child Year",
+            "apogeeYear": "Apogee Year",
             "price": "Price",
             "quantity": "Quantity",
             "comments": "Comments",
             "location": "Location",
-            "cellarId": "Cellar Id",
-            "childYear": "Child Year",
-            "apogeeYear": "Apogee Year",
+            "cellar": "Cellar",
             "vintage": "Vintage"
         }
     }

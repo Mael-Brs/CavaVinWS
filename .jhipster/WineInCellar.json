@@ -43,13 +43,6 @@
         {
             "fieldName": "location",
             "fieldType": "String"
-        },
-        {
-            "fieldName": "cellarId",
-            "fieldType": "Long",
-            "fieldValidateRules": [
-                "required"
-            ]
         }
     ],
     "changelogDate": "20170805153503",
