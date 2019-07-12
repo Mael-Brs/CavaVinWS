@@ -2,6 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { CavavinSharedModule } from '../../shared';
+import { CavavinAdminModule } from '../../admin/admin.module';
 import {
     CellarService,
     CellarPopupService,
@@ -23,7 +24,8 @@ const ENTITY_STATES = [
 @NgModule({
     imports: [
         CavavinSharedModule,
-        RouterModule.forRoot(ENTITY_STATES, { useHash: true })
+        CavavinAdminModule,
+        RouterModule.forChild(ENTITY_STATES)
     ],
     declarations: [
         CellarComponent,

@@ -4,10 +4,11 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+
 
 /**
  * A Cellar.
@@ -27,9 +28,10 @@ public class Cellar implements Serializable {
     @Column(name = "capacity")
     private Integer capacity;
 
+    @OneToOne(optional = false)
     @NotNull
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @JoinColumn(unique = true)
+    private User user;
 
     @Transient
     private Long sumOfWine;
@@ -43,6 +45,7 @@ public class Cellar implements Serializable {
     @Transient
     private List<WineByYear> wineByYear;
 
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -64,19 +67,19 @@ public class Cellar implements Serializable {
         this.capacity = capacity;
     }
 
-    public Long getUserId() {
-        return userId;
+
+    public User getUser() {
+        return user;
     }
 
-    public Cellar userId(Long userId) {
-        this.userId = userId;
+    public Cellar user(User user) {
+        this.user = user;
         return this;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
-
     public Long getSumOfWine() {
         return sumOfWine;
     }
@@ -108,6 +111,7 @@ public class Cellar implements Serializable {
     public void setWineByYear(List<WineByYear> wineByYear) {
         this.wineByYear = wineByYear;
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -132,13 +136,12 @@ public class Cellar implements Serializable {
     @Override
     public String toString() {
         return "Cellar{" +
-            "id=" + id +
-            ", capacity=" + capacity +
-            ", userId=" + userId +
-            ", sumOfWine=" + sumOfWine +
-            ", wineByRegion=" + wineByRegion +
-            ", wineByColor=" + wineByColor +
-            ", wineByYear=" + wineByYear +
-            '}';
+            "id=" + getId() +
+            ", capacity=" + getCapacity() +
+            ", sumOfWine=" + getSumOfWine() +
+            ", wineByRegion=" + getWineByRegion() +
+            ", wineByColor=" + getWineByColor() +
+            ", wineByYear=" + getWineByYear() +
+            "}";
     }
 }

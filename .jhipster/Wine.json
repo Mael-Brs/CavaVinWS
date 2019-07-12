@@ -14,6 +14,12 @@
             "relationshipName": "color",
             "otherEntityName": "color",
             "otherEntityField": "colorName"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "creator",
+            "otherEntityName": "user",
+            "otherEntityField": "login"
         }
     ],
     "fields": [
@@ -45,5 +51,6 @@
     "dto": "no",
     "pagination": "infinite-scroll",
     "service": "no",
+    "jpaMetamodelFiltering": true,
     "searchEngine": "elasticsearch"
 }

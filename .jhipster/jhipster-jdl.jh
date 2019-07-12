@@ -26,8 +26,7 @@ entity WineInCellar {
 	price Double,
     quantity Integer required,
     comments String,
-    location String,
-	cellarId Long required
+    location String
 }
 
 entity Cellar {
@@ -41,19 +40,27 @@ entity WineAgingData {
 }
 
 entity PinnedWine {
-	userId Long required,
+
+}
+
+relationship OneToOne {
+	Cellar{user(login) required} to User
 }
 
 relationship ManyToOne {
 	Wine{region(regionName) required} to Region,
     Wine{color(colorName) required} to Color,
+    Wine{creator(login)} to User,
     Vintage{wine(name) required} to Wine,
+	WineInCellar{cellar required} to Cellar,
     WineInCellar{vintage required} to Vintage,
     WineAgingData{color(colorName) required} to Color,
     WineAgingData{region(regionName) required} to Region,
-    PinnedWine{wine required} to Wine
+    PinnedWine{wine required} to Wine,
+    PinnedWine{user(login) required} to User
 }
 
+dto Cellar, WineInCellar, PinnedWine with mapstruct
 service Cellar, WineInCellar with serviceClass
 search Wine, WineInCellar with elasticsearch
 paginate WineInCellar, Wine with infinite-scroll

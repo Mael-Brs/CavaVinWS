@@ -1,10 +1,10 @@
 package com.mbras.cavavin.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.mbras.cavavin.domain.WineInCellar;
 import com.mbras.cavavin.service.WineInCellarQueryService;
 import com.mbras.cavavin.service.WineInCellarService;
 import com.mbras.cavavin.service.dto.WineInCellarCriteria;
+import com.mbras.cavavin.service.dto.WineInCellarDTO;
 import com.mbras.cavavin.web.rest.errors.BadRequestAlertException;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import com.mbras.cavavin.web.rest.util.PaginationUtil;
@@ -47,18 +47,18 @@ public class WineInCellarResource {
     /**
      * POST  /wine-in-cellars : Create a new wineInCellar.
      *
-     * @param wineInCellar the wineInCellar to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new wineInCellar, or with status 400 (Bad Request) if the wineInCellar has already an ID
+     * @param wineInCellarDTO the wineInCellarDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new wineInCellarDTO, or with status 400 (Bad Request) if the wineInCellar has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/wine-in-cellars")
     @Timed
-    public ResponseEntity<WineInCellar> createWineInCellar(@Valid @RequestBody WineInCellar wineInCellar) throws URISyntaxException {
-        log.debug("REST request to save WineInCellar : {}", wineInCellar);
-        if (wineInCellar.getId() != null) {
+    public ResponseEntity<WineInCellarDTO> createWineInCellar(@Valid @RequestBody WineInCellarDTO wineInCellarDTO) throws URISyntaxException {
+        log.debug("REST request to save WineInCellar : {}", wineInCellarDTO);
+        if (wineInCellarDTO.getId() != null) {
             throw new BadRequestAlertException("A new wineInCellar cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        WineInCellar result = wineInCellarService.save(wineInCellar);
+        WineInCellarDTO result = wineInCellarService.save(wineInCellarDTO);
         return ResponseEntity.created(new URI("/api/wine-in-cellars/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -67,19 +67,19 @@ public class WineInCellarResource {
     /**
      * POST  /wine-in-cellars : Create a new wineInCellar and a new vintage and a new wine.
      *
-     * @param wineInCellar the wineInCellarDTO to create
+     * @param wineInCellarDTO the wineInCellarDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new wineInCellarDTO, or with status 400 (Bad Request) if the wineInCellar has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/wine-in-cellars/all")
     @Timed
-    public ResponseEntity<WineInCellar> createWineInCellarFromScratch(@Valid @RequestBody WineInCellar wineInCellar) throws URISyntaxException {
-        log.debug("REST request to save WineInCellar : {}", wineInCellar);
-        if (wineInCellar.getId() != null) {
+    public ResponseEntity<WineInCellarDTO> createWineInCellarFromScratch(@Valid @RequestBody WineInCellarDTO wineInCellarDTO) throws URISyntaxException {
+        log.debug("REST request to save WineInCellar : {}", wineInCellarDTO);
+        if (wineInCellarDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new wineInCellar cannot already have an ID")).body(null);
         }
 
-        WineInCellar result = wineInCellarService.saveFromScratch(wineInCellar);
+        WineInCellarDTO result = wineInCellarService.saveFromScratch(wineInCellarDTO);
         return ResponseEntity.created(new URI("/api/wine-in-cellars/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -88,29 +88,29 @@ public class WineInCellarResource {
     /**
      * PUT  /wine-in-cellars : Updates an existing wineInCellar.
      *
-     * @param wineInCellar the wineInCellar to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated wineInCellar,
-     * or with status 400 (Bad Request) if the wineInCellar is not valid,
-     * or with status 500 (Internal Server Error) if the wineInCellar couldn't be updated
+     * @param wineInCellarDTO the wineInCellarDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated wineInCellarDTO,
+     * or with status 400 (Bad Request) if the wineInCellarDTO is not valid,
+     * or with status 500 (Internal Server Error) if the wineInCellarDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/wine-in-cellars")
     @Timed
-    public ResponseEntity<WineInCellar> updateWineInCellar(@Valid @RequestBody WineInCellar wineInCellar) throws URISyntaxException {
-        log.debug("REST request to update WineInCellar : {}", wineInCellar);
-        if (wineInCellar.getId() == null) {
-            return createWineInCellar(wineInCellar);
+    public ResponseEntity<WineInCellarDTO> updateWineInCellar(@Valid @RequestBody WineInCellarDTO wineInCellarDTO) throws URISyntaxException {
+        log.debug("REST request to update WineInCellar : {}", wineInCellarDTO);
+        if (wineInCellarDTO.getId() == null) {
+            return createWineInCellar(wineInCellarDTO);
         }
-        WineInCellar result = wineInCellarService.save(wineInCellar);
+        WineInCellarDTO result = wineInCellarService.save(wineInCellarDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, wineInCellar.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, wineInCellarDTO.getId().toString()))
             .body(result);
     }
 
     /**
      * PUT  /wine-in-cellars/all : Updates an existing wineInCellar and vinrage and wine.
      *
-     * @param wineInCellar the wineInCellarDTO to update
+     * @param wineInCellarDTO the wineInCellarDTO to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated wineInCellarDTO,
      * or with status 400 (Bad Request) if the wineInCellarDTO is not valid,
      * or with status 500 (Internal Server Error) if the wineInCellarDTO couldnt be updated
@@ -118,14 +118,14 @@ public class WineInCellarResource {
      */
     @PutMapping("/wine-in-cellars/all")
     @Timed
-    public ResponseEntity<WineInCellar> updateWineInCellarFromScratch(@Valid @RequestBody WineInCellar wineInCellar) throws URISyntaxException {
-        log.debug("REST request to update WineInCellar : {}", wineInCellar);
-        if (wineInCellar.getId() == null) {
-            return createWineInCellar(wineInCellar);
+    public ResponseEntity<WineInCellarDTO> updateWineInCellarFromScratch(@Valid @RequestBody WineInCellarDTO wineInCellarDTO) throws URISyntaxException {
+        log.debug("REST request to update WineInCellar : {}", wineInCellarDTO);
+        if (wineInCellarDTO.getId() == null) {
+            return createWineInCellar(wineInCellarDTO);
         }
-        WineInCellar result = wineInCellarService.saveFromScratch(wineInCellar);
+        WineInCellarDTO result = wineInCellarService.saveFromScratch(wineInCellarDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, wineInCellar.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, wineInCellarDTO.getId().toString()))
             .body(result);
     }
 
@@ -138,9 +138,9 @@ public class WineInCellarResource {
      */
     @GetMapping("/wine-in-cellars")
     @Timed
-    public ResponseEntity<List<WineInCellar>> getAllWineInCellars(WineInCellarCriteria criteria, Pageable pageable) {
+    public ResponseEntity<List<WineInCellarDTO>> getAllWineInCellars(WineInCellarCriteria criteria, Pageable pageable) {
         log.debug("REST request to get WineInCellars by criteria: {}", criteria);
-        Page<WineInCellar> page = wineInCellarQueryService.findByCriteria(criteria, pageable);
+        Page<WineInCellarDTO> page = wineInCellarQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/wine-in-cellars");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -148,21 +148,21 @@ public class WineInCellarResource {
     /**
      * GET  /wine-in-cellars/:id : get the "id" wineInCellar.
      *
-     * @param id the id of the wineInCellar to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the wineInCellar, or with status 404 (Not Found)
+     * @param id the id of the wineInCellarDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the wineInCellarDTO, or with status 404 (Not Found)
      */
     @GetMapping("/wine-in-cellars/{id}")
     @Timed
-    public ResponseEntity<WineInCellar> getWineInCellar(@PathVariable Long id) {
+    public ResponseEntity<WineInCellarDTO> getWineInCellar(@PathVariable Long id) {
         log.debug("REST request to get WineInCellar : {}", id);
-        WineInCellar wineInCellar = wineInCellarService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(wineInCellar));
+        WineInCellarDTO wineInCellarDTO = wineInCellarService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(wineInCellarDTO));
     }
 
     /**
      * DELETE  /wine-in-cellars/:id : delete the "id" wineInCellar.
      *
-     * @param id the id of the wineInCellar to delete
+     * @param id the id of the wineInCellarDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/wine-in-cellars/{id}")
@@ -178,15 +178,14 @@ public class WineInCellarResource {
      * to the query.
      *
      * @param query the query of the wineInCellar search
-     * @param cellarId the id of the cellar search
      * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/wine-in-cellars")
     @Timed
-    public ResponseEntity<List<WineInCellar>> searchWineInCellars(@RequestParam String query, @RequestParam(required = false) Long cellarId, Pageable pageable) {
+    public ResponseEntity<List<WineInCellarDTO>> searchWineInCellars(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of WineInCellars for query {}", query);
-        Page<WineInCellar> page = wineInCellarService.search(query, cellarId, pageable);
+        Page<WineInCellarDTO> page = wineInCellarService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/wine-in-cellars");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

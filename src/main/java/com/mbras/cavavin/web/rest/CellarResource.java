@@ -1,9 +1,10 @@
 package com.mbras.cavavin.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.mbras.cavavin.domain.Cellar;
 import com.mbras.cavavin.service.CellarService;
 import com.mbras.cavavin.service.WineInCellarService;
+import com.mbras.cavavin.service.dto.CellarDTO;
+import com.mbras.cavavin.web.rest.errors.BadRequestAlertException;
 import com.mbras.cavavin.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -41,18 +41,18 @@ public class CellarResource {
     /**
      * POST  /cellars : Create a new cellar.
      *
-     * @param cellar the cellar to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new cellar, or with status 400 (Bad Request) if the cellar has already an ID
+     * @param cellarDTO the cellarDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new cellarDTO, or with status 400 (Bad Request) if the cellar has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/cellars")
     @Timed
-    public ResponseEntity<Cellar> createCellar(@Valid @RequestBody Cellar cellar) throws URISyntaxException {
-        log.debug("REST request to save Cellar : {}", cellar);
-        if (cellar.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new cellar cannot already have an ID")).body(null);
+    public ResponseEntity<CellarDTO> createCellar(@Valid @RequestBody CellarDTO cellarDTO) throws URISyntaxException {
+        log.debug("REST request to save Cellar : {}", cellarDTO);
+        if (cellarDTO.getId() != null) {
+            throw new BadRequestAlertException("A new cellar cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Cellar result = cellarService.save(cellar);
+        CellarDTO result = cellarService.save(cellarDTO);
         return ResponseEntity.created(new URI("/api/cellars/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -61,22 +61,22 @@ public class CellarResource {
     /**
      * PUT  /cellars : Updates an existing cellar.
      *
-     * @param cellar the cellar to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated cellar,
-     * or with status 400 (Bad Request) if the cellar is not valid,
-     * or with status 500 (Internal Server Error) if the cellar couldn't be updated
+     * @param cellarDTO the cellarDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated cellarDTO,
+     * or with status 400 (Bad Request) if the cellarDTO is not valid,
+     * or with status 500 (Internal Server Error) if the cellarDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/cellars")
     @Timed
-    public ResponseEntity<Cellar> updateCellar(@Valid @RequestBody Cellar cellar) throws URISyntaxException {
-        log.debug("REST request to update Cellar : {}", cellar);
-        if (cellar.getId() == null) {
-            return createCellar(cellar);
+    public ResponseEntity<CellarDTO> updateCellar(@Valid @RequestBody CellarDTO cellarDTO) throws URISyntaxException {
+        log.debug("REST request to update Cellar : {}", cellarDTO);
+        if (cellarDTO.getId() == null) {
+            return createCellar(cellarDTO);
         }
-        Cellar result = cellarService.save(cellar);
+        CellarDTO result = cellarService.save(cellarDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, cellar.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, cellarDTO.getId().toString()))
             .body(result);
     }
 
@@ -87,10 +87,10 @@ public class CellarResource {
      */
     @GetMapping("/cellars")
     @Timed
-    public List<Cellar> getAllCellars() {
+    public List<CellarDTO> getAllCellars() {
         log.debug("REST request to get all Cellars");
-        List<Cellar> cellars = cellarService.findAll();
-        for(Cellar cellar : cellars){
+        List<CellarDTO> cellars = cellarService.findAll();
+        for(CellarDTO cellar : cellars){
             cellar.setSumOfWine(wineInCellarService.getWineSum(cellar.getId()));
             cellar.setWineByRegion(wineInCellarService.getWineByRegion(cellar.getId()));
             cellar.setWineByColor(wineInCellarService.getWineByColor(cellar.getId()));
@@ -102,14 +102,14 @@ public class CellarResource {
     /**
      * GET  /cellars/:id : get the "id" cellar.
      *
-     * @param id the id of the cellar to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the cellar, or with status 404 (Not Found)
+     * @param id the id of the cellarDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the cellarDTO, or with status 404 (Not Found)
      */
     @GetMapping("/cellars/{id}")
     @Timed
-    public ResponseEntity<Cellar> getCellar(@PathVariable Long id) {
+    public ResponseEntity<CellarDTO> getCellar(@PathVariable Long id) {
         log.debug("REST request to get Cellar : {}", id);
-        Cellar cellar = cellarService.findOne(id);
+        CellarDTO cellar = cellarService.findOne(id);
         if (cellar != null){
             cellar.setSumOfWine(wineInCellarService.getWineSum(id));
             cellar.setWineByRegion(wineInCellarService.getWineByRegion(id));
@@ -122,7 +122,7 @@ public class CellarResource {
     /**
      * DELETE  /cellars/:id : delete the "id" cellar.
      *
-     * @param id the id of the cellar to delete
+     * @param id the id of the cellarDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/cellars/{id}")

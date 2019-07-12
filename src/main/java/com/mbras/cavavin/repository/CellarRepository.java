@@ -14,6 +14,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface CellarRepository extends JpaRepository<Cellar,Long> {
-    @Query("select c from Cellar c join User u on u.id = c.userId where u.login = ?#{principal.username}")
+    @Query("select c from Cellar c where c.user.login = ?#{principal.username}")
     List<Cellar> findByUserIsCurrentUser();
 }

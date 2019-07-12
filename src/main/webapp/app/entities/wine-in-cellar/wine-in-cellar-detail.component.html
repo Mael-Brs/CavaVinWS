@@ -4,6 +4,14 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="cavavinApp.wineInCellar.childYear">Child Year</span></dt>
+        <dd>
+            <span>{{wineInCellar.childYear}}</span>
+        </dd>
+        <dt><span jhiTranslate="cavavinApp.wineInCellar.apogeeYear">Apogee Year</span></dt>
+        <dd>
+            <span>{{wineInCellar.apogeeYear}}</span>
+        </dd>
         <dt><span jhiTranslate="cavavinApp.wineInCellar.price">Price</span></dt>
         <dd>
             <span>{{wineInCellar.price}}</span>
@@ -20,17 +28,11 @@
         <dd>
             <span>{{wineInCellar.location}}</span>
         </dd>
-        <dt><span jhiTranslate="cavavinApp.wineInCellar.cellarId">Cellar Id</span></dt>
+        <dt><span jhiTranslate="cavavinApp.wineInCellar.cellar">Cellar</span></dt>
         <dd>
-            <span>{{wineInCellar.cellarId}}</span>
-        </dd>
-        <dt><span jhiTranslate="cavavinApp.wineInCellar.childYear">Child Year</span></dt>
-        <dd>
-            <span>{{wineInCellar.childYear}}</span>
-        </dd>
-        <dt><span jhiTranslate="cavavinApp.wineInCellar.apogeeYear">Apogee Year</span></dt>
-        <dd>
-            <span>{{wineInCellar.apogeeYear}}</span>
+            <div *ngIf="wineInCellar.cellarId">
+                <a [routerLink]="['/cellar', wineInCellar.cellarId]">{{wineInCellar.cellarId}}</a>
+            </div>
         </dd>
         <dt><span jhiTranslate="cavavinApp.wineInCellar.vintage">Vintage</span></dt>
         <dd>

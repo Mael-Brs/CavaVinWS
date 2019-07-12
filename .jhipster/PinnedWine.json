@@ -7,20 +7,19 @@
             "relationshipName": "wine",
             "otherEntityName": "wine",
             "otherEntityField": "id"
-        }
-    ],
-    "fields": [
+        },
         {
-            "fieldName": "userId",
-            "fieldType": "Long",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "otherEntityField": "login"
         }
     ],
+    "fields": [],
     "changelogDate": "20170610134422",
     "entityTableName": "pinned_wine",
-    "dto": "no",
+    "dto": "mapstruct",
     "pagination": "no",
     "service": "no",
     "searchEngine": "no",

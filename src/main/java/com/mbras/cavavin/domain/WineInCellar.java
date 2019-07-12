@@ -26,6 +26,12 @@ public class WineInCellar implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
+    @Column(name = "child_year")
+    private Integer childYear;
+
+    @Column(name = "apogee_year")
+    private Integer apogeeYear;
+
     @Column(name = "price")
     private Double price;
 
@@ -39,20 +45,13 @@ public class WineInCellar implements Serializable {
     @Column(name = "location")
     private String location;
 
+    @ManyToOne(optional = false)
     @NotNull
-    @Column(name = "cellar_id", nullable = false)
-    private Long cellarId;
-
-    @Column(name = "child_year")
-    private Integer childYear;
-
-    @Column(name = "apogee_year")
-    private Integer apogeeYear;
+    private Cellar cellar;
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @NotNull
     private Vintage vintage;
-
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -60,6 +59,32 @@ public class WineInCellar implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getChildYear() {
+        return childYear;
+    }
+
+    public WineInCellar childYear(Integer childYear) {
+        this.childYear = childYear;
+        return this;
+    }
+
+    public void setChildYear(Integer childYear) {
+        this.childYear = childYear;
+    }
+
+    public Integer getApogeeYear() {
+        return apogeeYear;
+    }
+
+    public WineInCellar apogeeYear(Integer apogeeYear) {
+        this.apogeeYear = apogeeYear;
+        return this;
+    }
+
+    public void setApogeeYear(Integer apogeeYear) {
+        this.apogeeYear = apogeeYear;
     }
 
     public Double getPrice() {
@@ -114,43 +139,17 @@ public class WineInCellar implements Serializable {
         this.location = location;
     }
 
-    public Long getCellarId() {
-        return cellarId;
+    public Cellar getCellar() {
+        return cellar;
     }
 
-    public WineInCellar cellarId(Long cellarId) {
-        this.cellarId = cellarId;
+    public WineInCellar cellar(Cellar cellar) {
+        this.cellar = cellar;
         return this;
     }
 
-    public void setCellarId(Long cellarId) {
-        this.cellarId = cellarId;
-    }
-
-    public Integer getChildYear() {
-        return childYear;
-    }
-
-    public WineInCellar childYear(Integer childYear) {
-        this.childYear = childYear;
-        return this;
-    }
-
-    public void setChildYear(Integer childYear) {
-        this.childYear = childYear;
-    }
-
-    public Integer getApogeeYear() {
-        return apogeeYear;
-    }
-
-    public WineInCellar apogeeYear(Integer apogeeYear) {
-        this.apogeeYear = apogeeYear;
-        return this;
-    }
-
-    public void setApogeeYear(Integer apogeeYear) {
-        this.apogeeYear = apogeeYear;
+    public void setCellar(Cellar cellar) {
+        this.cellar = cellar;
     }
 
     public Vintage getVintage() {
@@ -191,13 +190,12 @@ public class WineInCellar implements Serializable {
     public String toString() {
         return "WineInCellar{" +
             "id=" + getId() +
+            ", childYear=" + getChildYear() +
+            ", apogeeYear=" + getApogeeYear() +
             ", price=" + getPrice() +
             ", quantity=" + getQuantity() +
             ", comments='" + getComments() + "'" +
             ", location='" + getLocation() + "'" +
-            ", cellarId=" + getCellarId() +
-            ", childYear=" + getChildYear() +
-            ", apogeeYear=" + getApogeeYear() +
             "}";
     }
 }

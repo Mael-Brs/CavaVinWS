@@ -13,6 +13,16 @@
                    [(ngModel)]="wineInCellar.id" readonly />
         </div>
         <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.childYear" for="field_childYear">Child Year</label>
+            <input type="number" class="form-control" name="childYear" id="field_childYear"
+                [(ngModel)]="wineInCellar.childYear" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.apogeeYear" for="field_apogeeYear">Apogee Year</label>
+            <input type="number" class="form-control" name="apogeeYear" id="field_apogeeYear"
+                [(ngModel)]="wineInCellar.apogeeYear" />
+        </div>
+        <div class="form-group">
             <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.price" for="field_price">Price</label>
             <input type="number" class="form-control" name="price" id="field_price"
                 [(ngModel)]="wineInCellar.price" />
@@ -43,36 +53,23 @@
                 [(ngModel)]="wineInCellar.location" />
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.cellarId" for="field_cellarId">Cellar Id</label>
-            <input type="number" class="form-control" name="cellarId" id="field_cellarId"
-                [(ngModel)]="wineInCellar.cellarId" required/>
-            <div [hidden]="!(editForm.controls.cellarId?.dirty && editForm.controls.cellarId?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.cellarId?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-                <small class="form-text text-danger"
-                    [hidden]="!editForm.controls.cellarId?.errors?.number" jhiTranslate="entity.validation.number">
-                    This field should be a number.
-                </small>
-            </div>
+            <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.cellar" for="field_cellar">Cellar</label>
+            <select class="form-control" id="field_cellar" name="cellar" [(ngModel)]="wineInCellar.cellarId"  required>
+                <option *ngIf="!editForm.value.cellar" [ngValue]="null" selected></option>
+                <option [ngValue]="cellarOption.id" *ngFor="let cellarOption of cellars; trackBy: trackCellarById">{{cellarOption.id}}</option>
+            </select>
         </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.childYear" for="field_childYear">Child Year</label>
-            <input type="number" class="form-control" name="childYear" id="field_childYear"
-                [(ngModel)]="wineInCellar.childYear" />
+        <div [hidden]="!(editForm.controls.cellar?.dirty && editForm.controls.cellar?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.cellar?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
         </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.apogeeYear" for="field_apogeeYear">Apogee Year</label>
-            <input type="number" class="form-control" name="apogeeYear" id="field_apogeeYear"
-                [(ngModel)]="wineInCellar.apogeeYear" />
-        </div>
-
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="cavavinApp.wineInCellar.vintage" for="field_vintage">Vintage</label>
             <select class="form-control" id="field_vintage" name="vintage" [(ngModel)]="wineInCellar.vintage"  required>
                 <option *ngIf="!editForm.value.vintage" [ngValue]="null" selected></option>
-                <option [ngValue]="vintageOption.id === wineInCellar.vintage?.id ? wineInCellar.vintage : vintageOption" *ngFor="let vintageOption of vintages; trackBy: trackVintageById">{{vintageOption.id}}</option>
+                <option [ngValue]="vintageOption.id === wineInCellar.vintage?.id ? wineInCellar.vintage : vintageOption" *ngFor="let vintageOption of vintages; trackBy: trackVintageById">{{vintageOption.wine.name}}</option>
             </select>
         </div>
         <div [hidden]="!(editForm.controls.vintage?.dirty && editForm.controls.vintage?.invalid)">

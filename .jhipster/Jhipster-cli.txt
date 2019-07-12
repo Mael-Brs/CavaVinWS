@@ -11,7 +11,7 @@ jhipster
 http://DOCKER_HOST:8080
 
 <--Générer juste json-->
-jhipster import-jdl d:\Profiles\mbras\Documents\GitHub\CavaVinWS\.jhipster\jhipster-jdl.jh --json-only
+jhipster import-jdl ./.jhipster/jhipster-jdl.jh --json-only
 <--Forcer la génération-->
 jhipster import-jdl d:\Profiles\mbras\Documents\GitHub\CavaVinWS\.jhipster\jhipster-jdl.jh --force
 

@@ -6,6 +6,8 @@ import com.mbras.cavavin.repository.WineInCellarRepository;
 import com.mbras.cavavin.repository.search.WineInCellarSearchRepository;
 import com.mbras.cavavin.service.WineInCellarQueryService;
 import com.mbras.cavavin.service.WineInCellarService;
+import com.mbras.cavavin.service.dto.WineInCellarDTO;
+import com.mbras.cavavin.service.mapper.WineInCellarMapper;
 import com.mbras.cavavin.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +28,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.mbras.cavavin.web.rest.TestUtil.createFormattingConversionService;
+import static com.mbras.cavavin.web.rest.UserResourceIntTest.DEFAULT_LOGIN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -40,9 +43,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = CavavinApp.class)
 public class WineInCellarResourceIntTest {
 
-    private static final Integer DEFAULT_MIN_KEEP = 1;
+    private static final Integer DEFAULT_CHILD_YEAR = 1;
+    private static final Integer UPDATED_CHILD_YEAR = 2;
 
-    private static final Integer DEFAULT_MAX_KEEP = 1;
+    private static final Integer DEFAULT_APOGEE_YEAR = 1;
+    private static final Integer UPDATED_APOGEE_YEAR = 2;
 
     private static final Double DEFAULT_PRICE = 1D;
     private static final Double UPDATED_PRICE = 2D;
@@ -59,14 +64,15 @@ public class WineInCellarResourceIntTest {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final Integer DEFAULT_CHILD_YEAR = 1;
-    private static final Integer UPDATED_CHILD_YEAR = 2;
+    private static final Integer DEFAULT_MIN_KEEP = 1;
 
-    private static final Integer DEFAULT_APOGEE_YEAR = 1;
-    private static final Integer UPDATED_APOGEE_YEAR = 2;
+    private static final Integer DEFAULT_MAX_KEEP = 1;
 
     @Autowired
     private WineInCellarRepository wineInCellarRepository;
+
+    @Autowired
+    private WineInCellarMapper wineInCellarMapper;
 
     @Autowired
     private WineInCellarService wineInCellarService;
@@ -112,26 +118,30 @@ public class WineInCellarResourceIntTest {
      */
     public static WineInCellar createEntity(EntityManager em) {
         WineInCellar wineInCellar = new WineInCellar()
+            .childYear(DEFAULT_CHILD_YEAR)
+            .apogeeYear(DEFAULT_APOGEE_YEAR)
             .price(DEFAULT_PRICE)
             .quantity(DEFAULT_QUANTITY)
             .comments(DEFAULT_COMMENTS)
-            .location(DEFAULT_LOCATION)
-            .childYear(DEFAULT_CHILD_YEAR)
-            .apogeeYear(DEFAULT_APOGEE_YEAR);
+            .location(DEFAULT_LOCATION);
+
+        // Add required entity
+        Cellar cellar = CellarResourceIntTest.createEntity(em);
+        em.persist(cellar);
+        em.flush();
+        wineInCellar.setCellar(cellar);
         // Add required entity
         Vintage vintage = VintageResourceIntTest.createEntity(em);
-        Cellar cellar = CellarResourceIntTest.createEntity(em);
+        em.persist(vintage);
+        em.flush();
+        wineInCellar.setVintage(vintage);
         WineAgingData wineAgingData = new WineAgingData();
         wineAgingData.setColor(vintage.getWine().getColor());
         wineAgingData.setRegion(vintage.getWine().getRegion());
         wineAgingData.setMinKeep(DEFAULT_MIN_KEEP);
         wineAgingData.setMaxKeep(DEFAULT_MAX_KEEP);
-        em.persist(vintage);
-        em.persist(cellar);
         em.persist(wineAgingData);
         em.flush();
-        wineInCellar.setVintage(vintage);
-        wineInCellar.setCellarId(cellar.getId());
         return wineInCellar;
     }
 
@@ -148,9 +158,10 @@ public class WineInCellarResourceIntTest {
         wineInCellar.setApogeeYear(null);
         wineInCellar.setChildYear(null);
         // Create the WineInCellar
+        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.toDto(wineInCellar);
         restWineInCellarMockMvc.perform(post("/api/wine-in-cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(wineInCellar)))
+            .content(TestUtil.convertObjectToJsonBytes(wineInCellarDTO)))
             .andExpect(status().isCreated());
 
         // Validate the WineInCellar in the database
@@ -161,7 +172,6 @@ public class WineInCellarResourceIntTest {
         assertThat(testWineInCellar.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
         assertThat(testWineInCellar.getComments()).isEqualTo(DEFAULT_COMMENTS);
         assertThat(testWineInCellar.getLocation()).isEqualTo(DEFAULT_LOCATION);
-        assertThat(testWineInCellar.getCellarId()).isEqualTo(wineInCellar.getCellarId().intValue());
         assertThat(testWineInCellar.getChildYear()).isEqualTo(DEFAULT_MIN_KEEP + wineInCellar.getVintage().getYear());
         assertThat(testWineInCellar.getApogeeYear()).isEqualTo(DEFAULT_MAX_KEEP +  wineInCellar.getVintage().getYear());
 
@@ -177,11 +187,12 @@ public class WineInCellarResourceIntTest {
 
         // Create the WineInCellar with an existing ID
         wineInCellar.setId(1L);
+        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.toDto(wineInCellar);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restWineInCellarMockMvc.perform(post("/api/wine-in-cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(wineInCellar)))
+            .content(TestUtil.convertObjectToJsonBytes(wineInCellarDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the WineInCellar in the database
@@ -197,10 +208,11 @@ public class WineInCellarResourceIntTest {
         wineInCellar.setQuantity(null);
 
         // Create the WineInCellar, which fails.
+        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.toDto(wineInCellar);
 
         restWineInCellarMockMvc.perform(post("/api/wine-in-cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(wineInCellar)))
+            .content(TestUtil.convertObjectToJsonBytes(wineInCellarDTO)))
             .andExpect(status().isBadRequest());
 
         List<WineInCellar> wineInCellarList = wineInCellarRepository.findAll();
@@ -209,25 +221,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    public void checkCellarIdIsRequired() throws Exception {
-        int databaseSizeBeforeTest = wineInCellarRepository.findAll().size();
-        // set the field null
-        wineInCellar.setCellarId(null);
-
-        // Create the WineInCellar, which fails.
-
-        restWineInCellarMockMvc.perform(post("/api/wine-in-cellars")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(wineInCellar)))
-            .andExpect(status().isBadRequest());
-
-        List<WineInCellar> wineInCellarList = wineInCellarRepository.findAll();
-        assertThat(wineInCellarList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellars() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -237,27 +231,12 @@ public class WineInCellarResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(wineInCellar.getId().intValue())))
+            .andExpect(jsonPath("$.[*].childYear").value(hasItem(DEFAULT_CHILD_YEAR)))
+            .andExpect(jsonPath("$.[*].apogeeYear").value(hasItem(DEFAULT_APOGEE_YEAR)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())))
-            .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION.toString())))
-            .andExpect(jsonPath("$.[*].cellarId").value(hasItem(wineInCellar.getCellarId().intValue())))
-            .andExpect(jsonPath("$.[*].childYear").value(hasItem(DEFAULT_CHILD_YEAR)))
-            .andExpect(jsonPath("$.[*].apogeeYear").value(hasItem(DEFAULT_APOGEE_YEAR)));
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser
-    public void getAllWineInCellarsWithoutCellar() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList
-        restWineInCellarMockMvc.perform(get("/api/wine-in-cellars?sort=id,desc"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$").isEmpty());
+            .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION.toString())));
     }
 
     @Test
@@ -271,286 +250,17 @@ public class WineInCellarResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(wineInCellar.getId().intValue()))
-            .andExpect(jsonPath("$.price").value(DEFAULT_PRICE))
+            .andExpect(jsonPath("$.childYear").value(DEFAULT_CHILD_YEAR))
+            .andExpect(jsonPath("$.apogeeYear").value(DEFAULT_APOGEE_YEAR))
+            .andExpect(jsonPath("$.price").value(DEFAULT_PRICE.doubleValue()))
             .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY))
             .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS.toString()))
-            .andExpect(jsonPath("$.location").value(DEFAULT_LOCATION.toString()))
-            .andExpect(jsonPath("$.cellarId").value(wineInCellar.getCellarId().intValue()))
-            .andExpect(jsonPath("$.childYear").value(DEFAULT_CHILD_YEAR))
-            .andExpect(jsonPath("$.apogeeYear").value(DEFAULT_APOGEE_YEAR));
+            .andExpect(jsonPath("$.location").value(DEFAULT_LOCATION.toString()));
     }
 
     @Test
     @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByPriceIsEqualToSomething() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where price equals to DEFAULT_PRICE
-        defaultWineInCellarShouldBeFound("price.equals=" + DEFAULT_PRICE);
-
-        // Get all the wineInCellarList where price equals to UPDATED_PRICE
-        defaultWineInCellarShouldNotBeFound("price.equals=" + UPDATED_PRICE);
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByPriceIsInShouldWork() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where price in DEFAULT_PRICE or UPDATED_PRICE
-        defaultWineInCellarShouldBeFound("price.in=" + DEFAULT_PRICE + "," + UPDATED_PRICE);
-
-        // Get all the wineInCellarList where price equals to UPDATED_PRICE
-        defaultWineInCellarShouldNotBeFound("price.in=" + UPDATED_PRICE);
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByPriceIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where price is not null
-        defaultWineInCellarShouldBeFound("price.specified=true");
-
-        // Get all the wineInCellarList where price is null
-        defaultWineInCellarShouldNotBeFound("price.specified=false");
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByQuantityIsEqualToSomething() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where quantity equals to DEFAULT_QUANTITY
-        defaultWineInCellarShouldBeFound("quantity.equals=" + DEFAULT_QUANTITY);
-
-        // Get all the wineInCellarList where quantity equals to UPDATED_QUANTITY
-        defaultWineInCellarShouldNotBeFound("quantity.equals=" + UPDATED_QUANTITY);
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByQuantityIsInShouldWork() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where quantity in DEFAULT_QUANTITY or UPDATED_QUANTITY
-        defaultWineInCellarShouldBeFound("quantity.in=" + DEFAULT_QUANTITY + "," + UPDATED_QUANTITY);
-
-        // Get all the wineInCellarList where quantity equals to UPDATED_QUANTITY
-        defaultWineInCellarShouldNotBeFound("quantity.in=" + UPDATED_QUANTITY);
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByQuantityIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where quantity is not null
-        defaultWineInCellarShouldBeFound("quantity.specified=true");
-
-        // Get all the wineInCellarList where quantity is null
-        defaultWineInCellarShouldNotBeFound("quantity.specified=false");
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByQuantityIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where quantity greater than or equals to DEFAULT_QUANTITY
-        defaultWineInCellarShouldBeFound("quantity.greaterOrEqualThan=" + DEFAULT_QUANTITY);
-
-        // Get all the wineInCellarList where quantity greater than or equals to UPDATED_QUANTITY
-        defaultWineInCellarShouldNotBeFound("quantity.greaterOrEqualThan=" + UPDATED_QUANTITY);
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByQuantityIsLessThanSomething() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where quantity less than or equals to DEFAULT_QUANTITY
-        defaultWineInCellarShouldNotBeFound("quantity.lessThan=" + DEFAULT_QUANTITY);
-
-        // Get all the wineInCellarList where quantity less than or equals to UPDATED_QUANTITY
-        defaultWineInCellarShouldBeFound("quantity.lessThan=" + UPDATED_QUANTITY);
-    }
-
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByCommentsIsEqualToSomething() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where comments equals to DEFAULT_COMMENTS
-        defaultWineInCellarShouldBeFound("comments.equals=" + DEFAULT_COMMENTS);
-
-        // Get all the wineInCellarList where comments equals to UPDATED_COMMENTS
-        defaultWineInCellarShouldNotBeFound("comments.equals=" + UPDATED_COMMENTS);
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByCommentsIsInShouldWork() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where comments in DEFAULT_COMMENTS or UPDATED_COMMENTS
-        defaultWineInCellarShouldBeFound("comments.in=" + DEFAULT_COMMENTS + "," + UPDATED_COMMENTS);
-
-        // Get all the wineInCellarList where comments equals to UPDATED_COMMENTS
-        defaultWineInCellarShouldNotBeFound("comments.in=" + UPDATED_COMMENTS);
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByCommentsIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where comments is not null
-        defaultWineInCellarShouldBeFound("comments.specified=true");
-
-        // Get all the wineInCellarList where comments is null
-        defaultWineInCellarShouldNotBeFound("comments.specified=false");
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByLocationIsEqualToSomething() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where location equals to DEFAULT_LOCATION
-        defaultWineInCellarShouldBeFound("location.equals=" + DEFAULT_LOCATION);
-
-        // Get all the wineInCellarList where location equals to UPDATED_LOCATION
-        defaultWineInCellarShouldNotBeFound("location.equals=" + UPDATED_LOCATION);
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByLocationIsInShouldWork() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where location in DEFAULT_LOCATION or UPDATED_LOCATION
-        defaultWineInCellarShouldBeFound("location.in=" + DEFAULT_LOCATION + "," + UPDATED_LOCATION);
-
-        // Get all the wineInCellarList where location equals to UPDATED_LOCATION
-        defaultWineInCellarShouldNotBeFound("location.in=" + UPDATED_LOCATION);
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByLocationIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where location is not null
-        defaultWineInCellarShouldBeFound("location.specified=true");
-
-        // Get all the wineInCellarList where location is null
-        defaultWineInCellarShouldNotBeFound("location.specified=false");
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByCellarIdIsEqualToSomething() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where cellarId equals to wineInCellar.getCellarId()
-        defaultWineInCellarShouldBeFound("cellarId.equals=" + wineInCellar.getCellarId());
-
-        // Get all the wineInCellarList where cellarId equals to UPDATED_CELLAR_ID
-        defaultWineInCellarShouldNotBeFound("cellarId.equals=" + (wineInCellar.getCellarId() + 1));
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByCellarIdIsInShouldWork() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where cellarId in wineInCellar.getCellarId() or UPDATED_CELLAR_ID
-        defaultWineInCellarShouldBeFound("cellarId.in=" + wineInCellar.getCellarId() + "," + (wineInCellar.getCellarId() + 1));
-
-        // Get all the wineInCellarList where cellarId equals to UPDATED_CELLAR_ID
-        defaultWineInCellarShouldNotBeFound("cellarId.in=" + (wineInCellar.getCellarId() + 1));
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByCellarIdIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where cellarId is not null
-        defaultWineInCellarShouldBeFound("cellarId.specified=true");
-
-        // Get all the wineInCellarList where cellarId is null
-        defaultWineInCellarShouldNotBeFound("cellarId.specified=false");
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByCellarIdIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where cellarId greater than or equals to wineInCellar.getCellarId()
-        defaultWineInCellarShouldBeFound("cellarId.greaterOrEqualThan=" + wineInCellar.getCellarId());
-
-        // Get all the wineInCellarList where cellarId greater than or equals to UPDATED_CELLAR_ID
-        defaultWineInCellarShouldNotBeFound("cellarId.greaterOrEqualThan=" + wineInCellar.getCellarId() + 1);
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByCellarIdIsLessThanSomething() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-
-        // Get all the wineInCellarList where cellarId less than or equals to wineInCellar.getCellarId()
-        defaultWineInCellarShouldNotBeFound("cellarId.lessThan=" + wineInCellar.getCellarId());
-
-        // Get all the wineInCellarList where cellarId less than or equals to UPDATED_CELLAR_ID
-        defaultWineInCellarShouldBeFound("cellarId.lessThan=" + wineInCellar.getCellarId() + 1);
-    }
-
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByChildYearIsEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -564,7 +274,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByChildYearIsInShouldWork() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -578,7 +288,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByChildYearIsNullOrNotNull() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -592,7 +302,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByChildYearIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -606,7 +316,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByChildYearIsLessThanSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -621,7 +331,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByApogeeYearIsEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -635,7 +345,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByApogeeYearIsInShouldWork() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -649,7 +359,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByApogeeYearIsNullOrNotNull() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -663,7 +373,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByApogeeYearIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -677,7 +387,7 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByApogeeYearIsLessThanSomething() throws Exception {
         // Initialize the database
         wineInCellarRepository.saveAndFlush(wineInCellar);
@@ -692,7 +402,220 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
+    public void getAllWineInCellarsByPriceIsEqualToSomething() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where price equals to DEFAULT_PRICE
+        defaultWineInCellarShouldBeFound("price.equals=" + DEFAULT_PRICE);
+
+        // Get all the wineInCellarList where price equals to UPDATED_PRICE
+        defaultWineInCellarShouldNotBeFound("price.equals=" + UPDATED_PRICE);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(DEFAULT_LOGIN)
+    public void getAllWineInCellarsByPriceIsInShouldWork() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where price in DEFAULT_PRICE or UPDATED_PRICE
+        defaultWineInCellarShouldBeFound("price.in=" + DEFAULT_PRICE + "," + UPDATED_PRICE);
+
+        // Get all the wineInCellarList where price equals to UPDATED_PRICE
+        defaultWineInCellarShouldNotBeFound("price.in=" + UPDATED_PRICE);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(DEFAULT_LOGIN)
+    public void getAllWineInCellarsByPriceIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where price is not null
+        defaultWineInCellarShouldBeFound("price.specified=true");
+
+        // Get all the wineInCellarList where price is null
+        defaultWineInCellarShouldNotBeFound("price.specified=false");
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(DEFAULT_LOGIN)
+    public void getAllWineInCellarsByQuantityIsEqualToSomething() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where quantity equals to DEFAULT_QUANTITY
+        defaultWineInCellarShouldBeFound("quantity.equals=" + DEFAULT_QUANTITY);
+
+        // Get all the wineInCellarList where quantity equals to UPDATED_QUANTITY
+        defaultWineInCellarShouldNotBeFound("quantity.equals=" + UPDATED_QUANTITY);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(DEFAULT_LOGIN)
+    public void getAllWineInCellarsByQuantityIsInShouldWork() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where quantity in DEFAULT_QUANTITY or UPDATED_QUANTITY
+        defaultWineInCellarShouldBeFound("quantity.in=" + DEFAULT_QUANTITY + "," + UPDATED_QUANTITY);
+
+        // Get all the wineInCellarList where quantity equals to UPDATED_QUANTITY
+        defaultWineInCellarShouldNotBeFound("quantity.in=" + UPDATED_QUANTITY);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(DEFAULT_LOGIN)
+    public void getAllWineInCellarsByQuantityIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where quantity is not null
+        defaultWineInCellarShouldBeFound("quantity.specified=true");
+
+        // Get all the wineInCellarList where quantity is null
+        defaultWineInCellarShouldNotBeFound("quantity.specified=false");
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(DEFAULT_LOGIN)
+    public void getAllWineInCellarsByQuantityIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where quantity greater than or equals to DEFAULT_QUANTITY
+        defaultWineInCellarShouldBeFound("quantity.greaterOrEqualThan=" + DEFAULT_QUANTITY);
+
+        // Get all the wineInCellarList where quantity greater than or equals to UPDATED_QUANTITY
+        defaultWineInCellarShouldNotBeFound("quantity.greaterOrEqualThan=" + UPDATED_QUANTITY);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(DEFAULT_LOGIN)
+    public void getAllWineInCellarsByQuantityIsLessThanSomething() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where quantity less than or equals to DEFAULT_QUANTITY
+        defaultWineInCellarShouldNotBeFound("quantity.lessThan=" + DEFAULT_QUANTITY);
+
+        // Get all the wineInCellarList where quantity less than or equals to UPDATED_QUANTITY
+        defaultWineInCellarShouldBeFound("quantity.lessThan=" + UPDATED_QUANTITY);
+    }
+
+
+    @Test
+    @Transactional
+    @WithMockUser(DEFAULT_LOGIN)
+    public void getAllWineInCellarsByCommentsIsEqualToSomething() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where comments equals to DEFAULT_COMMENTS
+        defaultWineInCellarShouldBeFound("comments.equals=" + DEFAULT_COMMENTS);
+
+        // Get all the wineInCellarList where comments equals to UPDATED_COMMENTS
+        defaultWineInCellarShouldNotBeFound("comments.equals=" + UPDATED_COMMENTS);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(DEFAULT_LOGIN)
+    public void getAllWineInCellarsByCommentsIsInShouldWork() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where comments in DEFAULT_COMMENTS or UPDATED_COMMENTS
+        defaultWineInCellarShouldBeFound("comments.in=" + DEFAULT_COMMENTS + "," + UPDATED_COMMENTS);
+
+        // Get all the wineInCellarList where comments equals to UPDATED_COMMENTS
+        defaultWineInCellarShouldNotBeFound("comments.in=" + UPDATED_COMMENTS);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(DEFAULT_LOGIN)
+    public void getAllWineInCellarsByCommentsIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where comments is not null
+        defaultWineInCellarShouldBeFound("comments.specified=true");
+
+        // Get all the wineInCellarList where comments is null
+        defaultWineInCellarShouldNotBeFound("comments.specified=false");
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(DEFAULT_LOGIN)
+    public void getAllWineInCellarsByLocationIsEqualToSomething() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where location equals to DEFAULT_LOCATION
+        defaultWineInCellarShouldBeFound("location.equals=" + DEFAULT_LOCATION);
+
+        // Get all the wineInCellarList where location equals to UPDATED_LOCATION
+        defaultWineInCellarShouldNotBeFound("location.equals=" + UPDATED_LOCATION);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(DEFAULT_LOGIN)
+    public void getAllWineInCellarsByLocationIsInShouldWork() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where location in DEFAULT_LOCATION or UPDATED_LOCATION
+        defaultWineInCellarShouldBeFound("location.in=" + DEFAULT_LOCATION + "," + UPDATED_LOCATION);
+
+        // Get all the wineInCellarList where location equals to UPDATED_LOCATION
+        defaultWineInCellarShouldNotBeFound("location.in=" + UPDATED_LOCATION);
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(DEFAULT_LOGIN)
+    public void getAllWineInCellarsByLocationIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+
+        // Get all the wineInCellarList where location is not null
+        defaultWineInCellarShouldBeFound("location.specified=true");
+
+        // Get all the wineInCellarList where location is null
+        defaultWineInCellarShouldNotBeFound("location.specified=false");
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(DEFAULT_LOGIN)
+    public void getAllWineInCellarsByCellarIsEqualToSomething() throws Exception {
+        // Initialize the database
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+        Long cellarId = wineInCellar.getCellar().getId();
+
+        // Get all the wineInCellarList where cellar equals to cellarId
+        defaultWineInCellarShouldBeFound("cellarId.equals=" + cellarId);
+
+        // Get all the wineInCellarList where cellar equals to cellarId + 1
+        defaultWineInCellarShouldNotBeFound("cellarId.equals=" + (cellarId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    @WithMockUser(DEFAULT_LOGIN)
     public void getAllWineInCellarsByVintageIsEqualToSomething() throws Exception {
         // Initialize the database
         Vintage vintage = VintageResourceIntTest.createEntity(em);
@@ -709,33 +632,6 @@ public class WineInCellarResourceIntTest {
         defaultWineInCellarShouldNotBeFound("vintageId.equals=" + (vintageId + 1));
     }
 
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByRegionIsEqualToSomething() throws Exception {
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-        String regionName = wineInCellar.getVintage().getWine().getRegion().getRegionName();
-        // Get all the wineInCellarList where vintage equals to vintageId
-        defaultWineInCellarShouldBeFound("region.equals=" + regionName);
-
-        // Get all the wineInCellarList where vintage equals to vintageId + 1
-        defaultWineInCellarShouldNotBeFound("region.equals=" + "fakeName");
-    }
-
-    @Test
-    @Transactional
-    @WithMockUser("system")
-    public void getAllWineInCellarsByKeywordsContainsSomething() throws Exception {
-        // Initialize the database
-        wineInCellarRepository.saveAndFlush(wineInCellar);
-        String wineName = wineInCellar.getVintage().getWine().getName().substring(1);
-        // Get all the wineInCellarList where comments equals to DEFAULT_COMMENTS
-        defaultWineInCellarShouldBeFound("keywords=" + wineName);
-
-        // Get all the wineInCellarList where comments equals to UPDATED_COMMENTS
-        defaultWineInCellarShouldNotBeFound("keywords=fakeName");
-    }
-
     /**
      * Executes the search, and checks that the default entity is returned
      */
@@ -744,13 +640,12 @@ public class WineInCellarResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(wineInCellar.getId().intValue())))
+            .andExpect(jsonPath("$.[*].childYear").value(hasItem(DEFAULT_CHILD_YEAR)))
+            .andExpect(jsonPath("$.[*].apogeeYear").value(hasItem(DEFAULT_APOGEE_YEAR)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())))
-            .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION.toString())))
-            .andExpect(jsonPath("$.[*].cellarId").value(hasItem(wineInCellar.getCellarId().intValue())))
-            .andExpect(jsonPath("$.[*].childYear").value(hasItem(DEFAULT_CHILD_YEAR)))
-            .andExpect(jsonPath("$.[*].apogeeYear").value(hasItem(DEFAULT_APOGEE_YEAR)));
+            .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION.toString())));
     }
 
     /**
@@ -777,8 +672,8 @@ public class WineInCellarResourceIntTest {
     @Transactional
     public void updateWineInCellar() throws Exception {
         // Initialize the database
-        wineInCellarService.save(wineInCellar);
-
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+        wineInCellarSearchRepository.save(wineInCellar);
         int databaseSizeBeforeUpdate = wineInCellarRepository.findAll().size();
 
         // Update the wineInCellar
@@ -786,29 +681,29 @@ public class WineInCellarResourceIntTest {
         // Disconnect from session so that the updates on updatedWineInCellar are not directly saved in db
         em.detach(updatedWineInCellar);
         updatedWineInCellar
+            .childYear(UPDATED_CHILD_YEAR)
+            .apogeeYear(UPDATED_APOGEE_YEAR)
             .price(UPDATED_PRICE)
             .quantity(UPDATED_QUANTITY)
             .comments(UPDATED_COMMENTS)
-            .location(UPDATED_LOCATION)
-            .childYear(UPDATED_CHILD_YEAR)
-            .apogeeYear(UPDATED_APOGEE_YEAR);
+            .location(UPDATED_LOCATION);
+        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.toDto(updatedWineInCellar);
 
         restWineInCellarMockMvc.perform(put("/api/wine-in-cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedWineInCellar)))
+            .content(TestUtil.convertObjectToJsonBytes(wineInCellarDTO)))
             .andExpect(status().isOk());
 
         // Validate the WineInCellar in the database
         List<WineInCellar> wineInCellarList = wineInCellarRepository.findAll();
         assertThat(wineInCellarList).hasSize(databaseSizeBeforeUpdate);
         WineInCellar testWineInCellar = wineInCellarList.get(wineInCellarList.size() - 1);
+        assertThat(testWineInCellar.getChildYear()).isEqualTo(UPDATED_CHILD_YEAR);
+        assertThat(testWineInCellar.getApogeeYear()).isEqualTo(UPDATED_APOGEE_YEAR);
         assertThat(testWineInCellar.getPrice()).isEqualTo(UPDATED_PRICE);
         assertThat(testWineInCellar.getQuantity()).isEqualTo(UPDATED_QUANTITY);
         assertThat(testWineInCellar.getComments()).isEqualTo(UPDATED_COMMENTS);
         assertThat(testWineInCellar.getLocation()).isEqualTo(UPDATED_LOCATION);
-        assertThat(testWineInCellar.getCellarId()).isEqualTo(wineInCellar.getCellarId().intValue());
-        assertThat(testWineInCellar.getChildYear()).isEqualTo(UPDATED_CHILD_YEAR);
-        assertThat(testWineInCellar.getApogeeYear()).isEqualTo(UPDATED_APOGEE_YEAR);
 
         // Validate the WineInCellar in Elasticsearch
         WineInCellar wineInCellarEs = wineInCellarSearchRepository.findOne(testWineInCellar.getId());
@@ -821,11 +716,12 @@ public class WineInCellarResourceIntTest {
         int databaseSizeBeforeUpdate = wineInCellarRepository.findAll().size();
 
         // Create the WineInCellar
+        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.toDto(wineInCellar);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restWineInCellarMockMvc.perform(put("/api/wine-in-cellars")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(wineInCellar)))
+            .content(TestUtil.convertObjectToJsonBytes(wineInCellarDTO)))
             .andExpect(status().isCreated());
 
         // Validate the WineInCellar in the database
@@ -835,11 +731,11 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void deleteWineInCellar() throws Exception {
         // Initialize the database
-        wineInCellarService.save(wineInCellar);
-
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+        wineInCellarSearchRepository.save(wineInCellar);
         int databaseSizeBeforeDelete = wineInCellarRepository.findAll().size();
 
         // Get the wineInCellar
@@ -858,23 +754,23 @@ public class WineInCellarResourceIntTest {
 
     @Test
     @Transactional
-    @WithMockUser("system")
+    @WithMockUser(DEFAULT_LOGIN)
     public void searchWineInCellar() throws Exception {
         // Initialize the database
-        wineInCellarService.save(wineInCellar);
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+        wineInCellarSearchRepository.save(wineInCellar);
 
         // Search the wineInCellar
         restWineInCellarMockMvc.perform(get("/api/_search/wine-in-cellars?query=id:" + wineInCellar.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(wineInCellar.getId().intValue())))
+            .andExpect(jsonPath("$.[*].childYear").value(hasItem(DEFAULT_CHILD_YEAR)))
+            .andExpect(jsonPath("$.[*].apogeeYear").value(hasItem(DEFAULT_APOGEE_YEAR)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())))
-            .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION.toString())))
-            .andExpect(jsonPath("$.[*].cellarId").value(hasItem(wineInCellar.getCellarId().intValue())))
-            .andExpect(jsonPath("$.[*].childYear").value(hasItem(DEFAULT_CHILD_YEAR)))
-            .andExpect(jsonPath("$.[*].apogeeYear").value(hasItem(DEFAULT_APOGEE_YEAR)));
+            .andExpect(jsonPath("$.[*].location").value(hasItem(DEFAULT_LOCATION.toString())));
     }
 
     @Test
@@ -886,10 +782,10 @@ public class WineInCellarResourceIntTest {
         vintage.setWine(wine);
         wineInCellar.setVintage(vintage);
         // Create the WineInCellar
-
+        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.toDto(wineInCellar);
         restWineInCellarMockMvc.perform(post("/api/wine-in-cellars/all")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(wineInCellar)))
+            .content(TestUtil.convertObjectToJsonBytes(wineInCellarDTO)))
             .andExpect(status().isCreated());
 
         // Validate the WineInCellar in the database
@@ -910,19 +806,20 @@ public class WineInCellarResourceIntTest {
     @Transactional
     public void updateWineInCellarFromScratch() throws Exception {
         // Initialize the database
-        wineInCellarService.saveFromScratch(wineInCellar);
+        wineInCellarRepository.saveAndFlush(wineInCellar);
+        wineInCellarSearchRepository.save(wineInCellar);
 
         int databaseSizeBeforeUpdate = wineInCellarRepository.findAll().size();
 
         // Update the wineInCellar
         WineInCellar updatedWineInCellar = wineInCellarRepository.findOne(wineInCellar.getId());
-        // Clear entity association
-        em.clear();
+        em.detach(updatedWineInCellar);
         updatedWineInCellar.getVintage().getWine().setName(UPDATED_NAME);
 
+        WineInCellarDTO wineInCellarDTO = wineInCellarMapper.toDto(updatedWineInCellar);
         restWineInCellarMockMvc.perform(put("/api/wine-in-cellars/all")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedWineInCellar)))
+            .content(TestUtil.convertObjectToJsonBytes(wineInCellarDTO)))
             .andExpect(status().isOk());
 
         // Validate the WineInCellar in the database
@@ -949,5 +846,28 @@ public class WineInCellarResourceIntTest {
         assertThat(wineInCellar1).isNotEqualTo(wineInCellar2);
         wineInCellar1.setId(null);
         assertThat(wineInCellar1).isNotEqualTo(wineInCellar2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(WineInCellarDTO.class);
+        WineInCellarDTO wineInCellarDTO1 = new WineInCellarDTO();
+        wineInCellarDTO1.setId(1L);
+        WineInCellarDTO wineInCellarDTO2 = new WineInCellarDTO();
+        assertThat(wineInCellarDTO1).isNotEqualTo(wineInCellarDTO2);
+        wineInCellarDTO2.setId(wineInCellarDTO1.getId());
+        assertThat(wineInCellarDTO1).isEqualTo(wineInCellarDTO2);
+        wineInCellarDTO2.setId(2L);
+        assertThat(wineInCellarDTO1).isNotEqualTo(wineInCellarDTO2);
+        wineInCellarDTO1.setId(null);
+        assertThat(wineInCellarDTO1).isNotEqualTo(wineInCellarDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(wineInCellarMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(wineInCellarMapper.fromId(null)).isNull();
     }
 }

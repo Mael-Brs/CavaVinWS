@@ -1,14 +1,14 @@
 /* tslint:disable max-line-length */
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {DatePipe} from '@angular/common';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs/Rx';
-import {JhiDataUtils, JhiDateUtils, JhiEventManager} from 'ng-jhipster';
-import {CavavinTestModule} from '../../../test.module';
-import {MockActivatedRoute} from '../../../helpers/mock-route.service';
-import {WineInCellarDetailComponent} from '../../../../../../main/webapp/app/entities/wine-in-cellar/wine-in-cellar-detail.component';
-import {WineInCellarService} from '../../../../../../main/webapp/app/entities/wine-in-cellar/wine-in-cellar.service';
-import {WineInCellar} from '../../../../../../main/webapp/app/entities/wine-in-cellar/wine-in-cellar.model';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { DatePipe } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Rx';
+import { JhiDateUtils, JhiDataUtils, JhiEventManager } from 'ng-jhipster';
+import { CavavinTestModule } from '../../../test.module';
+import { MockActivatedRoute } from '../../../helpers/mock-route.service';
+import { WineInCellarDetailComponent } from '../../../../../../main/webapp/app/entities/wine-in-cellar/wine-in-cellar-detail.component';
+import { WineInCellarService } from '../../../../../../main/webapp/app/entities/wine-in-cellar/wine-in-cellar.service';
+import { WineInCellar } from '../../../../../../main/webapp/app/entities/wine-in-cellar/wine-in-cellar.model';
 
 describe('Component Tests', () => {
 

@@ -30,13 +30,13 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="childYear"><span jhiTranslate="cavavinApp.wineInCellar.childYear">Child Year</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="apogeeYear"><span jhiTranslate="cavavinApp.wineInCellar.apogeeYear">Apogee Year</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="price"><span jhiTranslate="cavavinApp.wineInCellar.price">Price</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="quantity"><span jhiTranslate="cavavinApp.wineInCellar.quantity">Quantity</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="comments"><span jhiTranslate="cavavinApp.wineInCellar.comments">Comments</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="location"><span jhiTranslate="cavavinApp.wineInCellar.location">Location</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="cellarId"><span jhiTranslate="cavavinApp.wineInCellar.cellarId">Cellar Id</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="childYear"><span jhiTranslate="cavavinApp.wineInCellar.childYear">Child Year</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="apogeeYear"><span jhiTranslate="cavavinApp.wineInCellar.apogeeYear">Apogee Year</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="cellarId"><span jhiTranslate="cavavinApp.wineInCellar.cellar">Cellar</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="vintage.id"><span jhiTranslate="cavavinApp.wineInCellar.vintage">Vintage</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
@@ -44,13 +44,17 @@
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let wineInCellar of wineInCellars ;trackBy: trackId">
                 <td><a [routerLink]="['../wine-in-cellar', wineInCellar.id ]">{{wineInCellar.id}}</a></td>
+                <td>{{wineInCellar.childYear}}</td>
+                <td>{{wineInCellar.apogeeYear}}</td>
                 <td>{{wineInCellar.price}}</td>
                 <td>{{wineInCellar.quantity}}</td>
                 <td>{{wineInCellar.comments}}</td>
                 <td>{{wineInCellar.location}}</td>
-                <td>{{wineInCellar.cellarId}}</td>
-                <td>{{wineInCellar.childYear}}</td>
-                <td>{{wineInCellar.apogeeYear}}</td>
+                <td>
+                    <div *ngIf="wineInCellar.cellarId">
+                        <a [routerLink]="['../cellar', wineInCellar.cellarId  ]" >{{wineInCellar.cellarId}}</a>
+                    </div>
+                </td>
                 <td>
                     <div *ngIf="wineInCellar.vintage">
                         <a [routerLink]="['../vintage', wineInCellar.vintage?.id ]" >{{wineInCellar.vintage?.id}}</a>
